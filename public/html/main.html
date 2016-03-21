@@ -1,0 +1,28 @@
+<!-- This is the outer wraper html that loads all the css and javascript, it also sets up ng-view so that THe page content can be set by $routeProvider -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="diningApp">
+	<title>Olin Dining 2.0</title>
+	<link rel="stylesheet" href="/node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" href="/stylesheets/style.css" >
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body layout="column" ng-app="myApp">
+
+	<ng-view layout="column" flex></ng-view>
+
+	<script src="/node_modules/angular/angular.js"></script> 
+	<script src="/node_modules/angular-aria/angular-aria.js"></script> 
+	<script src="/node_modules/angular-animate/angular-animate.js"></script> 
+	<script src="/node_modules/angular-material/angular-material.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+
+    <script type="text/javascript" src="/javascripts/main.js"></script>
+    <script src="views/homeView/homeController.js"></script>
+    
+</body>
+</html>
+
