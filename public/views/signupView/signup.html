@@ -1,0 +1,19 @@
+<!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
+<md-content>
+	<md-toolbar class="md-medium-tall" layout="row">
+		<h2>Dining App!!!</h2>
+		<!-- <md-button ng-click="logout()">Logout</md-button> -->
+	</md-toolbar>
+	<md-content layout="row" flex layout-align="center">
+		<form>
+			<md-input-container> 
+				<label> Username </label>
+				<input required ng-model="signupForm.username">
+			</md-input-container>
+			<md-input-container> 
+				<label> Password </label>
+				<input  type="password" required ng-model="signupForm.password">
+			</md-input-container>
+			<md-button ng-click="signup()" class="md-primary">Sign Up</md-button>
+		</form>
+</md-content>

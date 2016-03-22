@@ -7,23 +7,24 @@ var indexRoute = require('./routes/index');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
-var passport = require('passport');
+var auth = require('./authentication.js')
 var app = express();
 
-if (process.env.NODE_ENV === 'production') {
+// if (process.env.NODE_ENV === 'production') {
 
-} else {
-	var authKeys = require('./authKeys.js');
-	process.env['VARIABLE'] = authKeys.VARIABLE;
-}
+// } else {
+// 	var authKeys = require('./authKeys.js');
+// 	process.env['VARIABLE'] = authKeys.VARIABLE;
+// }
+
+var passport = auth.configure();
 
 //PASSPORT
-// require('./config/passportConfig')(passport);
-// app.use(session({ secret: 'this is not a secret ;)',
-//   resave: false,
-//   saveUninitialized: false }));
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(session({ secret: 'this is not a secret ;)',
+  resave: false,
+  saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // mongo setup
@@ -48,7 +49,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
-app.get('/', indexRoute.home);
+app.get('/auth/getAuthenticated', auth.getAuthenticated);
+app.get('/auth/logout', auth.logout);
+app.post('/auth/login', auth.login);
+app.post('/auth/signup', auth.signup);
+
+app.get('*', indexRoute.home);
 
 
 var PORT = process.env.PORT || 3000;
