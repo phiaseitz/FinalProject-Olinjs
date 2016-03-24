@@ -16,16 +16,38 @@ app.service('AuthService', function($http, $q, $rootScope, $location) {
   }
 
   this.login = function(credentials) {
-    console.log('hello')
+    console.log('attempting to log in')
     var service = this;
     $http.post('/auth/login', credentials).then(function success(response) {
-      service.getAuthenticated().then(function success(authStatus) {
-        console.log(authStatus);
-        service.authenticated = authStatus.data.authenticated;
-        $location.path('/');
-      })
+        service.getAuthenticated()
+          .then(function (authStatus) {
+            console.log(authStatus);
+            service.authenticated = authStatus.data.authenticated;
+            $location.path('/');
+          })
+    })
+    .catch(function(err){
+      console.log('Error logging in! ', err)
     });
   };
+
+  this.signup = function(credentials) {
+    var service = this;
+    $http.post('/auth/signup', credentials).then(function success(signupStatus){
+      if (signupStatus.data.err){
+        console.log('ERROR: ', signupStatus.data.err);
+      } else if (signupStatus.data.info) {
+        console.log('INFO: ', signupStatus.data.info)
+      } else {
+        service.getAuthenticated().then(
+          function (authStatus) {
+            console.log(authStatus);
+            service.authenticated = authStatus.data.authenticated;
+            $location.path('/');
+          })
+      }
+    })
+  }
 
   this.logout = function() {
     var service = this;
@@ -35,7 +57,6 @@ app.service('AuthService', function($http, $q, $rootScope, $location) {
         console.log(service.authenticated)
         //Feel meh about this... 
         location.reload();
-        // return service.authenticated;
       })
     });
   };
