@@ -2,7 +2,7 @@ angular.module('myApp.changePasswordView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/changePassword', {
-    templateUrl: '/views/changePasswordView/changePassword.html',
+    templateUrl: '/views/authViews/changePasswordView/changePassword.html',
     controller: 'changePasswordController'
   });
 }])

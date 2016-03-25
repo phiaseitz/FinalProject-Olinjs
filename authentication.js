@@ -52,13 +52,13 @@ var authentication = {
 
           if(err || message){
             console.log("not gonna work")
-            res.status(200).json({status: 0, msg: "bad password"})
+            res.status(401).json({status: 0, msg: "bad password"})
           } else {
             sanitizedUser.setPassword(req.body.newPassword, function(err, userWithNewPassword){
               console.log(err);
               console.log(userWithNewPassword);
               if (err){
-                res.status(200).json({status: 0, msg: "failed"})
+                res.status(401).json({status: 0, msg: "failed"})
               } else {
                 console.log('password changed');
                 res.status(200).json({status: 0, msg: "wooo!"})
@@ -69,7 +69,7 @@ var authentication = {
         console.log(sanitizedUser);
         res.json({test: test});
       } else {
-        res.status(200).json({status: 0, msg: 'This user does not exist'});
+        res.status(401).json({status: 0, msg: 'This user does not exist'});
       }
     },function(err){
       console.log(err)

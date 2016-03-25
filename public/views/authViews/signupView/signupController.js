@@ -2,7 +2,7 @@ angular.module('myApp.signupView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/signup', {
-    templateUrl: '/views/signupView/signup.html',
+    templateUrl: '/views/authViews/signupView/signup.html',
     controller: 'signupController'
   });
 }])
