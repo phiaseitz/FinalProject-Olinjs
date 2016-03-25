@@ -16,9 +16,13 @@ angular.module('myApp.homeView', ['ngRoute'])
 		AuthService.getLoginPage();
 	}
 
+	$scope.signupRedirect = function(){
+		AuthService.getSignupPage();
+	}
+
 	$scope.logout = function() {
-		AuthService.logout();
-		//I don't like the way that this is handled. It feels 
-		//bad to just be setting this variable this way. 
+		AuthService.logout().then(function(authStatus){
+			$scope.userAuthenticated = authStatus;
+		});
 	}
 }]);

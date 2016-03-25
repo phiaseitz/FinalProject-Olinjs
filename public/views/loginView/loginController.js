@@ -7,20 +7,14 @@ angular.module('myApp.loginView', ['ngRoute'])
   });
 }])
 
-.controller('loginController', ['$scope','$window', '$http', '$mdToast', 'AuthService', function($scope,$window, $http, $mdToast, AuthService) {
+.controller('loginController', ['$scope','$location', '$http', '$mdToast', 'AuthService', function($scope, $location, $http, $mdToast, AuthService) {
 	console.log("loginController loaded");
 	$scope.loginForm = {};
+	$scope.loginError = "";
 	
 	$scope.login = function(formData){
 		console.log(formData);
 		AuthService.login(formData);
-		// $http.post('/auth/login',$scope.loginForm)
-		// 	.success(function(data){
-		// 		console.log('success');
-		// 	})
-		// 	.error(function(data){
-		// 		console.log('error');
-		// 	})
 	}
 
 }]);
