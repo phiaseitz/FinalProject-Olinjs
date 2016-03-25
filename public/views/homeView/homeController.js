@@ -13,17 +13,21 @@ angular.module('myApp.homeView', ['ngRoute'])
   });
 }])
 
-.controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', 'AuthService', function($scope,$window, $http, $mdToast, $q, AuthService) {
+.controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', '$location', 'AuthService', function($scope,$window, $http, $mdToast, $q, $location, AuthService) {
 	console.log("homeController loaded");
 	
 	$scope.userAuthenticated = AuthService.authenticated;
 
 	$scope.loginRedirect = function(){
-		AuthService.getLoginPage();
+		$location.path("/login");
 	}
 
 	$scope.signupRedirect = function(){
-		AuthService.getSignupPage();
+		$location.path("/signup");
+	}
+
+	$scope.changePasswordRedirect = function(){
+		$location.path("/changePassword");
 	}
 
 	$scope.logout = function() {

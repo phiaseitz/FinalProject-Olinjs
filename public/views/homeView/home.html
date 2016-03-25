@@ -5,6 +5,7 @@
 		<div ng-switch="userAuthenticated">
 			<div ng-switch-when="true">
 				<md-button ng-click="logout()">Logout</md-button> 
+				<md-button ng-click="changePasswordRedirect()">Change Password</md-button> 
 			</div>
 			<div ng-switch-when="false">
 				<md-button ng-click="signupRedirect()">Sign Up</md-button> 

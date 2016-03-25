@@ -28,14 +28,6 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     })
   }
 
-  this.getLoginPage = function(){
-    $location.path("/login");
-  }
-
-  this.getSignupPage = function(){
-    $location.path("/signup");
-  }
-
   this.login = function(credentials) {
     console.log('attempting to log in')
     var service = this;
@@ -72,7 +64,18 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
           .hideDelay(3000)
       );
     })
-  }
+  },
+
+  this.changePassword = function(credentials){
+    var service = this;
+    $http.post('/auth/changePassword', credentials)
+      .then(function (response){
+        console.log('success');
+      })
+      .catch(function (err){
+        console.log('error');
+      } )
+  },
 
   this.logout = function() {
     var service = this;

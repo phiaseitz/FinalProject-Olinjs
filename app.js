@@ -53,6 +53,7 @@ app.get('/auth/getAuthenticated', auth.getAuthenticated);
 app.get('/auth/logout', auth.logout);
 app.post('/auth/login', auth.login);
 app.post('/auth/signup', auth.signup);
+app.post('/auth/changePassword', auth.changePassword)
 
 app.get('*', indexRoute.home);
 
