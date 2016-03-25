@@ -21,17 +21,11 @@ var homeGET = function(req, res) {
 }
 
 //Given a date, find the appropriate meal
-
-//should meals be encoded differently? as in, assign a date in d/m/y, then assign a mealtime (breakfast, lunch, dinner) for a given meal. Look up a meal given both a date and a mealtime? Otherwise times of day are gonna get weird.
-
-//imagining a drop-down menu: user chooses a day of the week, and a mealtime. The site displays the appropriate meal.
-
-//This would make a lot of things easier: getting all of a given day's meals, getting all meals of a given mealtime...
-
 var getMealGET = function(req, res) {
     var mealdate = req.query.mealdate;
+    var mealtime = req.query.mealtime
 
-    Meal.find({date: mealdate}, function(err, meal) {
+    Meal.find({date: mealdate, mealtime: mealtime}, function(err, meal) {
         res.send(meal);
     })
 }
