@@ -4,18 +4,28 @@
 
 app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) {
 
-  this.authenticated = false;
+  this.authenticated;
 
   this.errorMessage = {
     Unauthorized: "The username and password combination did not match. Please try again.",
     UserExistsError: "A user with that username already exists. Please try another one."
-  }
-
+  },
 
   this.getAuthenticated = function() {
     console.log('getting authenticated')
     return $http.get('/auth/getAuthenticated');
   };
+
+  this.setAuthenticated = function() {
+    var service = this;
+    return $q(function(resolve){
+      service.getAuthenticated()
+        .then(function (authStatus) {
+          service.authenticated = authStatus.data.authenticated;
+          resolve()
+        })
+    })
+  }
 
   this.getLoginPage = function(){
     $location.path("/login");
@@ -29,17 +39,9 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     console.log('attempting to log in')
     var service = this;
     
-    //Returns a promise that resolves with the authentication status, if login is successful, 
-    //and rejects with the error if login is unsuccessful
-    
     $http.post('/auth/login', credentials)
       .then(function success(response) {
-        service.getAuthenticated()
-          .then(function (authStatus) {
-            console.log(authStatus);
-            service.authenticated = authStatus.data.authenticated;
-            $location.path('/')
-          })
+        $location.path('/')
       })
       .catch(function(err){
         console.log('Error logging in! ', err)
@@ -56,11 +58,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     var service = this;
     $http.post('/auth/signup', credentials)
       .then(function success(signupStatus){
-        service.getAuthenticated().then(function (authStatus) {
-          console.log(authStatus);
-          service.authenticated = authStatus.data.authenticated;
-          $location.path('/');
-        })
+        $location.path('/');
       })
     .catch(function(err){
       console.log('Error signing up! ', err)

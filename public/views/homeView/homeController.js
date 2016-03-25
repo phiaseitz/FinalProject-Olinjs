@@ -3,7 +3,13 @@ angular.module('myApp.homeView', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: '/views/homeView/home.html',
-    controller: 'homeController'
+    controller: 'homeController',
+    // Know whether or not we are authenticated before we render the page
+    resolve: {
+    	authentication: function (AuthService, $route) {
+    		return AuthService.setAuthenticated();
+    	}
+    }
   });
 }])
 
