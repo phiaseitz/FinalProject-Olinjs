@@ -7,12 +7,12 @@
 	<md-content layout="row" flex layout-align="center">
 		<form>
 			<md-input-container> 
-				<label> Username </label>
-				<input required ng-model="signupForm.username">
+				<label> Email </label>
+				<input required ng-model="signupForm.username" type="email" >
 			</md-input-container>
 			<md-input-container> 
 				<label> Password </label>
-				<input  type="password" required ng-model="signupForm.password">
+				<input  required ng-model="signupForm.password" type="password">
 			</md-input-container>
 			<md-button ng-click="signup(signupForm)" class="md-primary">Sign Up</md-button>
 		</form>

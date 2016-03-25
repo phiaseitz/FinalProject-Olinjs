@@ -7,8 +7,9 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
   this.authenticated;
 
   this.errorMessage = {
-    Unauthorized: "The username and password combination did not match. Please try again.",
-    UserExistsError: "A user with that username already exists. Please try another one."
+    Unauthorized: "The email and password combination did not match. Please try again.",
+    UserExistsError: "This email is already associated with an account. Please try another one.",
+    MissingUsernameError: "This is not a valid email. Please try again.",
   },
 
   this.getAuthenticated = function() {
