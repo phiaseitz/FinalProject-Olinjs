@@ -50,6 +50,8 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', indexRoute.home);
 
+app.get('/api/test/getweek', indexRoute.getWeekMealsGET);
+
 
 var PORT = process.env.PORT || 3000;
 app.listen(PORT, function(err) {
