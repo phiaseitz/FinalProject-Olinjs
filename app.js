@@ -54,6 +54,7 @@ app.get('/', indexRoute.home);
 app.get('/scraping/menuUrl', scrapingRoute.menuUrl);
 app.get('/scraping/menuData', scrapingRoute.menuData);
 app.get('/scraping/menuDataSave', scrapingRoute.menuDataSave);
+app.get('/api/test/getweek', indexRoute.getWeekMealsGET);
 
 
 var PORT = process.env.PORT || 3000;
