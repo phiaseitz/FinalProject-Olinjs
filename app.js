@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
+var scrapingRoute = require('./routes/scraping');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
@@ -49,6 +50,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
 app.get('/', indexRoute.home);
+
+app.get('/scraping/menuUrl', scrapingRoute.menuUrl);
+app.get('/scraping/menuData', scrapingRoute.menuData);
+app.get('/scraping/menuDataSave', scrapingRoute.menuDataSave);
 
 
 var PORT = process.env.PORT || 3000;
