@@ -49,10 +49,12 @@ var getWeekMealsGET = function(req, res) {
     //need callback after loop is done!
     Meal.find({ 'date': { $in: weekdates} }, function(err, meals){
         console.log(meals);
-    }).sort({date: 1}).exec(function(err, meals) {  //sort by ascending date
-        console.log(meals);     //but what about meal sorting? b, l, d order...
         res.send(meals);
     });
+    // }).sort({date: 1}).exec(function(err, meals) {  //sort by ascending date
+    //     console.log(meals);     //but what about meal sorting? b, l, d order...
+    //     res.send(meals);
+    // });
 
 }
 
