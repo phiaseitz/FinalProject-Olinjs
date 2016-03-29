@@ -7,20 +7,26 @@ var Meal = require('../models/mealModel.js');
 
 var meals = ['brk', 'lun', 'din'];
 
-getMenuURL = function(callback) {
-	url = 'https://olindining.sodexomyway.com/dining-choices/index.html'
+getMenuURL = function(location, callback) {
+	//location = 'trim'
+	if (location === 'olin') {
+		url = 'https://olindining.sodexomyway.com/dining-choices/index.html'
+		urlBase = 'https://olindining.sodexomyway.com'
+	} else if (location === 'trim') {
+		url = 'https://babsondining.sodexomyway.com/dining-choices/index.html'
+		urlBase = 'https://babsondining.sodexomyway.com'
+	}
 	request(url, function(error, response, html) {
 		if (!error) {
 			var $ = cheerio.load(html);
-			menuURL = 'https://olindining.sodexomyway.com' + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
+			menuURL = urlBase + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
 			callback(menuURL)
 		}
 	})
-
 }
 
-getMenuData = function(callback) {
-	getMenuURL(function(url) {
+getMenuData = function(location, callback) {
+	getMenuURL(location, function(url) {
 		console.log(url)
 		request(url, function(error, response, html) {
 			// First we'll check to make sure no errors occurred when making the request
@@ -29,9 +35,12 @@ getMenuData = function(callback) {
 
 				var $ = cheerio.load(html);
 
+				$.prototype.logHtml = function() {
+					console.log(this.html());
+				};
+
 				var startDateInfo = html.match('(.*(?:var dstart=new).*)')[0].slice(20, -2).split(",")
 				var startDate = new Date(startDateInfo[0], startDateInfo[1], startDateInfo[2]);
-				console.log(startDate)
 
 				var menu = [];
 
@@ -59,23 +68,28 @@ getMenuData = function(callback) {
 							return $(elem).find('.menuitem').length != 0;
 						}).each(function(i, elem) {
 							var menuItem = $(elem).find('.menuitem').first();
+							if (menuItem.find('.chk').length !== 0) {
 
-							item = {
-								name: null,
-								foodId: null,
-								nutritionId: null,
-								'vegan': false,
-								'vegetarian': false,
-								'mindful': false
+								item = {
+									name: null,
+									foodId: null,
+									nutritionId: null,
+									'vegan': false,
+									'vegetarian': false,
+									'mindful': false
+								}
+
+								item.name = menuItem.find('span').first().text()
+
+								item.foodId = menuItem.find('.chk').first().attr('id').substring(9, 19);
+								item.nutritionId = menuItem.find('.chk').first().attr('id').substring(20);
+							
+								item.vegan = (menuItem.find('img[alt="Vegan"]').length != 0)
+								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
+								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
+
+								foods.push(item)
 							}
-							item.name = menuItem.find('span').first().text()
-							item.foodId = menuItem.find('.chk').first().attr('id').substring(9, 19);
-							item.nutritionId = menuItem.find('.chk').first().attr('id').substring(20);
-							item.vegan = (menuItem.find('img[alt="Vegan"]').length != 0)
-							item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
-							item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
-
-							foods.push(item)
 						})
 						dayMenu[meal] = foods
 					}
@@ -117,8 +131,8 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 	}
 }
 
-scrapeMenuAndSave = function(callback) {
-	getMenuData(function(weekMenu) {
+scrapeMenuAndSave = function(location, callback) {
+	getMenuData(location, function(weekMenu) {
 		for (dayMenu of weekMenu) {
 			for (mealType of meals) {
 				var currentMeal = dayMenu[mealType];
@@ -126,7 +140,8 @@ scrapeMenuAndSave = function(callback) {
 					(function(currentMeal){
 						Meal.findOneAndUpdate({
 								date: dayMenu.date,
-								mealType: mealType
+								mealType: mealType,
+								location: location
 							}, {
 								lastUpdated: Date.now(),
 								foods: []

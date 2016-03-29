@@ -8,20 +8,20 @@ var scrapingHelper = require('../helpers/scrapingMenu.js');
 module.exports = router;
 
 var menuUrlGET = function(req, res) {
-	scrapingHelper.getMenuURL(function(menuLink) {
+	scrapingHelper.getMenuURL('trim',function(menuLink) {
 		res.send(menuLink);
 	})
 	
 }
 
 var menuDataGET = function(req, res) {
-	scrapingHelper.getMenuData(function(data) {
+	scrapingHelper.getMenuData('trim',function(data) {
 		res.send(data);
 	})
 }
 
 var menuDataSaveGET = function(req, res) {
-	scrapingHelper.scrapeMenuAndSave(function(data) {
+	scrapingHelper.scrapeMenuAndSave(req.params.location,function(data) {
 		res.send(data);
 	})
 }
