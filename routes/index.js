@@ -61,9 +61,9 @@ var getWeekMealsGET = function(req, res) {
 //Given a date, and a mealtime, return the meal
 var getMealGET = function(req, res) {
     var mealdate = req.query.mealdate;
-    var mealtime = req.query.mealtime;
+    var mealtype = req.query.mealtype;
 
-    Meal.find({date: mealdate, mealtime: mealtime}, function(err, meal) {
+    Meal.find({date: mealdate, mealType: mealtype}, function(err, meal) {
         if(err) { console.log(err) }
         console.log("Meal: " + meal)
         res.send(meal);
@@ -96,7 +96,7 @@ var getFoodGET = function(req, res) {
 //For a given meal, find all vegetarian foods.
 var getVegetarianFoodsGET = function(req, res) {
     var mealdate = req.query.mealdate;
-    var mealtime = req.query.mealtime;
+    var mealtype = req.query.mealtype;
 
 
 }
