@@ -1,5 +1,5 @@
 # FinalProject-Olinjs
-**Samantha Kumaresena, Mac-I Crowell, and Sophia Seitz**
+**Samantha Kumarasena, Mac-I Crowell, and Sophia Seitz**
 
 ## Project Description
 Our project seeks to improve the [Olin College dining hall website](https://olindining.sodexomyway.com/) to make it more usable. Currently it can be difficult to find out what food the dining hall is serving at a given meal or what hours the dining hall is open. We hope to address this by creating a website where the menu at a given meal is the focus, rather than information that students might not be as interested in. 
