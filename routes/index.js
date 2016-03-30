@@ -22,14 +22,25 @@ var homeGET = function(req, res) {
 
 //Load all this week's foods!
 var getWeekMealsGET = function(req, res) {
+    /*
+    
+    Gets all meals for a given day and meal-location. 
+    If you want to test: comment out req.query, add in commented line below. 
+
+    Test at /api/test/getweek
+    
+
+    */
+    //var mealloc = 'olin'
+
+    var mealloc = req.query.mealloc;
+
     //get current date
     var now = new Date();
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    //console.log(today);
 
     //today's day of week (0-6)
     var day = today.getDay();
-    //console.log('Day of the week: ' + day)
 
     //first day of week is... Past Sunday
     var firstday = new Date(today.setDate(today.getDate() - today.getDay()))
@@ -38,68 +49,86 @@ var getWeekMealsGET = function(req, res) {
     var weekdates = [];
 
     //Create a new weekday for every day of the week, add it to weekdates
-    for(i=0; i<=6; i++) {
+    //Olin website starts on Monday, ends on coming Sunday, so 1-7.
+    for(i=1; i<=7; i++) {   
         weekday = new Date(firstday.getTime());
         weekday.setDate(weekday.getDate() + i)
         weekdates.push(weekday)
-        console.log("Day of week: " + weekday )
+        //console.log("Day of week: " + weekday )
     }
-    //console.log(weekdates)
 
-    //need callback after loop is done!
-    Meal.find({ 'date': { $in: weekdates} }, function(err, meals){
-        console.log(meals);
+    Meal.find({ 'date': { $in: weekdates}, location: mealloc}, function(err, meals){
+        // for(meal of meals) {
+        //     console.log(meal.date)
+        // }
         res.send(meals);
     });
-    // }).sort({date: 1}).exec(function(err, meals) {  //sort by ascending date
-    //     console.log(meals);     //but what about meal sorting? b, l, d order...
-    //     res.send(meals);
-    // });
-
 }
 
 //Given a date, and a mealtime, return the meal
 var getMealGET = function(req, res) {
+    /* 
+
+    Given a date, a meal-type, and a meal-location, returns the appropriate meal.
+
+    If you want to test: comment req.query stuff, uncomment the stuff below
+    Test at /api/test/getmeal
+
+    */
+
+    //var now = new Date();
+    //var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    //var mealtype = 'brk';
+    //var mealloc = 'olin'
+
+
     var mealdate = req.query.mealdate;
     var mealtype = req.query.mealtype;
+    var mealloc = req.query.mealloc;
 
-    Meal.find({date: mealdate, mealType: mealtype}, function(err, meal) {
+    Meal.find({
+        date: mealdate, 
+        mealType: mealtype, 
+        location: mealloc
+    }, function(err, meal) {
         if(err) { console.log(err) }
-        console.log("Meal: " + meal)
-        res.send(meal);
+
+        if(meal.length > 1) {
+            console.log("Uh-oh... you got more than one meal...")
+        }
+
+        res.send(meal[0]);
     })
 }
 
 //Given a date, get all meals from that date.
 var getDayMealsGET = function(req, res) {
-    var mealdate = req.query.mealdate;
+    /*
+    
+    Given a date and a meal-location, returns the meals of the day.
 
-    Meal.find({date:mealdate}, function(err, meals) {
+    If you want to test: comment req.query stuff, uncomment the stuff below
+    Test at /api/test/getdaymeals
+
+    */
+    //var mealloc = 'olin'
+    //var now = new Date();
+    //var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+
+    var mealdate = req.query.mealdate;
+    var mealloc = req.query.mealloc
+
+    Meal.find({date:mealdate, location: mealloc}, function(err, meals) {
         if(err) { console.log(err) }
-        console.log("Meals: " + mealdate + " " + meals)
+
+        // for(meal of meals) {
+        //     console.log(meal.date + " " + meal.mealType + " " + meal.location)
+        // }
         res.send(meals);
     })
 }
 
-//given a food ID, get the food
-var getFoodGET = function(req, res) {
-    var foodid = req.query.id;
-
-    Food.find({_id: foodid}, function(err, food) {
-        if(err) { console.log(err) }
-        res.send(food);
-    })
-}
-
-//getVegetarian, getVegan, getGlutenFree, getHelathy
-
-//For a given meal, find all vegetarian foods.
-var getVegetarianFoodsGET = function(req, res) {
-    var mealdate = req.query.mealdate;
-    var mealtype = req.query.mealtype;
-
-
-}
 
 
 module.exports.home = homeGET;
@@ -107,5 +136,3 @@ module.exports.home = homeGET;
 module.exports.getWeekMealsGET = getWeekMealsGET;
 module.exports.getMealGET = getMealGET;
 module.exports.getDayMealsGET = getDayMealsGET;
-
-module.exports.getFoodGET = getFoodGET;
