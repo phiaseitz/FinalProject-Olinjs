@@ -54,9 +54,10 @@ var authentication = {
             console.log("not gonna work")
             res.status(401).json({status: 0, msg: "bad password"})
           } else {
-            sanitizedUser.setPassword(req.body.newPassword, function(err, userWithNewPassword){
+            user.setPassword(req.body.newPassword, function(err, userWithNewPassword){
               console.log(err);
               console.log(userWithNewPassword);
+              user.save();
               if (err){
                 res.status(401).json({status: 0, msg: "failed"})
               } else {
@@ -66,7 +67,6 @@ var authentication = {
             })
           }
         })
-        console.log(sanitizedUser);
         res.json({test: test});
       } else {
         res.status(401).json({status: 0, msg: 'This user does not exist'});
