@@ -2,7 +2,17 @@
 <md-content>
 	<md-toolbar class="md-medium-tall" layout="row">
 		<h2>Dining App!!!</h2>
-		<!-- <md-button ng-click="logout()">Logout</md-button> -->
+		<div ng-switch="userAuthenticated">
+			<div ng-switch-when="true">
+				<md-button ng-click="logout()">Logout</md-button> 
+				<md-button ng-click="changePasswordRedirect()">Change Password</md-button> 
+			</div>
+			<div ng-switch-when="false">
+				<md-button ng-click="signupRedirect()">Sign Up</md-button> 
+				<md-button ng-click="loginRedirect()">Login</md-button> 
+			</div>
+		</div>
+		
 	</md-toolbar>
 	<md-content layout="row" flex layout-align="center">
 		Hello!
