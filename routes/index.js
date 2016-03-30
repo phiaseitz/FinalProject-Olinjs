@@ -27,7 +27,7 @@ var getWeekMealsGET = function(req, res) {
     Gets all meals for a given day and meal-location. 
     If you want to test: comment out req.query, add in commented line below. 
 
-    Test at /api/test/getweek
+    Test at /menuapi/getweek
     
 
     */
@@ -72,7 +72,7 @@ var getMealGET = function(req, res) {
     Given a date, a meal-type, and a meal-location, returns the appropriate meal.
 
     If you want to test: comment req.query stuff, uncomment the stuff below
-    Test at /api/test/getmeal
+    Test at /menuapi/getmeal
 
     */
 
@@ -108,7 +108,7 @@ var getDayMealsGET = function(req, res) {
     Given a date and a meal-location, returns the meals of the day.
 
     If you want to test: comment req.query stuff, uncomment the stuff below
-    Test at /api/test/getdaymeals
+    Test at /menuapi/getdaymeals
 
     */
     //var mealloc = 'olin'
