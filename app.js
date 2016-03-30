@@ -29,6 +29,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // mongo setup
 var mongoURI = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/diningApp';
+console.log(mongoURI)
 mongoose.connect(mongoURI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
