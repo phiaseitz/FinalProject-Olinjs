@@ -56,9 +56,10 @@ app.get('/scraping/menuData', scrapingRoute.menuData);
 app.get('/scraping/menuDataSave/:location', scrapingRoute.menuDataSave);
 
 
-var PORT = process.env.PORT || 3000;
-app.listen(PORT, function(err) {
-	if (err) console.log(err)
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
+server.listen( port, ipaddress, function() {
+    console.log((new Date()) + ' Server is listening on port 3000');
 });
 
 
