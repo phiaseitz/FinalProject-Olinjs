@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
+var scrapingRoute = require('./routes/scraping');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
@@ -28,7 +29,8 @@ app.use(passport.session());
 
 
 // mongo setup
-var mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/diningApp';
+var mongoURI = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/diningApp';
+console.log(mongoURI)
 mongoose.connect(mongoURI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -57,10 +59,15 @@ app.post('/auth/changePassword', auth.changePassword)
 
 app.get('*', indexRoute.home);
 
+app.get('/scraping/menuUrl', scrapingRoute.menuUrl);
+app.get('/scraping/menuData', scrapingRoute.menuData);
+app.get('/scraping/menuDataSave/:location', scrapingRoute.menuDataSave);
 
-var PORT = process.env.PORT || 3000;
-app.listen(PORT, function(err) {
-	if (err) console.log(err)
+
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
+app.listen( port, ipaddress, function() {
+    console.log((new Date()) + ' Server is listening on port 3000');
 });
 
 
