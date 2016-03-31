@@ -51,28 +51,27 @@ var authentication = {
           console.log(message);
 
           if(err || message){
-            console.log("not gonna work")
-            res.status(401).json({status: 0, msg: "bad password"})
+            res.status(401).json({status: 0, msg: "WrongPassword"})
           } else {
             user.setPassword(req.body.newPassword, function(err, userWithNewPassword){
               console.log(err);
               console.log(userWithNewPassword);
               user.save();
               if (err){
-                res.status(401).json({status: 0, msg: "failed"})
+                res.status(401).json({status: 0, msg: "PasswordSetFailed"})
               } else {
-                console.log('password changed');
-                res.status(200).json({status: 0, msg: "wooo!"})
+                res.status(200).json({status: 0, msg: "PasswordChanged"})
               }
             })
           }
         })
-        res.json({test: test});
       } else {
         res.status(401).json({status: 0, msg: 'This user does not exist'});
       }
-    },function(err){
-      console.log(err)
+    })
+    .catch(function(err){
+      console.log(err);
+      res.status(401).json({status: 0, msg: 'Error'});
     })
   },
 
