@@ -21,9 +21,11 @@
 				<section>
 					<div class="day-meals" ng-repeat="meal in daymeals">
 						<md-subheader class="md-primary">{{meal.mealType}}</md-subheader >
-						<md-list layout-padding>
+						<md-list>
 							<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
-								{{food.name}}
+								<div class="md-list-item-text">
+									<h3>{{food.name}}</h3>
+								</div>
 							</md-list-item>
 						</md-list>
 					</div>
