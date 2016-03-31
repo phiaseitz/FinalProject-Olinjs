@@ -4,7 +4,7 @@
 
 app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) {
 
-  this.authenticated;
+  this.authStatus= {authenticated: false};
 
   this.errorMessage = {
     Unauthorized: "The email and password combination did not match. Please try again.",
@@ -25,8 +25,8 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     var service = this;
     return $q(function(resolve){
       service.getAuthenticated()
-        .then(function (authStatus) {
-          service.authenticated = authStatus.data.authenticated;
+        .then(function (response) {
+          service.authStatus = response.data;
           resolve()
         })
     })
@@ -92,9 +92,9 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     var service = this;
     return $q(function(resolve, reject){
       $http.get('/auth/logout').then(function success(response) {
-        service.getAuthenticated().then(function success(authStatus) {
-          service.authenticated = authStatus.data.authenticated;
-          resolve(service.authenticated)
+        service.getAuthenticated().then(function success(response) {
+          service.authStatus = response.data;
+          resolve(service.authStatus.authenticated)
         })
       });
     })

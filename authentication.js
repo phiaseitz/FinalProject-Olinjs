@@ -66,7 +66,7 @@ var authentication = {
           }
         })
       } else {
-        res.status(401).json({status: 0, msg: 'This user does not exist'});
+        res.status(401).json({status: 0, msg: 'UserDNE'});
       }
     })
     .catch(function(err){
@@ -93,6 +93,7 @@ var authentication = {
     if (req.isAuthenticated()){
       console.log('authenticated');
       res.json({
+        user: req.user,
         authenticated: true, 
       });
     } else {
