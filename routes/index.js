@@ -31,7 +31,7 @@ var getWeekMealsGET = function(req, res) {
     
 
     */
-    //var mealloc = 'olin'
+    // var mealloc = 'olin'
 
     var mealloc = req.query.mealloc;
 
@@ -57,12 +57,15 @@ var getWeekMealsGET = function(req, res) {
         //console.log("Day of week: " + weekday )
     }
 
-    Meal.find({ 'date': { $in: weekdates}, location: mealloc}, function(err, meals){
+    Meal.find({ 'date': { $in: weekdates}, location: mealloc})
+        .populate('foods')
+        .exec(function(err, meals){
         // for(meal of meals) {
         //     console.log(meal.date)
         // }
-        res.send(meals);
+            res.send(meals);
     });
+
 }
 
 //Given a date, and a mealtime, return the meal
@@ -76,10 +79,10 @@ var getMealGET = function(req, res) {
 
     */
 
-    //var now = new Date();
-    //var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    //var mealtype = 'brk';
-    //var mealloc = 'olin'
+    // var now = new Date();
+    // var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    // var mealtype = 'brk';
+    // var mealloc = 'olin'
 
 
     var mealdate = req.query.mealdate;
@@ -90,7 +93,9 @@ var getMealGET = function(req, res) {
         date: mealdate, 
         mealType: mealtype, 
         location: mealloc
-    }, function(err, meal) {
+    })
+    .populate('foods')
+    .exec(function(err, meal) {
         if(err) { console.log(err) }
 
         if(meal.length > 1) {
@@ -111,15 +116,17 @@ var getDayMealsGET = function(req, res) {
     Test at /menuapi/getdaymeals
 
     */
-    //var mealloc = 'olin'
-    //var now = new Date();
-    //var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var mealloc = 'olin'
+    var now = new Date();
+    var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
 
-    var mealdate = req.query.mealdate;
-    var mealloc = req.query.mealloc
+    // var mealdate = req.query.mealdate;
+    // var mealloc = req.query.mealloc
 
-    Meal.find({date:mealdate, location: mealloc}, function(err, meals) {
+    Meal.find({date:mealdate, location: mealloc})
+    .populate('foods')
+    .exec(function(err, meals) {
         if(err) { console.log(err) }
 
         // for(meal of meals) {
