@@ -55,14 +55,17 @@ app.get('/auth/getAuthenticated', auth.getAuthenticated);
 app.get('/auth/logout', auth.logout);
 app.post('/auth/login', auth.login);
 app.post('/auth/signup', auth.signup);
-app.post('/auth/changePassword', auth.changePassword)
-
-app.get('*', indexRoute.home);
+app.post('/auth/changePassword', auth.changePassword);
 
 app.get('/scraping/menuUrl', scrapingRoute.menuUrl);
 app.get('/scraping/menuData', scrapingRoute.menuData);
 app.get('/scraping/menuDataSave/:location', scrapingRoute.menuDataSave);
 
+app.get('/menuapi/getweek', indexRoute.getWeekMealsGET);
+app.get('/menuapi/getmeal', indexRoute.getMealGET);
+app.get('/menuapi/getdaymeals', indexRoute.getDayMealsGET);
+
+app.get('*', indexRoute.home);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
