@@ -10,6 +10,10 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     Unauthorized: "The email and password combination did not match. Please try again.",
     UserExistsError: "This email is already associated with an account. Please try another one.",
     MissingUsernameError: "This is not a valid email. Please try again.",
+    WrongPassword: "Wrong Password. Please enter the password currently associated with this email",
+    PasswordSetFailed: "Password change failed. Please try again.",
+    UserDNE: "There is no account associated with this email",
+    Error: "This is a chatchall error message!",
   },
 
   this.getAuthenticated = function() {
@@ -71,10 +75,17 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     $http.post('/auth/changePassword', credentials)
       .then(function (response){
         console.log('success');
+        $location.path('/');
       })
       .catch(function (err){
-        console.log('error');
-      } )
+        console.log(err);
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(service.errorMessage[err.statusText])
+            .position("top")
+            .hideDelay(3000)
+        );
+      })
   },
 
   this.logout = function() {
