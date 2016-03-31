@@ -14,7 +14,11 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     PasswordSetFailed: "Password change failed. Please try again.",
     UserDNE: "There is no account associated with this email",
     Error: "This is a chatchall error message!",
-  },
+  };
+
+  this.routeForUnauthorizedAccess = '/';
+
+
 
   this.getAuthenticated = function() {
     console.log('getting authenticated')
@@ -30,7 +34,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
           resolve()
         })
     })
-  }
+  };
 
   this.login = function(credentials) {
     console.log('attempting to log in')
@@ -49,7 +53,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
             .hideDelay(3000)
         );
       });
-  },
+  };
 
   this.signup = function(credentials) {
     var service = this;
@@ -68,7 +72,22 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
           .hideDelay(3000)
       );
     })
-  },
+  };
+
+  this.ensureAuthenticated = function() {
+    var deferred = $q.defer();
+    var service = this;
+    service.setAuthenticated().then(function success() {
+      if (!service.authStatus.authenticated) {
+        $location.path(service.routeForUnauthorizedAccess);
+        $rootScope.$on('$locationChangeSuccess', function (next, current) {
+            deferred.resolve();
+        });
+      }
+      deferred.resolve();
+    });
+    return deferred.promise;
+  };
 
   this.changePassword = function(credentials){
     var service = this;
@@ -76,6 +95,12 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
       .then(function (response){
         console.log('success');
         $location.path('/');
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Password changed successfully!')
+            .position("top")
+            .hideDelay(3000)
+        );
       })
       .catch(function (err){
         console.log(err);
@@ -86,7 +111,9 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
             .hideDelay(3000)
         );
       })
-  },
+  };
+
+
 
   this.logout = function() {
     var service = this;
