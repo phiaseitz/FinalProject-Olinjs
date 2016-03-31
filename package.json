@@ -7,13 +7,15 @@
     "mocha": "./node_modules/mocha/bin/mocha tests/server --recursive || exit 0",
     "cover-mocha": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha tests/server -- --recursive -R spec || exit 0",
     "test": "npm run cover-mocha",
-    "start": "node app.js"
+    "start": "node app.js --websocket-port=$OPENSHIFT_NODEJS_PORT --log-level=1"
   },
+  "main": "app.js",
   "dependencies": {
     "angular": "1.5.0",
     "angular-animate": "1.5.0",
     "angular-aria": "1.5.0",
     "angular-material": "1.0.5",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
     "chai": "~1.8.1",
     "cheerio": "^0.20.0",
@@ -26,6 +28,8 @@
     "mongoose": "^4.4.4",
     "morgan": "^1.6.1",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
     "request": "^2.69.0",
     "serve-favicon": "^2.3.0",
     "url": "^0.11.0"
