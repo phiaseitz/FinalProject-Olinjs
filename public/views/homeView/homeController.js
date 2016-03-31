@@ -16,7 +16,9 @@ angular.module('myApp.homeView', ['ngRoute'])
 .controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', '$location', 'AuthService', function($scope,$window, $http, $mdToast, $q, $location, AuthService) {
 	console.log("homeController loaded");
 	
-	$scope.userAuthenticated = AuthService.authenticated;
+	$scope.userAuthenticated = AuthService.authStatus.authenticated;
+	console.log($scope.userAuthenticated);
+
 
 	$scope.loginRedirect = function(){
 		$location.path("/login");
