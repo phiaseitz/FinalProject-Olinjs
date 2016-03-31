@@ -116,13 +116,13 @@ var getDayMealsGET = function(req, res) {
     Test at /menuapi/getdaymeals
 
     */
-    var mealloc = 'olin'
-    var now = new Date();
-    var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    // var mealloc = 'olin'
+    // var now = new Date();
+    // var mealdate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
 
-    // var mealdate = req.query.mealdate;
-    // var mealloc = req.query.mealloc
+    var mealdate = req.query.mealdate;
+    var mealloc = req.query.mealloc
 
     Meal.find({date:mealdate, location: mealloc})
     .populate('foods')

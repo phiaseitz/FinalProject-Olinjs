@@ -15,6 +15,20 @@
 		
 	</md-toolbar>
 	<md-content layout="row" flex layout-align="center">
-		Hello!
+		<md-datepicker ng-model="myDate" md-placeholder="Enter date" ng-change="getDayMeals(myDate)"></md-datepicker>
+		<div id="day-meal-list">
+			<md-content>
+				<section>
+					<div class="day-meals" ng-repeat="meal in daymeals">
+						<md-subheader class="md-primary">{{meal.mealType}}</md-subheader >
+						<md-list layout-padding>
+							<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
+								{{food.name}}
+							</md-list-item>
+						</md-list>
+					</div>
+				</section>
+			</md-content>
+		</div>
 	</md-content>
 </md-content>
