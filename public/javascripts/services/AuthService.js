@@ -4,13 +4,21 @@
 
 app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) {
 
-  this.authenticated;
+  this.authStatus= {authenticated: false};
 
   this.errorMessage = {
     Unauthorized: "The email and password combination did not match. Please try again.",
     UserExistsError: "This email is already associated with an account. Please try another one.",
     MissingUsernameError: "This is not a valid email. Please try again.",
-  },
+    WrongPassword: "Wrong Password. Please enter the password currently associated with this email",
+    PasswordSetFailed: "Password change failed. Please try again.",
+    UserDNE: "There is no account associated with this email",
+    Error: "This is a chatchall error message!",
+  };
+
+  this.routeForUnauthorizedAccess = '/';
+
+
 
   this.getAuthenticated = function() {
     console.log('getting authenticated')
@@ -21,12 +29,12 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     var service = this;
     return $q(function(resolve){
       service.getAuthenticated()
-        .then(function (authStatus) {
-          service.authenticated = authStatus.data.authenticated;
+        .then(function (response) {
+          service.authStatus = response.data;
           resolve()
         })
     })
-  }
+  };
 
   this.login = function(credentials) {
     console.log('attempting to log in')
@@ -45,7 +53,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
             .hideDelay(3000)
         );
       });
-  },
+  };
 
   this.signup = function(credentials) {
     var service = this;
@@ -64,26 +72,56 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
           .hideDelay(3000)
       );
     })
-  },
+  };
+
+  this.ensureAuthenticated = function() {
+    var deferred = $q.defer();
+    var service = this;
+    service.setAuthenticated().then(function success() {
+      if (!service.authStatus.authenticated) {
+        $location.path(service.routeForUnauthorizedAccess);
+        $rootScope.$on('$locationChangeSuccess', function (next, current) {
+            deferred.resolve();
+        });
+      }
+      deferred.resolve();
+    });
+    return deferred.promise;
+  };
 
   this.changePassword = function(credentials){
     var service = this;
     $http.post('/auth/changePassword', credentials)
       .then(function (response){
         console.log('success');
+        $location.path('/');
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Password changed successfully!')
+            .position("top")
+            .hideDelay(3000)
+        );
       })
       .catch(function (err){
-        console.log('error');
-      } )
-  },
+        console.log(err);
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(service.errorMessage[err.statusText])
+            .position("top")
+            .hideDelay(3000)
+        );
+      })
+  };
+
+
 
   this.logout = function() {
     var service = this;
     return $q(function(resolve, reject){
       $http.get('/auth/logout').then(function success(response) {
-        service.getAuthenticated().then(function success(authStatus) {
-          service.authenticated = authStatus.data.authenticated;
-          resolve(service.authenticated)
+        service.getAuthenticated().then(function success(response) {
+          service.authStatus = response.data;
+          resolve(service.authStatus.authenticated)
         })
       });
     })

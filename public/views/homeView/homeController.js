@@ -16,7 +16,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 .controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', '$location', 'AuthService', function($scope,$window, $http, $mdToast, $q, $location, AuthService) {
 	console.log("homeController loaded");
 	
-	$scope.userAuthenticated = AuthService.authenticated;
+    $scope.userAuthenticated = AuthService.authStatus.authenticated;
     $scope.daymeals = []
     $scope.myDate = new Date();
 
@@ -38,7 +38,6 @@ angular.module('myApp.homeView', ['ngRoute'])
                 console.log('Error: ' + data);
             })
     }
-
 
 
 	$scope.loginRedirect = function(){
