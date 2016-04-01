@@ -20,7 +20,6 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.daymeals = []
     $scope.myDate = new Date();
 
-
     $scope.getDayMeals = function(myDate) {
         mealparams = {
             mealloc: 'olin', 
@@ -39,6 +38,7 @@ angular.module('myApp.homeView', ['ngRoute'])
             })
     }
 
+    $scope.getDayMeals($scope.myDate)
 
 	$scope.loginRedirect = function(){
 		$location.path("/login");
