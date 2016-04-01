@@ -1,6 +1,6 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
 <md-content>
-	<md-toolbar class="md-medium-tall" layout="row">
+	<md-toolbar layout="row">
 		<h2>Dining App!!!</h2>
 		<div ng-switch="userAuthenticated">
 			<div ng-switch-when="true">
@@ -15,6 +15,22 @@
 		
 	</md-toolbar>
 	<md-content layout="row" flex layout-align="center">
-		Hello!
+		<md-datepicker ng-model="myDate" md-placeholder="Enter date" ng-change="getDayMeals(myDate)"></md-datepicker>
+		<div id="day-meal-list">
+			<md-content>
+				<section>
+					<div class="day-meals" ng-repeat="meal in daymeals">
+						<md-subheader class="md-primary">{{meal.mealType}}</md-subheader >
+						<md-list>
+							<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
+								<div class="md-list-item-text">
+									<h3>{{food.name}}</h3>
+								</div>
+							</md-list-item>
+						</md-list>
+					</div>
+				</section>
+			</md-content>
+		</div>
 	</md-content>
 </md-content>

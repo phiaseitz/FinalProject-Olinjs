@@ -16,8 +16,28 @@ angular.module('myApp.homeView', ['ngRoute'])
 .controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', '$location', 'AuthService', function($scope,$window, $http, $mdToast, $q, $location, AuthService) {
 	console.log("homeController loaded");
 	
-	$scope.userAuthenticated = AuthService.authStatus.authenticated;
-	console.log($scope.userAuthenticated);
+    $scope.userAuthenticated = AuthService.authStatus.authenticated;
+    $scope.daymeals = []
+    $scope.myDate = new Date();
+
+
+    $scope.getDayMeals = function(myDate) {
+        mealparams = {
+            mealloc: 'olin', 
+            mealdate: new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate())
+        }
+        // $location.path("/menuapi/getdaymeals", {params: mealparams})
+
+
+        $http.get('/menuapi/getdaymeals', {params: mealparams})
+            .success(function(meals) {
+                $scope.daymeals = meals;
+                console.log(meals[0]);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            })
+    }
 
 
 	$scope.loginRedirect = function(){
