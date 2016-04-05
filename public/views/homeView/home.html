@@ -14,8 +14,18 @@
 		</div>
 		
 	</md-toolbar>
-	<md-content layout="row" flex layout-align="center">
-		<md-datepicker ng-model="myDate" md-placeholder="Enter date" ng-change="getDayMeals(myDate)"></md-datepicker>
+	<md-content layout="column" flex layout-align="center">
+		<div layout="row" id="get-menu-form">
+			<md-input-container>
+		        <label>Dining Hall</label>
+		        <md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
+		          	<md-option value="olin">Olin</md-option>
+		          	<md-option value="trim">Trim</md-option>
+		        </md-select>
+		    </md-input-container>
+			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
+		</div>
+		
 		<div id="day-meal-list">
 			<md-content>
 				<section>
