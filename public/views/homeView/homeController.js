@@ -18,17 +18,18 @@ angular.module('myApp.homeView', ['ngRoute'])
 	
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
     $scope.daymeals = []
-    $scope.myDate = new Date();
+    $scope.formData = {
+        myDate: new Date(),
+        myLocation: 'olin',
+    }
 
-
-    $scope.getDayMeals = function(myDate) {
+    $scope.getDayMeals = function(formData) {
         mealparams = {
-            mealloc: 'olin', 
-            mealdate: new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate())
+            mealloc: formData.myLocation, 
+            mealdate: new Date(formData.myDate.getFullYear(), formData.myDate.getMonth(), formData.myDate.getDate())
         }
         // $location.path("/menuapi/getdaymeals", {params: mealparams})
-
-
+        console.log(mealparams);
         $http.get('/menuapi/getdaymeals', {params: mealparams})
             .success(function(meals) {
                 $scope.daymeals = meals;
@@ -39,7 +40,7 @@ angular.module('myApp.homeView', ['ngRoute'])
             })
     }
 
-    $scope.getDayMeals($scope.myDate)
+    $scope.getDayMeals($scope.formData)
 
 	$scope.loginRedirect = function(){
 		$location.path("/login");
