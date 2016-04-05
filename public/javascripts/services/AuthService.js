@@ -10,6 +10,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     Unauthorized: "The email and password combination did not match. Please try again.",
     UserExistsError: "This email is already associated with an account. Please try another one.",
     MissingUsernameError: "This is not a valid email. Please try again.",
+    MissingPasswordError: "You did not enter a password. Please enter a password to sign up.",
     WrongPassword: "Wrong Password. Please enter the password currently associated with this email",
     PasswordSetFailed: "Password change failed. Please try again.",
     UserDNE: "There is no account associated with this email",
