@@ -10,12 +10,13 @@ var meals = ['brk', 'lun', 'din'];
 getMenuURL = function(location, callback) {
 	//location = 'trim'
 	if (location === 'olin') {
-		url = 'https://olindining.sodexomyway.com/dining-choices/index.html'
-		urlBase = 'https://olindining.sodexomyway.com'
+		var url = 'http://olindining.sodexomyway.com/dining-choices/index.html'
+		var urlBase = 'http://olindining.sodexomyway.com'
 	} else if (location === 'trim') {
-		url = 'https://babsondining.sodexomyway.com/dining-choices/index.html'
-		urlBase = 'https://babsondining.sodexomyway.com'
+		var url = 'http://babsondining.sodexomyway.com/dining-choices/index.html'
+		var urlBase = 'http://babsondining.sodexomyway.com'
 	}
+
 	request(url, function(error, response, html) {
 		if (!error) {
 			var $ = cheerio.load(html);
@@ -38,6 +39,8 @@ getMenuData = function(location, callback) {
 				$.prototype.logHtml = function() {
 					console.log(this.html());
 				};
+
+
 
 				var startDateInfo = html.match('(.*(?:var dstart=new).*)')[0].slice(20, -2).split(",")
 				var startDate = new Date(startDateInfo[0], startDateInfo[1], startDateInfo[2]);

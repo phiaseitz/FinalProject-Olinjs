@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
 var scrapingRoute = require('./routes/scraping');
+var scrapingHelper = require('./helpers/scrapingMenu.js');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
@@ -35,13 +36,25 @@ mongoose.connect(mongoURI);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("we're connected!")
+	console.log("we're connected!");
+	(function foo() {
+    	console.log('scraping menu');
+    	scrapingHelper.scrapeMenuAndSave('olin',function(data) {
+			console.log("scraped olin menu");
+		});
+		scrapingHelper.scrapeMenuAndSave('trim',function(data) {
+			console.log("scraped trim menu");
+		});
+    	setTimeout(foo, 30*60*1000);
+	})();
 });
 
 // favicon setup
 app.use(favicon(path.join(__dirname,'public','images','burger.png')));
 
-
+// setInterval(function () { 
+//     console.log('scraping menu'); 
+// }, 30*60*1000); 
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -72,6 +85,5 @@ var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 app.listen( port, ipaddress, function() {
     console.log((new Date()) + ' Server is listening on port 3000');
 });
-
 
 module.exports = app;
