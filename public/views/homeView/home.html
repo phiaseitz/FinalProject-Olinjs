@@ -15,7 +15,7 @@
 		</div>
 		
 	</md-toolbar>
-	<md-content layout="column" flex layout-align="center">
+	<div layout="column" flex layout-align="center">
 		<div layout="row" id="get-menu-form">
 			<md-input-container>
 		        <label>Dining Hall</label>
@@ -28,20 +28,21 @@
 		</div>
 		
 		<div id="day-meal-list">
-			<md-content>
-				<section>
-					<div class="day-meals" ng-repeat="meal in daymeals">
-						<md-subheader class="md-primary">{{meal.mealType}}</md-subheader >
-						<md-list>
-							<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
-								<div class="md-list-item-text">
-									<h3>{{food.name}}</h3>
-								</div>
-							</md-list-item>
-						</md-list>
-					</div>
-				</section>
+			<md-content flex layout='row'>
+				
+				<div flex class="day-meals" ng-repeat="meal in daymeals">
+					<section>
+					<md-subheader class="md-primary">{{mealTypeToDisplay[meal.mealType]}}</md-subheader >
+					<md-list>
+						<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
+							<div class="md-list-item-text">
+								<h5>{{food.name}}</h5>
+							</div>
+						</md-list-item>
+					</md-list>
+					</section>
+				</div>
+				
 			</md-content>
 		</div>
-	</md-content>
 </md-content>
