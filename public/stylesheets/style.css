@@ -37,6 +37,13 @@ md-list-item .md-avatar{
   width: 36px;
 }
 
+h5 {
+  margin: 0px;
+}
+
+.md-list-item {
+  margin: 5px;
+}
 
 md-toolbar h2 {
   margin: auto;

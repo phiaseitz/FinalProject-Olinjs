@@ -21,6 +21,11 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.formData = {
         myDate: new Date(),
         myLocation: 'olin',
+    };
+    $scope.mealTypeToDisplay = {
+        brk: "Breakfast",
+        lun: "Lunch",
+        din: "Dinner",
     }
 
     $scope.getDayMeals = function(formData) {
