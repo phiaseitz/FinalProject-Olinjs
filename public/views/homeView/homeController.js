@@ -27,6 +27,7 @@ angular.module('myApp.homeView', ['ngRoute'])
         lun: "Lunch",
         din: "Dinner",
     }
+    $scope.currentlySelected = {};
 
     $scope.getDayMeals = function(formData) {
         mealparams = {
@@ -64,4 +65,12 @@ angular.module('myApp.homeView', ['ngRoute'])
 			$scope.userAuthenticated = authStatus;
 		});
 	}
+
+    $scope.selectDish = function(dish){
+        $scope.currentlySelected = dish;
+        console.log(dish);
+    }
+    $scope.unselectDish = function(){
+        $scope.currentlySelected = {};
+    }
 }]);
