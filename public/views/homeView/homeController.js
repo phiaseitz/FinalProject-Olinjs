@@ -57,4 +57,23 @@ angular.module('myApp.homeView', ['ngRoute'])
 			$scope.userAuthenticated = authStatus;
 		});
 	}
+
+    $scope.addFav = function() { 
+        favparams = {
+            foodID: '4edd40c86762e0fb12000003',
+        }
+
+
+        $http.put('/prefapi/addfav', {}, {params: favparams})
+            .success(function(food){
+                console.log('Added food ' + food + '!')
+            })
+    }
+
+    $scope.getFavs = function() { 
+        $http.get('/prefapi/getfavs')
+            .success(function(foods){
+                console.log(foods)
+            })
+    }    
 }]);

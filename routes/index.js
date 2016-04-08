@@ -7,6 +7,7 @@ var request = require('request');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var url = require("url");
+var mongoose = require('mongoose');
 
 var User = require('../models/userModel.js');
 var Food = require('../models/foodModel.js');
@@ -15,6 +16,7 @@ var Meal = require('../models/mealModel.js');
 
 module.exports = router;
 
+//MEAL API
 var homeGET = function(req, res) {
     //console.log(req.spotifyApi)
 	res.sendFile(path.resolve('public/html/main.html'));
@@ -122,7 +124,7 @@ var getDayMealsGET = function(req, res) {
 
 
     var mealdate = req.query.mealdate;
-    var mealloc = req.query.mealloc
+    var mealloc = req.query.mealloc;
 
     Meal.find({date:mealdate, location: mealloc})
     .populate('foods')
@@ -136,6 +138,104 @@ var getDayMealsGET = function(req, res) {
     })
 }
 
+//USER PREFERENCES
+
+//get favorite foods
+var getFavFoodsGET = function(req, res) {
+    /*
+    Given the username of the authenticated user, returns a populated list of favorite foods.
+    */
+
+    //var username = req.query.username;
+    // var username = "skumarasena@gmail.com";     //for testing
+
+    var username = req.session.passport.user;
+
+    User.find({username:username})
+    .populate('favorites')
+    .exec(function(err, user){
+        if(err) { console.log(err) }
+
+        console.log("Get user ", user)
+
+        res.send(user.favorites);
+    })
+
+}
+
+//add favorite food
+var addFavFoodPUT = function(req, res) {
+    /*
+    Given the username of the authenticated user and a food ID, adds the food to the user's list of favorite foods.
+    */
+
+    //var username = req.body.username;
+    //var foodID = req.body.foodID;
+
+    // var username = "skumarasena@gmail.com";     //for testing
+
+
+    var foodID = req.query.foodID;
+    foodID = mongoose.Types.ObjectId(foodID); //turkey sausage patty, for testing
+
+    var username = req.session.passport.user;
+
+    //sourdough french toast
+    //56fb118968cdd37417fa4bb3
+
+    //fried eggs
+    //56fb118868cdd37417fa4b05
+
+    //homestyle potatoes
+    //570415e73111a1bd7222cc33
+
+    //console.log(username)
+
+    User.findOneAndUpdate( {username:username}, { $push: { favorites: foodID } } )
+    .populate('favorites')
+    .exec(function(err, data) {
+        if(err) { console.log(err) }
+        console.log("Query status ", data)
+
+        User.find({username:username}, function(err, user) {
+            if(err) { console.log(err) }
+            console.log("Add favorite food to user ", user);
+            res.send(foodID)
+        })
+
+    })
+}
+
+var removeFavFoodPUT = function(req, res) {
+    /*
+    Given the username of the authenticated user and a food ID, removes the food from the user's list of favorite foods.
+    */
+
+    //var username = req.body.username;
+    //var foodID = req.body.foodID;
+
+    var username = "skumarasena@gmail.com";     //for testing
+    var foodID = mongoose.Types.ObjectId('4edd40c86762e0fb12000003'); //turkey    
+
+    User.update( {username:username}, { $pull: { favorites: foodID } } )
+    .exec(function(err, data) {
+        if(err) { console.log(err) }
+    })
+} //user auth problems! sad... ask Sophia
+
+
+//remove favorite food
+
+//change vegan status (if setting true, set vegetarian status true as well!)
+
+//change vegetarian status (if setting false, set vegan status false as well!)
+
+//change gluten-free status
+
+//change default location
+
+
+
 
 
 module.exports.home = homeGET;
@@ -143,3 +243,7 @@ module.exports.home = homeGET;
 module.exports.getWeekMealsGET = getWeekMealsGET;
 module.exports.getMealGET = getMealGET;
 module.exports.getDayMealsGET = getDayMealsGET;
+
+module.exports.getFavFoodsGET = getFavFoodsGET;
+module.exports.addFavFoodPUT = addFavFoodPUT;
+module.exports.removeFavFoodPUT = removeFavFoodPUT;
