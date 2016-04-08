@@ -6,44 +6,41 @@ html, body {
   padding: 0px;
 }
 
-#mainListItem {
+/*#mainListItem {
   border: 1px solid #ccc;
-}
+}*/
 
-#restoreListDiv {
+/*#restoreListDiv {
   align-self: baseline;
-}
+}*/
 
-md-list-item .md-avatar {
+/*md-list-item .md-avatar {
     width: 80px;
-    height: 80px;
-}
+    height: 10px;
+}*/
 
-md-list-item .md-avatar{
+/*md-list-item .md-avatar{
     margin-top: 12px;
     margin-bottom: 12px;
     margin-left: 12px;
     margin-right: 12px;
-}
+}*/
 
 
 /* Toolbar area */
 
-.menu {
+/*.menu {
   background-color: transparent;
   border: none;
   height: 38px;
   margin: 16px;
   width: 36px;
-}
+}*/
 
-h5 {
-  margin: 0px;
-}
 
-.md-list-item {
+/*.md-list-item {
   margin: 5px;
-}
+}*/
 
 md-toolbar h2 {
   margin: auto;
@@ -51,33 +48,33 @@ md-toolbar h2 {
 }
 /* Sidenav area */
 
-md-list-item > button {
+/*md-list-item > button {
   width:100%;
   text-align:left !important;
-}
+}*/
 
-  md-list .md-button.selected {
+/*  md-list .md-button.selected {
     color: #03a9f4;
-  }
+  }*/
 
-  md-sidenav  md-list {
+/*  md-sidenav  md-list {
     padding: 0px 0px 8px 0px;
-  }
+  }*/
 
 
 /* Primary content area */
 
-#content {
+/*#content {
   overflow: hidden;
-}
+}*/
 
-#content  {
+/*#content  {
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 5px;
-}
+}*/
 
-#content .md-button.share {
+/*#content .md-button.share {
   background-color: transparent;
   border: none;
   width: 48px;
@@ -86,60 +83,73 @@ md-list-item > button {
   position: absolute;
   top: 10px;
   right: 25px;
-}
+}*/
 
-#content md-icon.avatar {
+/*#content md-icon.avatar {
   margin-top: 10px;
-}
+}*/
 
-#content .md-button.share > md-icon {
+/*#content .md-button.share > md-icon {
   fill:black;
   width:36px;
   height:36px;
-}
+}*/
 
-md-button.menuBtn > md-icon {
+/*md-button.menuBtn > md-icon {
   fill:white;
   width:24px;
   height:24px;
-}
+}*/
 
-#content .md-button.share:active > md-icon {
+/*#content .md-button.share:active > md-icon {
   background-color: #dadada;
   border-radius: 75%;
   padding:4px;
   transition: all 100ms ease-out 30ms;
-}
+}*/
 
-#content img {
+/*#content img {
   display: block;
   height: auto;
   max-width: 500px;
+}*/
+
+h5 {
+  margin: 0px;
+}
+
+
+.meal-card {
+  height: 75vh;
+}
+.meal-menu {
+  overflow: scroll;
+  height: 100%;
 }
 
 /* Utils */
 
-.content-wrapper {
+/*.content-wrapper {
   position: relative;
 }
-
+*/
 /* Typography support coming in 0.8.0 */
 
-md-toolbar h1 {
+/*md-toolbar h1 {
   font-size: 1.250em;
   font-weight: 400;
-}
+}*/
 
 
-md-bottom-sheet  md-icon {
+/*md-bottom-sheet  md-icon {
   margin-right:20px;
-}
+}*/
 
-span.name {
+/*span.name {
   font-weight: bold;
   font-size:1.1em;
   padding-left:5px;
-}
+}*/
 
 /*md-sidenav {position: fixed;
 height: 1000px}*/

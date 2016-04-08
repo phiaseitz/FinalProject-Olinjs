@@ -25,13 +25,13 @@
 		    </md-input-container>
 			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
 		</div>
-		
-		<div id="day-meal-list">
-			<md-content flex layout='row'>
+
+	
+		<div id="day-meal-list" flex layout='row'>
 				
-				<div flex class="day-meals" ng-repeat="meal in daymeals">
-					<section>
-					<md-subheader class="md-primary">{{mealTypeToDisplay[meal.mealType]}}</md-subheader >
+			<md-card flex class="meal-card" ng-repeat="meal in daymeals" md-scroll-y>
+				<md-subheader class="md-primary">{{mealTypeToDisplay[meal.mealType]}}</md-subheader >
+				<md-content class="meal-menu">
 					<md-list>
 						<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
 							<div class="md-list-item-text">
@@ -39,9 +39,8 @@
 							</div>
 						</md-list-item>
 					</md-list>
-					</section>
-				</div>
+				</md-content>
+			</md-card>
 				
-			</md-content>
 		</div>
 </md-content>
