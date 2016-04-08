@@ -151,15 +151,14 @@ var getFavFoodsGET = function(req, res) {
 
     var username = req.session.passport.user;
 
-    User.find({username:username})
-    .populate('favorites')
-    .exec(function(err, user){
+    User.findOne({username:username}, function(err, user){
         if(err) { console.log(err) }
 
         console.log("Get user ", user)
 
         res.send(user.favorites);
     })
+
 
 }
 
@@ -176,6 +175,7 @@ var addFavFoodPUT = function(req, res) {
 
 
     var foodID = req.query.foodID;
+    console.log("foodid", foodID);
     foodID = mongoose.Types.ObjectId(foodID); //turkey sausage patty, for testing
 
     var username = req.session.passport.user;
@@ -191,18 +191,18 @@ var addFavFoodPUT = function(req, res) {
 
     //console.log(username)
 
-    User.findOneAndUpdate( {username:username}, { $push: { favorites: foodID } } )
-    .populate('favorites')
-    .exec(function(err, data) {
+    User.findOneAndUpdate( {username:username}, { $push: { favorites: foodID }}, {new: true}, function(err, doc){
         if(err) { console.log(err) }
-        console.log("Query status ", data)
-
-        User.find({username:username}, function(err, user) {
-            if(err) { console.log(err) }
-            console.log("Add favorite food to user ", user);
-            res.send(foodID)
-        })
-
+        console.log("doc", doc)
+        // console.log("Query status ", data)
+        // console.log("raw",rawResponse);
+        // User.findOne({username:username})
+        //     .exec(function(err, user) {
+        //         if(err) { console.log(err) }
+        //         console.log("Add favorite food to user ", user);
+        //         res.send(foodID)
+        //     })
+        res.send(doc);
     })
 }
 
