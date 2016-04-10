@@ -16,7 +16,7 @@
 	</md-toolbar>
 
 	<div layout="column" flex layout-align="center">
-		<div layout="row" id="get-menu-form">
+		<div layout="row" layout-align="center center" id="get-menu-form">
 			<md-input-container>
 		        <label>Dining Hall</label>
 		        <md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -25,6 +25,7 @@
 		        </md-select>
 		    </md-input-container>
 			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
+			<md-button ng-click="setDateToday()">Today</md-button>
 		</div>
 
 	
@@ -37,15 +38,31 @@
 				
 				<md-content class="meal-menu">
 					<md-list>
-						<md-list-item ng-repeat="food in meal.foods">
-							<div layout="row" class="md-list-item-text">
-								<h5>{{food.name}}</h5>
+						<md-list-item layout="column" ng-repeat="food in meal.foods">
+							<div flex layout="row" layout-align="space-between center" class="dish-header">
+								<div class='dish-text'>
+									<h5 class='dish-name'>{{food.name}}</h5>
+								</div>
+								
 								<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 										<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
 								</div>
 								<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 										<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
 								</div>
+							</div>
+
+							<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+									<div layout="column" layout-fill class="expanded">
+				            <span>Here we'll have some content</span>
+				            <br/>
+				            <span>Like pictures of the dishes?</span>
+				            <br/>
+				            <span>Nutritional Information!</span>
+				            <br/>
+				            <span>Maybe some reviews as well!</span>
+				            <br/>
+				          </div>
 							</div>
 							<md-divider ng-if="!$last"></md-divider>
 
