@@ -46,6 +46,7 @@ md-toolbar h2, h4 {
   margin: auto;
   font-weight: 500;
 }
+
 /* Sidenav area */
 
 /*md-list-item > button {
@@ -114,12 +115,13 @@ md-toolbar h2, h4 {
   max-width: 500px;
 }*/
 
-h5 {
-  margin: 0px;
+.dish-header {
+  width: 100%;
 }
 
-
-
+.dish-name {
+  margin: 0px;
+}
 
 .meal-card {
   height: 75vh;
@@ -128,6 +130,7 @@ h5 {
   overflow: scroll;
   height: 90%;
 }
+
 
 /* Utils */
 

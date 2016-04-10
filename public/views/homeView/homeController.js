@@ -41,12 +41,29 @@ angular.module('myApp.homeView', ['ngRoute'])
         console.log(mealparams);
         $http.get('/menuapi/getdaymeals', {params: mealparams})
             .success(function(meals) {
-                $scope.daymeals = meals;
-                console.log(meals[0]);
+                $scope.daymeals = meals.sort(function(meal1, meal2){
+                    // I'm sure there's a better way to do this!
+                    if (meal1.mealType === meal2.mealType){
+                        return 0
+                    } else if (meal1.mealType === 'brk'){
+                        return -1
+                    } else if (meal2.mealType === 'brk'){
+                        return 1 
+                    } else if (meal1.mealType === 'lun'){
+                        return -1
+                    } else {
+                        return 1
+                    }
+                });
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             })
+    }
+
+    $scope.setDateToday = function (){
+        $scope.formData.myDate = new Date();
+        $scope.getDayMeals($scope.formData);
     }
 
     $scope.getDayMeals($scope.formData)
