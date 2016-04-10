@@ -40,14 +40,11 @@
 						<md-list-item ng-repeat="food in meal.foods">
 							<div layout="row" class="md-list-item-text">
 								<h5>{{food.name}}</h5>
-								<div class="expand-button" ng-switch="food._id === currentlySelected._id">
-									<div ng-switch-when="false">
-										<md-button  class="material-icons" ng-click="selectDish(food)">keyboard_arrow_down</md-button>
-									</div>
-									<div ng-switch-when="true">
+								<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+										<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
+								</div>
+								<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 										<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
-									</div>
-									
 								</div>
 							</div>
 							<md-divider ng-if="!$last"></md-divider>
