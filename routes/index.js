@@ -226,10 +226,9 @@ var removeFavFoodPUT = function(req, res) {
 
             if(err) { console.log(err) }
             console.log("doc", doc)
-            res.send(doc)
+            res.send(foodID)
     })
 
-    })
 
 } //user auth problems! sad... ask Sophia
 

@@ -79,7 +79,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 
     $scope.rmFav = function() { 
         favparams = {
-            foodID: '4edd40c86762e0fb12000003',
+            foodID: '56fb118868cdd37417fa4b05',
         }
 
         $http.put('/prefapi/rmfav', {}, {params: favparams})
