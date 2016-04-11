@@ -285,11 +285,39 @@ var changeVegetarianStatusPUT = function(req, res) {
 
 }
 
-
 //change gluten-free status
+var changeGFStatusPUT = function(req, res) {
+    var glutenfree = req.query.glutenfree;
+    console.log("Gluten free", glutenfree)
+
+    var username = req.session.passport.user;
+    console.log("Changing glutenfree status!")
+
+    User.findOneAndUpdate({username:username}, {gf:glutenfree}, {new: true}, function(err, user) {
+            console.log("made it!")
+            console.log("User", user)
+            res.send(user)
+    })
+
+
+}
 
 //change default location
+var changeDefaultLocPUT = function(req, res) {
+    var defaultloc = req.query.defaultloc;
+    console.log("Default location", defaultloc)
 
+    var username = req.session.passport.user;
+    console.log("Changing default location status!")
+
+    User.findOneAndUpdate({username:username}, {defaultloc:defaultloc}, {new: true}, function(err, user) {
+            console.log("made it!")
+            console.log("User", user)
+            res.send(user)
+    })
+
+
+}
 
 
 
@@ -306,3 +334,5 @@ module.exports.removeFavFoodPUT = removeFavFoodPUT;
 
 module.exports.changeVeganStatusPUT = changeVeganStatusPUT;
 module.exports.changeVegetarianStatusPUT = changeVegetarianStatusPUT;
+module.exports.changeGFStatusPUT = changeGFStatusPUT;
+module.exports.changeDefaultLocPUT = changeDefaultLocPUT;

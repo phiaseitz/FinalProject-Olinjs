@@ -108,6 +108,28 @@ angular.module('myApp.homeView', ['ngRoute'])
             .success(function(user){
                 console.log('Vegetarian status ', user.vegan, user.vegetarian)
             })
-    }  
+    } 
+
+    $scope.changeGF = function() { 
+        gfparams = {
+            glutenfree: true,
+        }
+
+        $http.put('/prefapi/gf', {}, {params: gfparams})
+            .success(function(user){
+                console.log('Gluten free status ', user.gf)
+            })
+    } 
+
+    $scope.changeDefaultLoc = function() { 
+        locparams = {
+            defaultloc: "trim",
+        }
+
+        $http.put('/prefapi/loc', {}, {params: locparams})
+            .success(function(user){
+                console.log('Default loc status ', user.defaultloc)
+            })
+    }             
 
 }]);
