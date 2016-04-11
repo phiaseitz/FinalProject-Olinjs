@@ -66,7 +66,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 
         $http.put('/prefapi/addfav', {}, {params: favparams})
             .success(function(food){
-                console.log('Added food ' + food + '!')
+                console.log('Added food ', food)
             })
     }
 
@@ -83,8 +83,8 @@ angular.module('myApp.homeView', ['ngRoute'])
         }
 
         $http.put('/prefapi/rmfav', {}, {params: favparams})
-            .success(function(foods){
-                console.log(foods)
+            .success(function(food){
+                console.log('Removed food ', food)
             })
     }         
 }]);

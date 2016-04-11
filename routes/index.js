@@ -192,10 +192,17 @@ var addFavFoodPUT = function(req, res) {
 
     //console.log(username)
 
-    User.findOneAndUpdate( {username:username}, { $addToSet: { favorites: foodID }}, {new: true}, function(err, doc){   //addToSet instead of push, no duplicates!
+    User.findOneAndUpdate( {username:username}, { $addToSet: { favorites: foodID }}, {new: true})
+    .populate('favorites')
+    .exec(function(err, user){   //addToSet instead of push, no duplicates!
         if(err) { console.log(err) }
-        console.log("doc", doc)
-        res.send(doc);
+        console.log("doc", user)
+
+        Food.findOne( {_id: foodID}, function(err, food) {
+            console.log("add-food", food)
+            res.send(food);
+        })
+
     })
 }
 
@@ -215,11 +222,17 @@ var removeFavFoodPUT = function(req, res) {
 
     console.log("Removing favorite food!")  
 
-    User.findOneAndUpdate( {username:username}, { $pull: { favorites: foodID } }, {new: true}, function(err, doc) {
+    User.findOneAndUpdate( {username:username}, { $pull: { favorites: foodID } }, {new: true})
+    .populate('favorites')
+    .exec(function(err, user) {
+        if(err) { console.log(err) }
+        console.log("doc", user)
 
-            if(err) { console.log(err) }
-            console.log("doc", doc)
-            res.send(foodID)
+        Food.findOne({_id: foodID}, function(err, food) {
+            console.log('remove-food', food)
+            res.send(food)
+        })
+
     })
 
 
