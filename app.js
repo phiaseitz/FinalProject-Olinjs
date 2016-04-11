@@ -69,6 +69,9 @@ app.get('/prefapi/getfavs',  indexRoute.getFavFoodsGET);
 app.put('/prefapi/addfav', indexRoute.addFavFoodPUT);
 app.put('/prefapi/rmfav', indexRoute.removeFavFoodPUT);
 
+app.put('/prefapi/vegan', indexRoute.changeVeganStatusPUT);
+app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
+
 app.get('*', indexRoute.home);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";

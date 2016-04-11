@@ -206,6 +206,7 @@ var addFavFoodPUT = function(req, res) {
     })
 }
 
+//remove favorite food
 var removeFavFoodPUT = function(req, res) {
     /*
     Given the username of the authenticated user and a food ID, removes the food from the user's list of favorite foods.
@@ -236,14 +237,54 @@ var removeFavFoodPUT = function(req, res) {
     })
 
 
-} //user auth problems! sad... ask Sophia
-
-
-//remove favorite food
+} 
 
 //change vegan status (if setting true, set vegetarian status true as well!)
+var changeVeganStatusPUT = function(req, res) {
+    var vegan = req.query.vegan;
+    console.log("vegan", vegan)
+
+    var username = req.session.passport.user;
+    console.log("Changing vegan status!")
+
+    if(vegan=== 'true') {
+        User.findOneAndUpdate({username:username}, {vegan:true, vegetarian:true}, {new: true}, function(err, user) {
+                console.log("made it!")
+                console.log("User", user)
+                res.send(user)
+        })
+    } else {
+        User.findOneAndUpdate({username:username}, {vegan: false}, {new: true}, function(err, user) {
+                console.log("other made it!")
+                res.send(user)
+        })
+    }
+
+}
 
 //change vegetarian status (if setting false, set vegan status false as well!)
+var changeVegetarianStatusPUT = function(req, res) {
+    var vegetarian = req.query.vegetarian;
+    console.log("vegetarian", vegetarian)
+
+    var username = req.session.passport.user;
+    console.log("Changing vegetarian status!")
+
+    if(vegetarian==='true') {
+        User.findOneAndUpdate({username:username}, {vegetarian:true}, {new: true}, function(err, user) {
+                console.log("made it!")
+                console.log("User", user)
+                res.send(user)
+        })
+    } else {
+        User.findOneAndUpdate({username:username}, {vegetarian:false, vegan: false}, {new: true}, function(err, user) {
+                console.log("other made it!")
+                res.send(user)
+        })
+    }
+
+}
+
 
 //change gluten-free status
 
@@ -262,3 +303,6 @@ module.exports.getDayMealsGET = getDayMealsGET;
 module.exports.getFavFoodsGET = getFavFoodsGET;
 module.exports.addFavFoodPUT = addFavFoodPUT;
 module.exports.removeFavFoodPUT = removeFavFoodPUT;
+
+module.exports.changeVeganStatusPUT = changeVeganStatusPUT;
+module.exports.changeVegetarianStatusPUT = changeVegetarianStatusPUT;

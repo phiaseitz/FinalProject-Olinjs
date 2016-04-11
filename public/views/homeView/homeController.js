@@ -86,5 +86,28 @@ angular.module('myApp.homeView', ['ngRoute'])
             .success(function(food){
                 console.log('Removed food ', food)
             })
-    }         
+    }
+
+    $scope.changeVegan = function() { 
+        veganparams = {
+            vegan: true,
+        }
+
+        $http.put('/prefapi/vegan', {}, {params: veganparams})
+            .success(function(user){
+                console.log('Vegan status ', user.vegan, user.vegetarian)
+            })
+    }  
+
+    $scope.changeVegetarian = function() { 
+        vegparams = {
+            vegetarian: true,
+        }
+
+        $http.put('/prefapi/vegetarian', {}, {params: vegparams})
+            .success(function(user){
+                console.log('Vegetarian status ', user.vegan, user.vegetarian)
+            })
+    }  
+
 }]);
