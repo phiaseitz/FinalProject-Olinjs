@@ -60,7 +60,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 
     $scope.addFav = function() { 
         favparams = {
-            foodID: '4edd40c86762e0fb12000003',
+            foodID: '56fb118868cdd37417fa4b05',
         }
 
 
@@ -75,5 +75,16 @@ angular.module('myApp.homeView', ['ngRoute'])
             .success(function(foods){
                 console.log(foods)
             })
-    }    
+    }
+
+    $scope.rmFav = function() { 
+        favparams = {
+            foodID: '4edd40c86762e0fb12000003',
+        }
+
+        $http.put('/prefapi/rmfav', {}, {params: favparams})
+            .success(function(foods){
+                console.log(foods)
+            })
+    }         
 }]);

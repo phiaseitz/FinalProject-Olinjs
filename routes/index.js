@@ -33,7 +33,7 @@ var getWeekMealsGET = function(req, res) {
     
 
     */
-    // var mealloc = 'olin'
+    //var mealloc = 'olin'
 
     var mealloc = req.query.mealloc;
 
@@ -191,7 +191,7 @@ var addFavFoodPUT = function(req, res) {
 
     //console.log(username)
 
-    User.findOneAndUpdate( {username:username}, { $push: { favorites: foodID }}, {new: true}, function(err, doc){
+    User.findOneAndUpdate( {username:username}, { $addToSet: { favorites: foodID }}, {new: true}, function(err, doc){   //addToSet instead of push, no duplicates!
         if(err) { console.log(err) }
         console.log("doc", doc)
         // console.log("Query status ", data)
@@ -214,13 +214,23 @@ var removeFavFoodPUT = function(req, res) {
     //var username = req.body.username;
     //var foodID = req.body.foodID;
 
-    var username = "skumarasena@gmail.com";     //for testing
-    var foodID = mongoose.Types.ObjectId('4edd40c86762e0fb12000003'); //turkey    
+    var foodID = req.query.foodID;
+    console.log("foodid", foodID);
+    foodID = mongoose.Types.ObjectId(foodID); //turkey sausage patty, for testing
 
-    User.update( {username:username}, { $pull: { favorites: foodID } } )
-    .exec(function(err, data) {
-        if(err) { console.log(err) }
+    var username = req.session.passport.user;  
+
+    console.log("Removing favorite food!")  
+
+    User.findOneAndUpdate( {username:username}, { $pull: { favorites: foodID } }, {new: true}, function(err, doc) {
+
+            if(err) { console.log(err) }
+            console.log("doc", doc)
+            res.send(doc)
     })
+
+    })
+
 } //user auth problems! sad... ask Sophia
 
 
