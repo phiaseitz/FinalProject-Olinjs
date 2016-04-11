@@ -151,11 +151,12 @@ var getFavFoodsGET = function(req, res) {
 
     var username = req.session.passport.user;
 
-    User.findOne({username:username}, function(err, user){
+    User.findOne({username:username})
+    .populate('favorites')
+    .exec(function(err, user){
         if(err) { console.log(err) }
 
         console.log("Get user ", user)
-
         res.send(user.favorites);
     })
 
@@ -194,14 +195,6 @@ var addFavFoodPUT = function(req, res) {
     User.findOneAndUpdate( {username:username}, { $addToSet: { favorites: foodID }}, {new: true}, function(err, doc){   //addToSet instead of push, no duplicates!
         if(err) { console.log(err) }
         console.log("doc", doc)
-        // console.log("Query status ", data)
-        // console.log("raw",rawResponse);
-        // User.findOne({username:username})
-        //     .exec(function(err, user) {
-        //         if(err) { console.log(err) }
-        //         console.log("Add favorite food to user ", user);
-        //         res.send(foodID)
-        //     })
         res.send(doc);
     })
 }
