@@ -53,10 +53,15 @@ angular.module('myApp.homeView', ['ngRoute'])
 		$location.path("/changePassword");
 	}
 
+    $scope.accountSettingsRedirect = function(){
+        $location.path("/accountsettings");
+    }    
+
 	$scope.logout = function() {
 		AuthService.logout().then(function(authStatus){
 			$scope.userAuthenticated = authStatus;
 		});
+        $location.path("/")
 	}
 
     // $scope.addFav = function() { 

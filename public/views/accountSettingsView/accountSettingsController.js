@@ -7,7 +7,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     // Know whether or not we are authenticated before we render the page
     resolve: {
         authentication: function (AuthService, $route) {
-            return AuthService.setAuthenticated();
+            return AuthService.ensureAuthenticated();
         }
     }
   });
@@ -45,6 +45,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     // }
 
     // $scope.getDayMeals($scope.myDate)
+    $scope.homeRedirect = function(){
+        $location.path("/");
+    }
 
     $scope.loginRedirect = function(){
         $location.path("/login");
@@ -62,6 +65,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         AuthService.logout().then(function(authStatus){
             $scope.userAuthenticated = authStatus;
         });
+        $location.path("/")
     }
 
     // $scope.addFav = function() { 
