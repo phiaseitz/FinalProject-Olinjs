@@ -21,10 +21,10 @@
 
 
         <form class="accountsettings-form">
-            <md-switch ng-model="preferences.vegetarian">
+            <md-switch ng-model="preferences.vegetarian" ng-disabled="preferences.vegan">
                 Vegetarian: {{ preferences.vegetarian }}
             </md-switch>
-            <md-switch ng-model="preferences.vegan">
+            <md-switch ng-model="preferences.vegan" ng-change="preferences.vegetarian=preferences.vegan">
                 Vegan: {{ preferences.vegan }}
             </md-switch>
             <md-switch ng-model="preferences.gf">
