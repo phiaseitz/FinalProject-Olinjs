@@ -156,7 +156,7 @@ var getFavFoodsGET = function(req, res) {
     .exec(function(err, user){
         if(err) { console.log(err) }
 
-        console.log("Get user ", user)
+        //console.log("Get user ", user)
         res.send(user.favorites);
     })
 
@@ -221,16 +221,16 @@ var removeFavFoodPUT = function(req, res) {
 
     var username = req.session.passport.user;  
 
-    console.log("Removing favorite food!")  
+    //console.log("Removing favorite food!")  
 
     User.findOneAndUpdate( {username:username}, { $pull: { favorites: foodID } }, {new: true})
     .populate('favorites')
     .exec(function(err, user) {
         if(err) { console.log(err) }
-        console.log("doc", user)
+        //console.log("doc", user)
 
         Food.findOne({_id: foodID}, function(err, food) {
-            console.log('remove-food', food)
+            //console.log('remove-food', food)
             res.send(food)
         })
 
@@ -242,20 +242,20 @@ var removeFavFoodPUT = function(req, res) {
 //change vegan status (if setting true, set vegetarian status true as well!)
 var changeVeganStatusPUT = function(req, res) {
     var vegan = req.query.vegan;
-    console.log("vegan", vegan)
+    //console.log("vegan", vegan)
 
     var username = req.session.passport.user;
-    console.log("Changing vegan status!")
+    //console.log("Changing vegan status!")
 
     if(vegan=== 'true') {
         User.findOneAndUpdate({username:username}, {vegan:true, vegetarian:true}, {new: true}, function(err, user) {
-                console.log("made it!")
-                console.log("User", user)
+                //console.log("made it!")
+                //console.log("User", user)
                 res.send(user)
         })
     } else {
         User.findOneAndUpdate({username:username}, {vegan: false}, {new: true}, function(err, user) {
-                console.log("other made it!")
+                //console.log("other made it!")
                 res.send(user)
         })
     }
@@ -265,20 +265,20 @@ var changeVeganStatusPUT = function(req, res) {
 //change vegetarian status (if setting false, set vegan status false as well!)
 var changeVegetarianStatusPUT = function(req, res) {
     var vegetarian = req.query.vegetarian;
-    console.log("vegetarian", vegetarian)
+    //console.log("vegetarian", vegetarian)
 
     var username = req.session.passport.user;
-    console.log("Changing vegetarian status!")
+    //console.log("Changing vegetarian status!")
 
     if(vegetarian==='true') {
         User.findOneAndUpdate({username:username}, {vegetarian:true}, {new: true}, function(err, user) {
-                console.log("made it!")
-                console.log("User", user)
+                //console.log("made it!")
+                //console.log("User", user)
                 res.send(user)
         })
     } else {
         User.findOneAndUpdate({username:username}, {vegetarian:false, vegan: false}, {new: true}, function(err, user) {
-                console.log("other made it!")
+                //console.log("other made it!")
                 res.send(user)
         })
     }
@@ -288,14 +288,14 @@ var changeVegetarianStatusPUT = function(req, res) {
 //change gluten-free status
 var changeGFStatusPUT = function(req, res) {
     var glutenfree = req.query.glutenfree;
-    console.log("Gluten free", glutenfree)
+    //console.log("Gluten free", glutenfree)
 
     var username = req.session.passport.user;
-    console.log("Changing glutenfree status!")
+    //console.log("Changing glutenfree status!")
 
     User.findOneAndUpdate({username:username}, {gf:glutenfree}, {new: true}, function(err, user) {
-            console.log("made it!")
-            console.log("User", user)
+            //console.log("made it!")
+            //console.log("User", user)
             res.send(user)
     })
 
@@ -305,14 +305,14 @@ var changeGFStatusPUT = function(req, res) {
 //change default location
 var changeDefaultLocPUT = function(req, res) {
     var defaultloc = req.query.defaultloc;
-    console.log("Default location", defaultloc)
+    //console.log("Default location", defaultloc)
 
     var username = req.session.passport.user;
-    console.log("Changing default location status!")
+    //console.log("Changing default location status!")
 
     User.findOneAndUpdate({username:username}, {defaultloc:defaultloc}, {new: true}, function(err, user) {
-            console.log("made it!")
-            console.log("User", user)
+            //console.log("made it!")
+            //console.log("User", user)
             res.send(user)
     })
 
