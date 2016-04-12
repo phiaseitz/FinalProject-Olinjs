@@ -78,6 +78,15 @@ app.get('/menuapi/getweek', indexRoute.getWeekMealsGET);
 app.get('/menuapi/getmeal', indexRoute.getMealGET);
 app.get('/menuapi/getdaymeals', indexRoute.getDayMealsGET);
 
+app.get('/prefapi/getfavs',  indexRoute.getFavFoodsGET);
+app.put('/prefapi/addfav', indexRoute.addFavFoodPUT);
+app.put('/prefapi/rmfav', indexRoute.removeFavFoodPUT);
+
+app.put('/prefapi/vegan', indexRoute.changeVeganStatusPUT);
+app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
+app.put('/prefapi/gf', indexRoute.changeGFStatusPUT);
+app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
+
 app.get('*', indexRoute.home);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";

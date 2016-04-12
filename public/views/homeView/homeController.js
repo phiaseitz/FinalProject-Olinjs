@@ -20,6 +20,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.daymeals = []
     $scope.myDate = new Date();
 
+
     $scope.getDayMeals = function(myDate) {
         mealparams = {
             mealloc: 'olin', 
@@ -52,9 +53,89 @@ angular.module('myApp.homeView', ['ngRoute'])
 		$location.path("/changePassword");
 	}
 
+    $scope.accountSettingsRedirect = function(){
+        $location.path("/accountsettings");
+    }    
+
 	$scope.logout = function() {
 		AuthService.logout().then(function(authStatus){
 			$scope.userAuthenticated = authStatus;
 		});
+        $location.path("/")
 	}
+
+    // $scope.addFav = function() { 
+    //     favparams = {
+    //         foodID: '56fb118868cdd37417fa4b05',
+    //     }
+
+
+    //     $http.put('/prefapi/addfav', {}, {params: favparams})
+    //         .success(function(food){
+    //             console.log('Added food ', food)
+    //         })
+    // }
+
+    // $scope.getFavs = function() { 
+    //     $http.get('/prefapi/getfavs')
+    //         .success(function(foods){
+    //             console.log(foods)
+    //         })
+    // }
+
+    // $scope.rmFav = function() { 
+    //     favparams = {
+    //         foodID: '56fb118868cdd37417fa4b05',
+    //     }
+
+    //     $http.put('/prefapi/rmfav', {}, {params: favparams})
+    //         .success(function(food){
+    //             console.log('Removed food ', food)
+    //         })
+    // }
+
+    // $scope.changeVegan = function() { 
+    //     veganparams = {
+    //         vegan: true,
+    //     }
+
+    //     $http.put('/prefapi/vegan', {}, {params: veganparams})
+    //         .success(function(user){
+    //             console.log('Vegan status ', user.vegan, user.vegetarian)
+    //         })
+    // }  
+
+    // $scope.changeVegetarian = function() { 
+    //     vegparams = {
+    //         vegetarian: true,
+    //     }
+
+    //     $http.put('/prefapi/vegetarian', {}, {params: vegparams})
+    //         .success(function(user){
+    //             console.log('Vegetarian status ', user.vegan, user.vegetarian)
+    //         })
+    // } 
+
+    // $scope.changeGF = function() { 
+    //     gfparams = {
+    //         glutenfree: true,
+    //     }
+
+    //     $http.put('/prefapi/gf', {}, {params: gfparams})
+    //         .success(function(user){
+    //             console.log('Gluten free status ', user.gf)
+    //         })
+    // } 
+
+    // $scope.changeDefaultLoc = function() { 
+    //     locparams = {
+    //         defaultloc: "trim",
+    //     }
+
+    //     $http.put('/prefapi/loc', {}, {params: locparams})
+    //         .success(function(user){
+    //             console.log('Default loc status ', user.defaultloc)
+    //         })
+    // }             
+
 }]);

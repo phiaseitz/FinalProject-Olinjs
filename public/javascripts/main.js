@@ -6,6 +6,7 @@ var app = angular.module('myApp', [
   'myApp.loginView',
   'myApp.signupView',
   'myApp.changePasswordView',
+  'myApp.accountSettingsView'
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
