@@ -18,9 +18,17 @@ angular.module('myApp.homeView', ['ngRoute'])
 	
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
     $scope.daymeals = []
+    $scope.filteredDayMeals = []
+    $scope.foodTypes = ['mindful', 'vegan', 'vegetarian']
     $scope.formData = {
         myDate: new Date(),
         myLocation: 'olin',
+        myFoodTypes: {
+            'all': false,
+            'mindful': false,
+            'vegan': true,
+            'vegetarian': false, 
+        }
     };
     $scope.mealTypeToDisplay = {
         brk: "Breakfast",
@@ -55,6 +63,9 @@ angular.module('myApp.homeView', ['ngRoute'])
                         return 1
                     }
                 });
+                console.log($scope.daymeals);
+                $scope.filterFoods();
+                console.log($scope.filteredDayMeals);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -66,7 +77,64 @@ angular.module('myApp.homeView', ['ngRoute'])
         $scope.getDayMeals($scope.formData);
     }
 
-    $scope.getDayMeals($scope.formData)
+    $scope.getDayMeals($scope.formData);
+
+    $scope.setAllFoodType = function(){
+        $scope.formData.myFoodTypes.all = !$scope.formData.myFoodTypes.all;
+        var value = $scope.formData.myFoodTypes.all;
+        console.log($scope.formData);
+        $scope.foodTypes.forEach(function (foodType){
+            $scope.formData.myFoodTypes[foodType] = value;
+        });
+        $scope.filterFoods();
+    }
+
+    $scope.toggleFoodType = function(foodType){
+        $scope.formData.myFoodTypes[foodType] = !$scope.formData.myFoodTypes[foodType];
+        
+        var areAllFoodTypeChecked = $scope.formData.myFoodTypes[foodType];
+        var newSelectAllVal = areAllFoodTypeChecked;
+
+        if (areAllFoodTypeChecked){
+            $scope.foodTypes.forEach(function (foodType){
+            if (!$scope.formData.myFoodTypes[foodType]){
+                newSelectAllVal = false;
+            }
+        });
+        }
+        
+        $scope.formData.myFoodTypes.all = newSelectAllVal;
+        $scope.filterFoods();
+    }
+
+    $scope.filterFoods = function(){
+        $scope.filteredDayMeals = [];
+        $scope.daymeals.forEach(function (meal){
+            console.log(meal.mealType)
+            var filteredMeal = {
+                _id: meal._id,
+                date: meal.date,
+                lastUpdated: meal.lastUpdated,
+                location: meal.location,
+                mealType: meal.mealType,
+                foods: []
+            };
+            console.log(meal);
+            meal.foods.forEach(function (dish){
+                console.log(dish.mindful);
+                var include = true;
+                $scope.foodTypes.forEach(function (foodType){
+                    if ($scope.formData.myFoodTypes[foodType] && !dish[foodType]){
+                        include = false;
+                    }
+                });
+                if (include){
+                    filteredMeal.foods.push(dish);
+                }
+            });
+            $scope.filteredDayMeals.push(filteredMeal)
+        });
+    }
 
 	$scope.loginRedirect = function(){
 		$location.path("/login");
