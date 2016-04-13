@@ -186,51 +186,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     //         .success(function(food){
     //             console.log('Removed food ', food)
     //         })
-    // }
-
-    // $scope.changeVegan = function() { 
-    //     veganparams = {
-    //         vegan: true,
-    //     }
-
-    //     $http.put('/prefapi/vegan', {}, {params: veganparams})
-    //         .success(function(user){
-    //             console.log('Vegan status ', user.vegan, user.vegetarian)
-    //         })
-    // }  
-
-    // $scope.changeVegetarian = function() { 
-    //     vegparams = {
-    //         vegetarian: true,
-    //     }
-
-    //     $http.put('/prefapi/vegetarian', {}, {params: vegparams})
-    //         .success(function(user){
-    //             console.log('Vegetarian status ', user.vegan, user.vegetarian)
-    //         })
-    // } 
-
-    // $scope.changeGF = function() { 
-    //     gfparams = {
-    //         glutenfree: true,
-    //     }
-
-    //     $http.put('/prefapi/gf', {}, {params: gfparams})
-    //         .success(function(user){
-    //             console.log('Gluten free status ', user.gf)
-    //         })
-    // } 
-
-    // $scope.changeDefaultLoc = function() { 
-    //     locparams = {
-    //         defaultloc: "trim",
-    //     }
-
-    //     $http.put('/prefapi/loc', {}, {params: locparams})
-    //         .success(function(user){
-    //             console.log('Default loc status ', user.defaultloc)
-    //         })
-    // }             
+    // }            
 
     $scope.selectDish = function(meal, dish){
         $scope.currentlySelected.meal = meal.mealType;
