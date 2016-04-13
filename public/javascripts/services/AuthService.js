@@ -4,7 +4,7 @@
 
 app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) {
 
-  this.authStatus= {authenticated: false};
+  this.authStatus = {authenticated: false};
 
   this.errorMessage = {
     Unauthorized: "The email and password combination did not match. Please try again.",

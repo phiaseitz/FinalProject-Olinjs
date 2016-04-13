@@ -1,6 +1,6 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
 <md-content>
-	<md-toolbar layout="row">
+	<md-toolbar layout="row" layout-align="center center">
 		<h2>Dining App!!!</h2>
 		<div ng-switch="userAuthenticated">
 			<div ng-switch-when="true">
@@ -13,25 +13,82 @@
 				<md-button ng-click="loginRedirect()">Login</md-button> 
 			</div>
 		</div>
-		
 	</md-toolbar>
-	<md-content layout="row" flex layout-align="center">
-		<md-datepicker ng-model="myDate" md-placeholder="Enter date" ng-change="getDayMeals(myDate)"></md-datepicker>
-		<div id="day-meal-list">
-			<md-content>
-				<section>
-					<div class="day-meals" ng-repeat="meal in daymeals">
-						<md-subheader class="md-primary">{{meal.mealType}}</md-subheader >
-						<md-list>
-							<md-list-item class="md-3-line" ng-repeat="food in meal.foods">
-								<div class="md-list-item-text">
-									<h3>{{food.name}}</h3>
-								</div>
-							</md-list-item>
-						</md-list>
-					</div>
-				</section>
-			</md-content>
+
+	<div layout="column" flex layout-align="center">
+		<div layout="column" flex layout-align="center">
+		<div layout="row" layout-align="center center" id="get-menu-form">
+			<md-input-container>
+		        <label>Dining Hall</label>
+		        <md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
+		          	<md-option value="olin">Olin</md-option>
+		          	<md-option value="trim">Trim</md-option>
+		        </md-select>
+		    </md-input-container>
+			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
+			<md-button ng-click="setDateToday()">Today</md-button>
+			
+    </div>
+    <fieldset class="food-types" >
+      <legend class="food-types-legend">Show me only foods that are...</legend>
+      <div layout="row" layout-wrap flex>
+      <div flex-xs flex="100">
+        <md-checkbox aria-label="Select All"
+                     ng-checked="formData.myFoodTypes.all"
+                     ng-click="setAllFoodType()">
+          <span ng-if="formData.myFoodTypes.all">Un-</span>Select All
+        </md-checkbox>
+      </div>
+        <div class="food-types-checkboxes" flex="100" ng-repeat="foodType in foodTypes">
+          <md-checkbox ng-checked="formData.myFoodTypes.{{foodType}}" ng-click="toggleFoodType(foodType)">{{foodType}}</md-checkbox>
+        </div>
+      </div>
+    </fieldset>
+
 		</div>
-	</md-content>
+
+	
+		<div id="day-meal-list" flex layout='row'>
+				
+			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
+				<md-toolbar>
+					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
+				</md-toolbar>
+				
+				<md-content class="meal-menu">
+					<md-list>
+						<md-list-item layout="column" ng-repeat="food in meal.foods">
+							<div flex layout="row" layout-align="space-between center" class="dish-header">
+								<div class='dish-text'>
+									<h5 class='dish-name'>{{food.name}}</h5>
+								</div>
+								
+								<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+										<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
+								</div>
+								<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+										<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
+								</div>
+							</div>
+
+							<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+									<div layout="column" layout-fill class="expanded">
+				            <span>Here we'll have some content</span>
+				            <br/>
+				            <span>Like pictures of the dishes?</span>
+				            <br/>
+				            <span>Nutritional Information!</span>
+				            <br/>
+				            <span>Maybe some reviews as well!</span>
+				            <br/>
+				          </div>
+							</div>
+							<md-divider ng-if="!$last"></md-divider>
+
+						</md-list-item>
+					</md-list>
+				</md-content>
+			</md-card>
+				
+		</div>
 </md-content>

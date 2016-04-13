@@ -6,135 +6,36 @@ html, body {
   padding: 0px;
 }
 
-#mainListItem {
-  border: 1px solid #ccc;
-}
-
-#restoreListDiv {
-  align-self: baseline;
-}
-
-md-list-item .md-avatar {
-    width: 80px;
-    height: 80px;
-}
-
-md-list-item .md-avatar{
-    margin-top: 12px;
-    margin-bottom: 12px;
-    margin-left: 12px;
-    margin-right: 12px;
-}
-
-
-/* Toolbar area */
-
-.menu {
-  background-color: transparent;
-  border: none;
-  height: 38px;
-  margin: 16px;
-  width: 36px;
-}
-
-
-md-toolbar h2 {
+md-toolbar h2, h4 {
   margin: auto;
   font-weight: 500;
 }
-/* Sidenav area */
 
-md-list-item > button {
-  width:100%;
-  text-align:left !important;
+.dish-header {
+  padding: 10px;
+  width: 100%;
 }
 
-  md-list .md-button.selected {
-    color: #03a9f4;
-  }
-
-  md-sidenav  md-list {
-    padding: 0px 0px 8px 0px;
-  }
-
-
-/* Primary content area */
-
-#content {
-  overflow: hidden;
+.dish-name {
+  margin: 0px;
 }
 
-#content  {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 5px;
+.meal-card {
+  height: 75vh;
+}
+.meal-menu {
+  overflow: scroll;
+  height: 90%;
 }
 
-#content .md-button.share {
-  background-color: transparent;
-  border: none;
-  width: 48px;
-  height: 48px;
-  margin: 8px auto 16px 0;
-  position: absolute;
-  top: 10px;
-  right: 25px;
+h5 {
+  margin-left: 10px;
 }
 
-#content md-icon.avatar {
-  margin-top: 10px;
-}
-
-#content .md-button.share > md-icon {
-  fill:black;
-  width:36px;
-  height:36px;
-}
-
-md-button.menuBtn > md-icon {
-  fill:white;
-  width:24px;
-  height:24px;
-}
-
-#content .md-button.share:active > md-icon {
-  background-color: #dadada;
-  border-radius: 75%;
-  padding:4px;
-  transition: all 100ms ease-out 30ms;
-}
-
-#content img {
-  display: block;
-  height: auto;
-  max-width: 500px;
-}
-
-/* Utils */
-
-.content-wrapper {
-  position: relative;
-}
-
-/* Typography support coming in 0.8.0 */
-
-md-toolbar h1 {
-  font-size: 1.250em;
-  font-weight: 400;
+.food-types-checkboxes {
+  margin-left: 10px;
 }
 
 
-md-bottom-sheet  md-icon {
-  margin-right:20px;
-}
-
-span.name {
-  font-weight: bold;
-  font-size:1.1em;
-  padding-left:5px;
-}
-
-/*md-sidenav {position: fixed;
-height: 1000px}*/
 
 

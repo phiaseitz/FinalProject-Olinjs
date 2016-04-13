@@ -18,28 +18,123 @@ angular.module('myApp.homeView', ['ngRoute'])
 	
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
     $scope.daymeals = []
-    $scope.myDate = new Date();
+    $scope.filteredDayMeals = []
+    $scope.foodTypes = ['mindful', 'vegan', 'vegetarian']
+    $scope.formData = {
+        myDate: new Date(),
+        myLocation: 'olin',
+        myFoodTypes: {
+            'all': false,
+            'mindful': false,
+            'vegan': true,
+            'vegetarian': false, 
+        }
+    };
+    $scope.mealTypeToDisplay = {
+        brk: "Breakfast",
+        lun: "Lunch",
+        din: "Dinner",
+    }
+    $scope.currentlySelected = {
+        meal: "",
+        dish: {}
+    };
 
-
-    $scope.getDayMeals = function(myDate) {
+    $scope.getDayMeals = function(formData) {
         mealparams = {
-            mealloc: 'olin', 
-            mealdate: new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate())
+            mealloc: formData.myLocation, 
+            mealdate: new Date(formData.myDate.getFullYear(), formData.myDate.getMonth(), formData.myDate.getDate())
         }
         // $location.path("/menuapi/getdaymeals", {params: mealparams})
-
-
+        console.log(mealparams);
         $http.get('/menuapi/getdaymeals', {params: mealparams})
             .success(function(meals) {
-                $scope.daymeals = meals;
-                console.log(meals[0]);
+                $scope.daymeals = meals.sort(function(meal1, meal2){
+                    // I'm sure there's a better way to do this!
+                    if (meal1.mealType === meal2.mealType){
+                        return 0
+                    } else if (meal1.mealType === 'brk'){
+                        return -1
+                    } else if (meal2.mealType === 'brk'){
+                        return 1 
+                    } else if (meal1.mealType === 'lun'){
+                        return -1
+                    } else {
+                        return 1
+                    }
+                });
+                console.log($scope.daymeals);
+                $scope.filterFoods();
+                console.log($scope.filteredDayMeals);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             })
     }
 
-    $scope.getDayMeals($scope.myDate)
+    $scope.setDateToday = function (){
+        $scope.formData.myDate = new Date();
+        $scope.getDayMeals($scope.formData);
+    }
+
+    $scope.getDayMeals($scope.formData);
+
+    $scope.setAllFoodType = function(){
+        $scope.formData.myFoodTypes.all = !$scope.formData.myFoodTypes.all;
+        var value = $scope.formData.myFoodTypes.all;
+        console.log($scope.formData);
+        $scope.foodTypes.forEach(function (foodType){
+            $scope.formData.myFoodTypes[foodType] = value;
+        });
+        $scope.filterFoods();
+    }
+
+    $scope.toggleFoodType = function(foodType){
+        $scope.formData.myFoodTypes[foodType] = !$scope.formData.myFoodTypes[foodType];
+        
+        var areAllFoodTypeChecked = $scope.formData.myFoodTypes[foodType];
+        var newSelectAllVal = areAllFoodTypeChecked;
+
+        if (areAllFoodTypeChecked){
+            $scope.foodTypes.forEach(function (foodType){
+            if (!$scope.formData.myFoodTypes[foodType]){
+                newSelectAllVal = false;
+            }
+        });
+        }
+        
+        $scope.formData.myFoodTypes.all = newSelectAllVal;
+        $scope.filterFoods();
+    }
+
+    $scope.filterFoods = function(){
+        $scope.filteredDayMeals = [];
+        $scope.daymeals.forEach(function (meal){
+            console.log(meal.mealType)
+            var filteredMeal = {
+                _id: meal._id,
+                date: meal.date,
+                lastUpdated: meal.lastUpdated,
+                location: meal.location,
+                mealType: meal.mealType,
+                foods: []
+            };
+            console.log(meal);
+            meal.foods.forEach(function (dish){
+                console.log(dish.mindful);
+                var include = true;
+                $scope.foodTypes.forEach(function (foodType){
+                    if ($scope.formData.myFoodTypes[foodType] && !dish[foodType]){
+                        include = false;
+                    }
+                });
+                if (include){
+                    filteredMeal.foods.push(dish);
+                }
+            });
+            $scope.filteredDayMeals.push(filteredMeal)
+        });
+    }
 
 	$scope.loginRedirect = function(){
 		$location.path("/login");
@@ -63,7 +158,6 @@ angular.module('myApp.homeView', ['ngRoute'])
 		});
         $location.path("/")
 	}
-
     // $scope.addFav = function() { 
     //     favparams = {
     //         foodID: '56fb118868cdd37417fa4b05',
@@ -92,50 +186,18 @@ angular.module('myApp.homeView', ['ngRoute'])
     //         .success(function(food){
     //             console.log('Removed food ', food)
     //         })
-    // }
+    // }            
 
-    // $scope.changeVegan = function() { 
-    //     veganparams = {
-    //         vegan: true,
-    //     }
-
-    //     $http.put('/prefapi/vegan', {}, {params: veganparams})
-    //         .success(function(user){
-    //             console.log('Vegan status ', user.vegan, user.vegetarian)
-    //         })
-    // }  
-
-    // $scope.changeVegetarian = function() { 
-    //     vegparams = {
-    //         vegetarian: true,
-    //     }
-
-    //     $http.put('/prefapi/vegetarian', {}, {params: vegparams})
-    //         .success(function(user){
-    //             console.log('Vegetarian status ', user.vegan, user.vegetarian)
-    //         })
-    // } 
-
-    // $scope.changeGF = function() { 
-    //     gfparams = {
-    //         glutenfree: true,
-    //     }
-
-    //     $http.put('/prefapi/gf', {}, {params: gfparams})
-    //         .success(function(user){
-    //             console.log('Gluten free status ', user.gf)
-    //         })
-    // } 
-
-    // $scope.changeDefaultLoc = function() { 
-    //     locparams = {
-    //         defaultloc: "trim",
-    //     }
-
-    //     $http.put('/prefapi/loc', {}, {params: locparams})
-    //         .success(function(user){
-    //             console.log('Default loc status ', user.defaultloc)
-    //         })
-    // }             
-
+    $scope.selectDish = function(meal, dish){
+        $scope.currentlySelected.meal = meal.mealType;
+        $scope.currentlySelected.dish = dish;
+        console.log($scope.currentlySelected);
+        console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
+    }
+    $scope.unselectDish = function(){
+        $scope.currentlySelected = {
+            meal: "",
+            dish: {},
+        };
+    }
 }]);
