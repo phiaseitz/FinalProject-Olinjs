@@ -5,18 +5,19 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var indexRoute = require('./routes/index');
 var scrapingRoute = require('./routes/scraping');
+var pushNotificationRoute = require('./routes/pushNotifications');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
 var auth = require('./authentication.js')
 var app = express();
 
-// if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
 
-// } else {
-// 	var authKeys = require('./authKeys.js');
-// 	process.env['VARIABLE'] = authKeys.VARIABLE;
-// }
+} else {
+	var authKeys = require('./authKeys.json');
+	process.env['GCM_API_KEY'] = authKeys.GCM_API_KEY;
+}
 
 var passport = auth.configure();
 
@@ -64,6 +65,9 @@ app.get('/scraping/menuDataSave/:location', scrapingRoute.menuDataSave);
 app.get('/menuapi/getweek', indexRoute.getWeekMealsGET);
 app.get('/menuapi/getmeal', indexRoute.getMealGET);
 app.get('/menuapi/getdaymeals', indexRoute.getDayMealsGET);
+
+app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
+app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
 
 app.get('*', indexRoute.home);
 
