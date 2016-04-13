@@ -89,8 +89,9 @@ getMenuData = function(location, callback) {
 
 								item.name = menuItem.find('span').first().text()
 
-								item.foodId = menuItem.find('.chk').first().attr('id').substring(9, 19);
-								item.nutritionId = menuItem.find('.chk').first().attr('id').substring(20);
+								var itemId =  menuItem.find('.chk').first().attr('id');
+								item.foodId = itemId.substring(9, 19);
+								item.nutritionId = itemId.substring(20);
 
 								item.station = currentCategory;
 							
@@ -98,6 +99,51 @@ getMenuData = function(location, callback) {
 								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
 								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
 
+								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]"
+								// console.log(regSearchString)
+								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
+								// var nutritionArray = nutritionString.slice(36, -2).replace(/'/g, "").split(",");
+								console.log(nutritionString.slice(36, -2).replace(/\\/g, ""))
+								// var nutritionArray = new Array(nutritionString.slice(36, -2).replace(/\\/g, ""));
+								// (?=((?<=')(?:[^']*)(?=')))(?=[^,]) (work with pcre)
+								var re = /'([^']*)'/g;
+								var nutritionArray = nutritionString.slice(36, -2).match(re).map(function(x) {
+									return x.slice(1,-1)
+								});
+								console.log(nutritionArray)
+								nutritionObject = {
+									serving: nutritionArray[0],
+									calories: nutritionArray[1],
+									fatCalories: nutritionArray[2],
+									fat: nutritionArray[3],
+									fatPercent: nutritionArray[4],
+									saturatedFat: nutritionArray[5],
+									saturatedFatPercent: nutritionArray[6],
+									transFat: nutritionArray[7],
+									cholesterol: nutritionArray[8],
+									cholesterolPercent: nutritionArray[9],
+									sodium: nutritionArray[10],
+									sodiumPercent: nutritionArray[11],
+									carbohydrates: nutritionArray[12],
+									carbohydratesPercent: nutritionArray[13],
+									dietaryFiber: nutritionArray[14],
+									dietaryFiberPercent: nutritionArray[15],
+									sugar: nutritionArray[16],
+									protein: nutritionArray[17],
+									vitAPercent: nutritionArray[18],
+									vitCPercent: nutritionArray[19],
+									calciumPercent: nutritionArray[20],
+									ironPercent: nutritionArray[21],
+									name: nutritionArray[22],
+									description: nutritionArray[23],
+									allergens: nutritionArray[24],
+									vitA: nutritionArray[25],
+									vitC: nutritionArray[26],
+									calcium: nutritionArray[27],
+									iron: nutritionArray[28],
+								}
+								item.nutrition = nutritionObject
+								console.log(item)
 								foods.push(item)
 							}
 						})
