@@ -17,17 +17,19 @@ angular.module('myApp.homeView', ['ngRoute'])
 	console.log("homeController loaded");
 	
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
+    console.log("Hello we want an authstatus ", AuthService.authStatus)
     $scope.daymeals = []
     $scope.filteredDayMeals = []
-    $scope.foodTypes = ['mindful', 'vegan', 'vegetarian']
+    $scope.foodTypes = ['mindful', 'vegan', 'vegetarian', 'gf']
     $scope.formData = {
         myDate: new Date(),
-        myLocation: 'olin',
+        myLocation: $scope.userAuthenticated? AuthService.authStatus.user.defaultloc : "olin",
         myFoodTypes: {
-            'all': false,
-            'mindful': false,
-            'vegan': true,
-            'vegetarian': false, 
+            all: false,
+            mindful: $scope.userAuthenticated? AuthService.authStatus.user.mindful : false,
+            vegan: $scope.userAuthenticated? AuthService.authStatus.user.vegan: false,
+            vegetarian: $scope.userAuthenticated? AuthService.authStatus.user.vegetarian : false,
+            gf: $scope.userAuthenticated? AuthService.authStatus.user.gf : false,
         }
     };
     $scope.mealTypeToDisplay = {
@@ -46,7 +48,7 @@ angular.module('myApp.homeView', ['ngRoute'])
             mealdate: new Date(formData.myDate.getFullYear(), formData.myDate.getMonth(), formData.myDate.getDate())
         }
         // $location.path("/menuapi/getdaymeals", {params: mealparams})
-        console.log(mealparams);
+        //console.log(mealparams);
         $http.get('/menuapi/getdaymeals', {params: mealparams})
             .success(function(meals) {
                 $scope.daymeals = meals.sort(function(meal1, meal2){
@@ -63,9 +65,9 @@ angular.module('myApp.homeView', ['ngRoute'])
                         return 1
                     }
                 });
-                console.log($scope.daymeals);
+                //console.log($scope.daymeals);
                 $scope.filterFoods();
-                console.log($scope.filteredDayMeals);
+                //console.log($scope.filteredDayMeals);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -82,7 +84,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.setAllFoodType = function(){
         $scope.formData.myFoodTypes.all = !$scope.formData.myFoodTypes.all;
         var value = $scope.formData.myFoodTypes.all;
-        console.log($scope.formData);
+        //console.log($scope.formData);
         $scope.foodTypes.forEach(function (foodType){
             $scope.formData.myFoodTypes[foodType] = value;
         });
@@ -110,7 +112,7 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.filterFoods = function(){
         $scope.filteredDayMeals = [];
         $scope.daymeals.forEach(function (meal){
-            console.log(meal.mealType)
+            //console.log(meal.mealType)
             var filteredMeal = {
                 _id: meal._id,
                 date: meal.date,
@@ -119,9 +121,9 @@ angular.module('myApp.homeView', ['ngRoute'])
                 mealType: meal.mealType,
                 foods: []
             };
-            console.log(meal);
+            //console.log(meal);
             meal.foods.forEach(function (dish){
-                console.log(dish.mindful);
+                //console.log(dish.mindful);
                 var include = true;
                 $scope.foodTypes.forEach(function (foodType){
                     if ($scope.formData.myFoodTypes[foodType] && !dish[foodType]){
@@ -157,6 +159,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 			$scope.userAuthenticated = authStatus;
 		});
         $location.path("/")
+        location.reload();
 	}
     // $scope.addFav = function() { 
     //     favparams = {
@@ -191,8 +194,8 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.selectDish = function(meal, dish){
         $scope.currentlySelected.meal = meal.mealType;
         $scope.currentlySelected.dish = dish;
-        console.log($scope.currentlySelected);
-        console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
+        //console.log($scope.currentlySelected);
+        //console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
     }
     $scope.unselectDish = function(){
         $scope.currentlySelected = {

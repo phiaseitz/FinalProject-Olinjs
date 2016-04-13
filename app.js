@@ -86,6 +86,7 @@ app.put('/prefapi/vegan', indexRoute.changeVeganStatusPUT);
 app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
 app.put('/prefapi/gf', indexRoute.changeGFStatusPUT);
 app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
+app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
 
 app.get('*', indexRoute.home);
 
