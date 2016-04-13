@@ -21,10 +21,11 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.myDate = new Date();
 
     $scope.preferences = {};
-    $scope.preferences.vegetarian = false;
-    $scope.preferences.vegan = false;
-    $scope.preferences.gf = false;
-    $scope.preferences.defaultloc = "olin";
+    $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
+    $scope.preferences.vegan = AuthService.authStatus.user.vegan;
+    $scope.preferences.gf = AuthService.authStatus.user.gf;
+    $scope.preferences.defaultloc = AuthService.authStatus.user.defaultloc;
+    $scope.preferences.mindful = AuthService.authStatus.user.mindful;
 
     $scope.changePasswordForm = {};
 
@@ -39,6 +40,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     // $scope.getDayMeals($scope.myDate)
     $scope.homeRedirect = function(){
         $location.path("/");
+        $location.reload();
     }
 
     $scope.loginRedirect = function(){
@@ -58,6 +60,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
             $scope.userAuthenticated = authStatus;
         });
         $location.path("/")
+        location.reload();
     }
 
     $scope.submit = function() {
@@ -65,6 +68,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         $scope.changeVegetarian($scope.preferences.vegetarian);
         $scope.changeGF($scope.preferences.gf);
         $scope.changeDefaultLoc($scope.preferences.defaultloc)
+        $scope.changeMindful($scope.preferences.mindful)
 
     }
 
@@ -100,6 +104,17 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
                 console.log('Gluten free status ', user.gf)
             })
     } 
+
+    $scope.changeMindful = function(ismindful) { 
+        mindfulparams = {
+            mindful: ismindful,
+        }
+
+        $http.put('/prefapi/mindful', {}, {params: mindfulparams})
+            .success(function(user){
+                console.log('Mindful status ', user.mindful)
+            })
+    }    
 
     $scope.changeDefaultLoc = function(loc) { 
         var locparams = {};

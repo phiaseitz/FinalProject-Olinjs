@@ -319,6 +319,22 @@ var changeDefaultLocPUT = function(req, res) {
 
 }
 
+var changeMindfulStatusPUT = function(req, res) {
+    var mindful = req.query.mindful;
+    //console.log("Gluten free", glutenfree)
+
+    var username = req.session.passport.user;
+    //console.log("Changing glutenfree status!")
+
+    User.findOneAndUpdate({username:username}, {mindful:mindful}, {new: true}, function(err, user) {
+            //console.log("made it!")
+            //console.log("User", user)
+            res.send(user)
+    })
+
+
+}
+
 
 
 
@@ -336,3 +352,4 @@ module.exports.changeVeganStatusPUT = changeVeganStatusPUT;
 module.exports.changeVegetarianStatusPUT = changeVegetarianStatusPUT;
 module.exports.changeGFStatusPUT = changeGFStatusPUT;
 module.exports.changeDefaultLocPUT = changeDefaultLocPUT;
+module.exports.changeMindfulStatusPUT = changeMindfulStatusPUT;
