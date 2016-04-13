@@ -6,18 +6,19 @@ var express = require('express');
 var indexRoute = require('./routes/index');
 var scrapingRoute = require('./routes/scraping');
 var scrapingHelper = require('./helpers/scrapingMenu.js');
+var pushNotificationRoute = require('./routes/pushNotifications');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
 var auth = require('./authentication.js')
 var app = express();
 
-// if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
 
-// } else {
-// 	var authKeys = require('./authKeys.js');
-// 	process.env['VARIABLE'] = authKeys.VARIABLE;
-// }
+} else {
+	var authKeys = require('./authKeys.json');
+	process.env['GCM_API_KEY'] = authKeys.GCM_API_KEY;
+}
 
 var passport = auth.configure();
 
@@ -87,6 +88,10 @@ app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
 app.put('/prefapi/gf', indexRoute.changeGFStatusPUT);
 app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
 app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
+
+app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
+app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
+
 
 app.get('*', indexRoute.home);
 

@@ -12,8 +12,8 @@ var userSchema = mongoose.Schema({
     vegetarian: { type: Boolean, default: false }, 
     gf: { type: Boolean, default: false }, //gluten free
     mindful: { type: Boolean, default: false },
-    defaultloc: { type: String, default: 'olin' }
-
+    defaultloc: { type: String, default: 'olin' },
+    notificationSubscriptions: [String],
 });
 
 userSchema.plugin(passportLocalMongoose);
