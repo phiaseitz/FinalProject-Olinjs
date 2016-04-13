@@ -63,10 +63,10 @@
 								</div>
 								
 								<div layout="row" class="food-buttons">
-									<div class="notfavd-button" ng-if="userFavoriteFoods.indexOf(food._id) < 0">
+									<div class="notfavd-button" ng-if="userAuthenticated&&(userFavoriteFoods.indexOf(food._id) < 0)">
 											<md-button class="material-icons" ng-click="addFav(food._id)">favorite_border</md-button>
 									</div>
-									<div class="isfavd-button" ng-if="userFavoriteFoods.indexOf(food._id) >= 0">
+									<div class="isfavd-button" ng-if="userAuthenticated && userFavoriteFoods.indexOf(food._id) >= 0">
 											<md-button class="material-icons" ng-click="rmFav(food._id)">favorite</md-button>
 									</div>
 									
