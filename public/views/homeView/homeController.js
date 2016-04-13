@@ -17,6 +17,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 	console.log("homeController loaded");
 	
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
+    $scope.userFavoriteFoods = $scope.userAuthenticated? AuthService.authStatus.user.favorites : [];
     $scope.daymeals = []
     $scope.filteredDayMeals = []
     $scope.foodTypes = ['mindful', 'vegan', 'vegetarian']
@@ -136,6 +137,62 @@ angular.module('myApp.homeView', ['ngRoute'])
         });
     }
 
+    $scope.selectDish = function(meal, dish){
+        $scope.currentlySelected.meal = meal.mealType;
+        $scope.currentlySelected.dish = dish;
+        console.log($scope.currentlySelected);
+        console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
+    }
+    $scope.unselectDish = function(){
+        $scope.currentlySelected = {
+            meal: "",
+            dish: {},
+        };
+    }
+
+    $scope.getFavs = function() { 
+        $http.get('/prefapi/getfavs')
+            .success(function(foods){
+                console.log(foods)
+                $scope.userFavoriteFoods = foods;
+                console.log ($scope.userFavoriteFoods);
+            })
+    }
+
+    $scope.addFav = function(id) { 
+        favparams = {
+            foodID: id,
+        }
+
+
+        $http.put('/prefapi/addfav', {}, {params: favparams})
+            .success(function(food){
+                console.log('Added food ', food)
+                $scope.userFavoriteFoods.push(id);
+            })
+    }
+
+    $scope.rmFav = function(id) { 
+        favparams = {
+            foodID: id,
+        }
+
+        $http.put('/prefapi/rmfav', {}, {params: favparams})
+            .success(function(food){
+                console.log('Removed food ', food)
+                var index = $scope.userFavoriteFoods.indexOf(id);
+                if (index > -1) {
+                    $scope.userFavoriteFoods.splice(index, 1);
+                }
+            })
+    }        
+
+
+
+
+
+
+
 	$scope.loginRedirect = function(){
 		$location.path("/login");
 	}
@@ -158,46 +215,7 @@ angular.module('myApp.homeView', ['ngRoute'])
 		});
         $location.path("/")
 	}
-    // $scope.addFav = function() { 
-    //     favparams = {
-    //         foodID: '56fb118868cdd37417fa4b05',
-    //     }
+        
 
-
-    //     $http.put('/prefapi/addfav', {}, {params: favparams})
-    //         .success(function(food){
-    //             console.log('Added food ', food)
-    //         })
-    // }
-
-    // $scope.getFavs = function() { 
-    //     $http.get('/prefapi/getfavs')
-    //         .success(function(foods){
-    //             console.log(foods)
-    //         })
-    // }
-
-    // $scope.rmFav = function() { 
-    //     favparams = {
-    //         foodID: '56fb118868cdd37417fa4b05',
-    //     }
-
-    //     $http.put('/prefapi/rmfav', {}, {params: favparams})
-    //         .success(function(food){
-    //             console.log('Removed food ', food)
-    //         })
-    // }            
-
-    $scope.selectDish = function(meal, dish){
-        $scope.currentlySelected.meal = meal.mealType;
-        $scope.currentlySelected.dish = dish;
-        console.log($scope.currentlySelected);
-        console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
-    }
-    $scope.unselectDish = function(){
-        $scope.currentlySelected = {
-            meal: "",
-            dish: {},
-        };
-    }
+    
 }]);
