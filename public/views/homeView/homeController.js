@@ -189,11 +189,6 @@ angular.module('myApp.homeView', ['ngRoute'])
     }        
 
 
-
-
-
-
-
 	$scope.loginRedirect = function(){
 		$location.path("/login");
 	}
@@ -217,5 +212,4 @@ angular.module('myApp.homeView', ['ngRoute'])
         $location.path("/")
         location.reload();
 	}
-        
 }]);
