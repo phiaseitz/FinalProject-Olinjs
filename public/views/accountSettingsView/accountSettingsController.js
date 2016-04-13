@@ -26,23 +26,15 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences.gf = false;
     $scope.preferences.defaultloc = "olin";
 
-    // $scope.getDayMeals = function(myDate) {
-    //     mealparams = {
-    //         mealloc: 'olin', 
-    //         mealdate: new Date(myDate.getFullYear(), myDate.getMonth(), myDate.getDate())
-    //     }
-    //     // $location.path("/menuapi/getdaymeals", {params: mealparams})
+    $scope.changePasswordForm = {};
 
+    $scope.changePasswordForm.username = AuthService.authStatus.user.username;
+    
+    $scope.changePassword = function(formData){
+        console.log(formData);
 
-    //     $http.get('/menuapi/getdaymeals', {params: mealparams})
-    //         .success(function(meals) {
-    //             $scope.daymeals = meals;
-    //             console.log(meals[0]);
-    //         })
-    //         .error(function(data) {
-    //             console.log('Error: ' + data);
-    //         })
-    // }
+        AuthService.changePassword(formData);
+    }
 
     // $scope.getDayMeals($scope.myDate)
     $scope.homeRedirect = function(){
@@ -67,36 +59,6 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         });
         $location.path("/")
     }
-
-    // $scope.addFav = function() { 
-    //     favparams = {
-    //         foodID: '56fb118868cdd37417fa4b05',
-    //     }
-
-
-    //     $http.put('/prefapi/addfav', {}, {params: favparams})
-    //         .success(function(food){
-    //             console.log('Added food ', food)
-    //         })
-    // }
-
-    // $scope.getFavs = function() { 
-    //     $http.get('/prefapi/getfavs')
-    //         .success(function(foods){
-    //             console.log(foods)
-    //         })
-    // }
-
-    // $scope.rmFav = function() { 
-    //     favparams = {
-    //         foodID: '56fb118868cdd37417fa4b05',
-    //     }
-
-    //     $http.put('/prefapi/rmfav', {}, {params: favparams})
-    //         .success(function(food){
-    //             console.log('Removed food ', food)
-    //         })
-    // }
 
     $scope.submit = function() {
         $scope.changeVegan($scope.preferences.vegan);
