@@ -8,14 +8,14 @@ var scrapingHelper = require('../helpers/scrapingMenu.js');
 module.exports = router;
 
 var menuUrlGET = function(req, res) {
-	scrapingHelper.getMenuURL('trim',function(menuLink) {
+	scrapingHelper.getMenuURL('olin',function(menuLink) {
 		res.send(menuLink);
 	})
 	
 }
 
 var menuDataGET = function(req, res) {
-	scrapingHelper.getMenuData('trim',function(data) {
+	scrapingHelper.getMenuData('olin',function(data) {
 		res.send(data);
 	})
 }
