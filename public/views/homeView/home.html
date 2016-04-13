@@ -62,12 +62,22 @@
 									<h5 class='dish-name'>{{food.name}}</h5>
 								</div>
 								
-								<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
-										<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
+								<div layout="row" class="food-buttons">
+									<div class="notfavd-button" ng-if="userFavoriteFoods.indexOf(food._id) < 0">
+											<md-button class="material-icons" ng-click="addFav(food._id)">favorite_border</md-button>
+									</div>
+									<div class="isfavd-button" ng-if="userFavoriteFoods.indexOf(food._id) >= 0">
+											<md-button class="material-icons" ng-click="rmFav(food._id)">favorite</md-button>
+									</div>
+									
+									<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+											<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
+									</div>
+									<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+											<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
+									</div>
 								</div>
-								<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
-										<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
-								</div>
+								
 							</div>
 
 							<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
