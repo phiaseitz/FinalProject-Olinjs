@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var foodSchema = mongoose.Schema({
     name: String,
     sodexoId: String,
+    station: String,
     vegan: { type: Boolean, default: false },
 	vegetarian: { type: Boolean, default: false },
 	mindful: { type: Boolean, default: false },

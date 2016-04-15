@@ -64,19 +64,27 @@ getMenuData = function(location, callback) {
 					dayDate.setDate(dayDate.getDate() + daysOfWeek[dayMenu.dayOfWeek]);
 					dayMenu.date = dayDate;
 
-
+					var currentCategory = null;
 					for (meal of meals) {
 						var foods = [];
 						$(elem).find('.' + meal).filter(function(i, elem) {
 							return $(elem).find('.menuitem').length != 0;
 						}).each(function(i, elem) {
+							var station = $(elem).find('.station').first().text();
+							// console.log(station)
+							// console.log(station.length)
+							if (station.length > 1) {
+								currentCategory = station.substring(1)
+							}
 							var menuItem = $(elem).find('.menuitem').first();
+
 							if (menuItem.find('.chk').length !== 0) {
 
 								item = {
 									name: null,
 									foodId: null,
 									nutritionId: null,
+									station: null,
 									'vegan': false,
 									'vegetarian': false,
 									'mindful': false
@@ -86,6 +94,8 @@ getMenuData = function(location, callback) {
 
 								item.foodId = menuItem.find('.chk').first().attr('id').substring(9, 19);
 								item.nutritionId = menuItem.find('.chk').first().attr('id').substring(20);
+
+								item.station = currentCategory;
 							
 								item.vegan = (menuItem.find('img[alt="Vegan"]').length != 0)
 								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
@@ -112,6 +122,7 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 			}, {
 				name: food.name,
 				vegan: food.vegan,
+				station: food.station,
 				vegetarian: food.vegetarian,
 				mindful: food.mindful,
 				lastUpdated: Date.now()
