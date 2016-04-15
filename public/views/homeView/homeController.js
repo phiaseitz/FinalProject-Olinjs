@@ -42,6 +42,19 @@ angular.module('myApp.homeView', ['ngRoute'])
         dish: {}
     };
 
+    $scope.stations = {
+        olin: {
+            brk: [],
+            lun: [],
+            din: [],
+        },
+        trim: {
+            brk: [],
+            lun: [],
+            din: [],
+        }
+    };
+
     $scope.getDayMeals = function(formData) {
         mealparams = {
             mealloc: formData.myLocation, 
@@ -123,7 +136,6 @@ angular.module('myApp.homeView', ['ngRoute'])
             };
             //console.log(meal);
             meal.foods.forEach(function (dish){
-                //console.log(dish.mindful);
                 var include = true;
                 $scope.foodTypes.forEach(function (foodType){
                     if ($scope.formData.myFoodTypes[foodType] && !dish[foodType]){
@@ -133,9 +145,14 @@ angular.module('myApp.homeView', ['ngRoute'])
                 if (include){
                     filteredMeal.foods.push(dish);
                 }
+                // We should move this code somewhere else. This is for testing!
+                if ($scope.stations[meal.location][meal.mealType].indexOf(dish.station) === -1){
+                    $scope.stations[meal.location][meal.mealType].push(dish.station);
+                }
             });
             $scope.filteredDayMeals.push(filteredMeal)
         });
+        console.log($scope.stations)
     }
 
     $scope.selectDish = function(meal, dish){
