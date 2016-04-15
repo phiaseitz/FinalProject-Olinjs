@@ -87,7 +87,7 @@ getMenuData = function(location, callback) {
 									'mindful': false
 								}
 
-								item.name = menuItem.find('span').first().text()
+								item.name = menuItem.find('span').first().text().replace(/(\r\n|\n|\r)/gm,"");
 
 								var itemId =  menuItem.find('.chk').first().attr('id');
 								item.foodId = itemId.substring(9, 19);
@@ -100,18 +100,11 @@ getMenuData = function(location, callback) {
 								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
 
 								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]"
-								// console.log(regSearchString)
 								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
-								// var nutritionArray = nutritionString.slice(36, -2).replace(/'/g, "").split(",");
-								console.log(nutritionString.slice(36, -2).replace(/\\/g, ""))
-								// var nutritionArray = new Array(nutritionString.slice(36, -2).replace(/\\/g, ""));
-								// (?=((?<=')(?:[^']*)(?=')))(?=[^,]) (work with pcre)
-								var re = /'([^']*)'/g;
-								var nutritionArray = nutritionString.slice(36, -2).match(re).map(function(x) {
-									return x.slice(1,-1)
-								});
-								console.log(nutritionArray)
+								var nutritionArray = nutritionString.slice(37, -3).replace(/(\r\n|\n|\r)/gm,"").split("','")
+								
 								nutritionObject = {
+									nutritionId: item.nutritionId,
 									serving: nutritionArray[0],
 									calories: Number(nutritionArray[1]),
 									fatCalories: Number(nutritionArray[2]),
@@ -132,8 +125,8 @@ getMenuData = function(location, callback) {
 									protein: Number(nutritionArray[17]),
 									vitAPercent: Number(nutritionArray[18]),
 									vitCPercent: Number(nutritionArray[19]),
-									calciumPercent:Number( nutritionArray[20]),
-									ironPercent:Number( nutritionArray[21]),
+									calciumPercent:Number(nutritionArray[20]),
+									ironPercent:Number(nutritionArray[21]),
 									name: nutritionArray[22],
 									description: nutritionArray[23],
 									allergens: nutritionArray[24].substring(9).split(',').filter(function(x) { return (x !== '') }),
@@ -143,7 +136,7 @@ getMenuData = function(location, callback) {
 									iron: Number(nutritionArray[28]),
 								}
 								item.nutrition = nutritionObject
-								console.log(item)
+								// console.log(item)
 								foods.push(item)
 							}
 						})
@@ -168,7 +161,7 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 				station: food.station,
 				vegetarian: food.vegetarian,
 				mindful: food.mindful,
-				$push: { replies: reply },
+				$addToSet: {"nutritionInformation": food.nutrition},
 				lastUpdated: Date.now()
 			}, {
 				upsert: true,
@@ -179,7 +172,7 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 				if (err) return console.error(err)
 				Meal.findByIdAndUpdate(
 			        mealId,
-			        {$push: {"foods": food._id}},
+			        {$addToSet: {"foods": food._id}},
 			        {},
 			        function(err, meal) {
 						if (err) return console.error(err)

@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 
-var nutritionSchema = new mongoose.Schema({ 	serving: String,
+var nutritionSchema = new mongoose.Schema({ 
+									nutritionId: Number,		
+									serving: String,
 									calories: Number,
 									fatCalories: Number,
 									fat: Number,
@@ -28,7 +30,7 @@ var nutritionSchema = new mongoose.Schema({ 	serving: String,
 									vitA: Number,
 									vitC: Number,
 									calcium: Number,
-									iron: Number});
+									iron: Number},{ _id : false });
 
 // Create a Schema
 var foodSchema = mongoose.Schema({
