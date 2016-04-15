@@ -40,7 +40,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     // $scope.getDayMeals($scope.myDate)
     $scope.homeRedirect = function(){
         $location.path("/");
-        $location.reload();
+        location.reload();
     }
 
     $scope.loginRedirect = function(){
@@ -118,12 +118,12 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
 
     $scope.changeDefaultLoc = function(loc) { 
         var locparams = {};
-        if(loc === false) {
-            locparams = { defaultloc: "olin" }
-        } else {
-            locparams = { defaultloc: "trim" }
-        }
-
+        // if(loc === false) {
+        //     locparams = { defaultloc: "olin" }
+        // } else {
+        //     locparams = { defaultloc: "trim" }
+        // }
+        locparams = {defaultloc: loc};
         $http.put('/prefapi/loc', {}, {params: locparams})
             .success(function(user){
                 console.log('Default loc status ', user.defaultloc)
