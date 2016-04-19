@@ -123,7 +123,6 @@ angular.module('myApp.homeView', ['ngRoute'])
         };
         $scope.filteredDayMeals = [];
         $scope.daymeals.forEach(function (meal){
-            //console.log(meal.mealType)
             var filteredMeal = {
                 _id: meal._id,
                 date: meal.date,
@@ -132,7 +131,6 @@ angular.module('myApp.homeView', ['ngRoute'])
                 mealType: meal.mealType,
                 foods: []
             };
-            //console.log(meal);
             meal.foods.forEach(function (dish){
                 var include = true;
                 $scope.foodTypes.forEach(function (foodType){
@@ -143,7 +141,6 @@ angular.module('myApp.homeView', ['ngRoute'])
                 if (include){
                     filteredMeal.foods.push(dish);
                 }
-                // We should move this code somewhere else. This is for testing!
                 if ($scope.stations[meal.mealType].indexOf(dish.station) === -1){
                     $scope.stations[meal.mealType].push(dish.station);
                 }
