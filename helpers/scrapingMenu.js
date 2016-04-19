@@ -90,10 +90,11 @@ getMenuData = function(location, callback) {
 									'mindful': false
 								}
 
-								item.name = menuItem.find('span').first().text()
+								item.name = menuItem.find('span').first().text().replace(/(\r\n|\n|\r)/gm,"");
 
-								item.foodId = menuItem.find('.chk').first().attr('id').substring(9, 19);
-								item.nutritionId = menuItem.find('.chk').first().attr('id').substring(20);
+								var itemId =  menuItem.find('.chk').first().attr('id');
+								item.foodId = itemId.substring(9, 19);
+								item.nutritionId = itemId.substring(20);
 
 								item.station = currentCategory;
 							
@@ -101,6 +102,44 @@ getMenuData = function(location, callback) {
 								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
 								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
 
+								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]"
+								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
+								var nutritionArray = nutritionString.slice(37, -3).replace(/(\r\n|\n|\r)/gm,"").split("','")
+								
+								nutritionObject = {
+									nutritionId: item.nutritionId,
+									serving: nutritionArray[0],
+									calories: Number(nutritionArray[1]),
+									fatCalories: Number(nutritionArray[2]),
+									fat: Number(nutritionArray[3]),
+									fatPercent: Number(nutritionArray[4]),
+									saturatedFat: Number(nutritionArray[5]),
+									saturatedFatPercent: Number(nutritionArray[6]),
+									transFat: Number(nutritionArray[7]),
+									cholesterol: Number(nutritionArray[8]),
+									cholesterolPercent: Number(nutritionArray[9]),
+									sodium: Number(nutritionArray[10]),
+									sodiumPercent: Number(nutritionArray[11]),
+									carbohydrates: Number(nutritionArray[12]),
+									carbohydratesPercent: Number(nutritionArray[13]),
+									dietaryFiber: Number(nutritionArray[14]),
+									dietaryFiberPercent: Number(nutritionArray[15]),
+									sugar: Number(nutritionArray[16]),
+									protein: Number(nutritionArray[17]),
+									vitAPercent: Number(nutritionArray[18]),
+									vitCPercent: Number(nutritionArray[19]),
+									calciumPercent:Number(nutritionArray[20]),
+									ironPercent:Number(nutritionArray[21]),
+									name: nutritionArray[22],
+									description: nutritionArray[23],
+									allergens: nutritionArray[24].substring(9).split(',').filter(function(x) { return (x !== '') }),
+									vitA: Number(nutritionArray[25]),
+									vitC: Number(nutritionArray[26]),
+									calcium: Number(nutritionArray[27]),
+									iron: Number(nutritionArray[28]),
+								}
+								item.nutrition = nutritionObject
+								// console.log(item)
 								foods.push(item)
 							}
 						})
@@ -125,6 +164,7 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 				station: food.station,
 				vegetarian: food.vegetarian,
 				mindful: food.mindful,
+				$addToSet: {"nutritionInformation": food.nutrition},
 				lastUpdated: Date.now()
 			}, {
 				upsert: true,
@@ -135,7 +175,7 @@ saveFoodsAndAddToMenu = function(foods, mealId) {
 				if (err) return console.error(err)
 				Meal.findByIdAndUpdate(
 			        mealId,
-			        {$push: {"foods": food._id}},
+			        {$addToSet: {"foods": food._id}},
 			        {},
 			        function(err, meal) {
 						if (err) return console.error(err)
