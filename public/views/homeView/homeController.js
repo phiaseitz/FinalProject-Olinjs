@@ -43,16 +43,9 @@ angular.module('myApp.homeView', ['ngRoute'])
     };
 
     $scope.stations = {
-        olin: {
-            brk: [],
-            lun: [],
-            din: [],
-        },
-        trim: {
-            brk: [],
-            lun: [],
-            din: [],
-        }
+        brk: [],
+        lun: [],
+        din: [],
     };
 
     $scope.getDayMeals = function(formData) {
@@ -123,6 +116,11 @@ angular.module('myApp.homeView', ['ngRoute'])
     }
 
     $scope.filterFoods = function(){
+        $scope.stations = {
+            brk: [],
+            lun: [],
+            din: [],
+        };
         $scope.filteredDayMeals = [];
         $scope.daymeals.forEach(function (meal){
             //console.log(meal.mealType)
@@ -146,8 +144,8 @@ angular.module('myApp.homeView', ['ngRoute'])
                     filteredMeal.foods.push(dish);
                 }
                 // We should move this code somewhere else. This is for testing!
-                if ($scope.stations[meal.location][meal.mealType].indexOf(dish.station) === -1){
-                    $scope.stations[meal.location][meal.mealType].push(dish.station);
+                if ($scope.stations[meal.mealType].indexOf(dish.station) === -1){
+                    $scope.stations[meal.mealType].push(dish.station);
                 }
             });
             $scope.filteredDayMeals.push(filteredMeal)
