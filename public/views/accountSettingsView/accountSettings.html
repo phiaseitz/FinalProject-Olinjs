@@ -1,22 +1,11 @@
 <md-content>
-    <md-toolbar layout="row">
-        <h2>Dining App!!!</h2>
-        <div ng-switch="userAuthenticated">
-            <div ng-switch-when="true">
-                <md-button ng-click="logout()">Logout</md-button> 
-                <md-button ng-click="homeRedirect()">Home</md-button> 
+    <md-toolbar layout="row" layout-align="space-between center">
+        <h2>Olin Trim Dining</h2>
+        <div class="navbuttons" layout='row' layout-align='center center'>
+            <md-button ng-click="homeRedirect()">Home</md-button> 
+            <md-button ng-click="logout()">Logout</md-button>  
+        </div>      
 
-
-<!--                <md-button ng-click="addFav()">Add Favorite</md-button> 
-                <md-button ng-click="getFavs()">Get Favorites</md-button>   
-                <md-button ng-click="rmFav()">Remove Favorite</md-button>    -->            
-            </div>
-            <div ng-switch-when="false">
-                <md-button ng-click="signupRedirect()">Sign Up</md-button> 
-                <md-button ng-click="loginRedirect()">Login</md-button> 
-                <md-button ng-click="homeRedirect()">Home</md-button> 
-
-            </div>
         </div>
         
     </md-toolbar>
