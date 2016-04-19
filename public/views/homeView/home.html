@@ -1,11 +1,11 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
 <md-content>
-	<md-toolbar layout="row" layout-align="center center">
-		<h2>Dining App!!!</h2>
+	<md-toolbar layout="row" layout-align="space-between center">
+		<h2>Olin Trim Dining</h2>
 		<div ng-switch="userAuthenticated">
-			<div ng-switch-when="true">
-				<md-button ng-click="logout()">Logout</md-button> 
-				<md-button class="material-icons" ng-click="accountSettingsRedirect()">settings</md-button> 		
+			<div ng-switch-when="true" layout='row' layout-align='center center'>
+				<md-button class="material-icons" ng-click="accountSettingsRedirect()">settings</md-button>
+				<md-button ng-click="logout()">Logout</md-button>  		
 			</div>
 			<div ng-switch-when="false">
 				<md-button ng-click="signupRedirect()">Sign Up</md-button> 
@@ -50,7 +50,7 @@
 		<div id="day-meal-list" flex layout='row'>
 				
 			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
-				<md-toolbar>
+				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
 				</md-toolbar>
 				
