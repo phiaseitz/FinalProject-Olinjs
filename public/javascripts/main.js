@@ -6,7 +6,6 @@ var app = angular.module('myApp', [
   'myApp.loginView',
   'myApp.signupView',
   'myApp.accountSettingsView',
-  'myApp.changePasswordView',
   'myApp.settingsView',
 ])
 
