@@ -55,47 +55,54 @@
 				</md-toolbar>
 				
 				<md-content class="meal-menu">
-					<md-list>
-						<md-list-item layout="column" ng-repeat="food in meal.foods">
-							<div flex layout="row" layout-align="space-between center" class="dish-header">
-								<div class='dish-text'>
-									<h5 class='dish-name'>{{food.name}}</h5>
-								</div>
-								
-								<div layout="row" class="food-buttons">
-									<div class="notfavd-button" ng-if="userAuthenticated&&(userFavoriteFoods.indexOf(food._id) < 0)">
-											<md-button class="material-icons" ng-click="addFav(food._id)">favorite_border</md-button>
+					<section ng-repeat="station in stations[meal.mealType]">
+						<md-subheader class="md-primary">{{station}}</md-subheader>
+						<md-list>
+							<div ng-repeat="food in meal.foods">
+								<md-list-item layout="column" ng-if="food.station === station">
+									<div flex layout="row" layout-align="space-between center" class="dish-header">
+										<div class='dish-text'>
+											<h5 class='dish-name'>{{food.name}}</h5>
+										</div>
+										
+										<div layout="row" class="food-buttons">
+											<div class="notfavd-button" ng-if="userAuthenticated&&(userFavoriteFoods.indexOf(food._id) < 0)">
+													<md-button class="material-icons" ng-click="addFav(food._id)">favorite_border</md-button>
+											</div>
+											<div class="isfavd-button" ng-if="userAuthenticated && userFavoriteFoods.indexOf(food._id) >= 0">
+													<md-button class="material-icons" ng-click="rmFav(food._id)">favorite</md-button>
+											</div>
+											
+											<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+													<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
+											</div>
+											<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+													<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
+											</div>
+										</div>
+										
 									</div>
-									<div class="isfavd-button" ng-if="userAuthenticated && userFavoriteFoods.indexOf(food._id) >= 0">
-											<md-button class="material-icons" ng-click="rmFav(food._id)">favorite</md-button>
-									</div>
-									
-									<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
-											<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
-									</div>
-									<div class="expand-button" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
-											<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
-									</div>
-								</div>
-								
-							</div>
 
-							<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
-									<div layout="column" layout-fill class="expanded">
-				            <span>Here we'll have some content</span>
-				            <br/>
-				            <span>Like pictures of the dishes?</span>
-				            <br/>
-				            <span>Nutritional Information!</span>
-				            <br/>
-				            <span>Maybe some reviews as well!</span>
-				            <br/>
-				          </div>
-							</div>
-							<md-divider ng-if="!$last"></md-divider>
+									<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+											<div layout="column" layout-fill class="expanded">
+									            <span>Here we'll have some content</span>
+									            <br/>
+									            <span>Like pictures of the dishes?</span>
+									            <br/>
+									            <span>Nutritional Information!</span>
+									            <br/>
+									            <span>Maybe some reviews as well!</span>
+									            <br/>
+								          </div>
+									</div>
+									<md-divider ng-if="!$last"></md-divider>
 
-						</md-list-item>
-					</md-list>
+								</md-list-item>
+							</div>
+							
+						</md-list>
+					</section>
+					
 				</md-content>
 			</md-card>
 				
