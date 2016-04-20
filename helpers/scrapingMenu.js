@@ -70,6 +70,7 @@ getMenuData = function(location, callback) {
 						$(elem).find('.' + meal).filter(function(i, elem) {
 							return $(elem).find('.menuitem').length != 0;
 						}).each(function(i, elem) {
+							
 							var station = $(elem).find('.station').first().text();
 							// console.log(station)
 							// console.log(station.length)
@@ -102,7 +103,7 @@ getMenuData = function(location, callback) {
 								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
 								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
 
-								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]"
+								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]";
 								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
 								var nutritionArray = nutritionString.slice(37, -3).replace(/(\r\n|\n|\r)/gm,"").split("','")
 								
