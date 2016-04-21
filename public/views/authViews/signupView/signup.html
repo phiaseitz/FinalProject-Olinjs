@@ -1,7 +1,7 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
 <md-content>
 	<md-toolbar layout="row" layout-align="space-between center">
-		<h2>Olin Trim Dining</h2>
+		<h2>Olin Trim Dining - Sign Up</h2>
 		<div class="navbuttons" layout='row' layout-align='center center'>
 			<md-button ng-click="loginRedirect()">Log In</md-button>  
             <md-button ng-click="homeRedirect()">Home</md-button> 
@@ -9,7 +9,7 @@
 	</md-toolbar>
 	<md-content layout="row" layout-align="center">
 		<form>
-			<div layout="row" flex layout-align="center center">
+			<div layout="column" flex layout-align="center center">
 				<md-input-container> 
 					<label> Email </label>
 					<input required ng-model="signupForm.username" type="email" >
