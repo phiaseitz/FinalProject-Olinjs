@@ -37,22 +37,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         AuthService.changePassword(formData);
     }
 
-    // $scope.getDayMeals($scope.myDate)
     $scope.homeRedirect = function(){
         $location.path("/");
         location.reload();
-    }
-
-    $scope.loginRedirect = function(){
-        $location.path("/login");
-    }
-
-    $scope.signupRedirect = function(){
-        $location.path("/signup");
-    }
-
-    $scope.changePasswordRedirect = function(){
-        $location.path("/changePassword");
     }
 
     $scope.logout = function() {

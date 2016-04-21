@@ -2,8 +2,12 @@
 <md-content>
 	<md-toolbar layout="row" layout-align="space-between center">
 		<h2>Olin Trim Dining</h2>
+		<div class="navbuttons" layout='row' layout-align='center center'>
+			<md-button ng-click="signupRedirect()">Sign Up</md-button>  
+            <md-button ng-click="homeRedirect()">Home</md-button> 
+        </div> 
 	</md-toolbar>
-	<md-content layout="row" flex layout-align="center">
+	<md-content layout="row" flex layout-align="center center">
 		<form>
 			<md-input-container> 
 				<label> Email </label>
