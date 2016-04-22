@@ -20,7 +20,7 @@ getMenuURL = function(location, callback) {
 	request(url, function(error, response, html) {
 		if (!error) {
 			var $ = cheerio.load(html);
-			menuURL = urlBase + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
+			var menuURL = urlBase + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
 			callback(menuURL)
 		}
 	})
@@ -47,7 +47,7 @@ getMenuData = function(location, callback) {
 
 				var menu = [];
 
-				daysOfWeek = {
+				var daysOfWeek = {
 					'monday': 0,
 					'tuesday': 1,
 					'wednesday': 2,
@@ -58,7 +58,7 @@ getMenuData = function(location, callback) {
 				}
 
 				$('.dayouter').each(function(i, elem) {
-					dayMenu = {}
+					var dayMenu = {}
 					dayMenu.dayOfWeek = $(elem).attr('id');
 					var dayDate = new Date(startDate.getTime());
 					dayDate.setDate(dayDate.getDate() + daysOfWeek[dayMenu.dayOfWeek]);
@@ -81,7 +81,7 @@ getMenuData = function(location, callback) {
 
 							if (menuItem.find('.chk').length !== 0) {
 
-								item = {
+								var item = {
 									name: null,
 									foodId: null,
 									nutritionId: null,
@@ -107,7 +107,7 @@ getMenuData = function(location, callback) {
 								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
 								var nutritionArray = nutritionString.slice(37, -3).replace(/(\r\n|\n|\r)/gm,"").split("','")
 								
-								nutritionObject = {
+								var nutritionObject = {
 									nutritionId: item.nutritionId,
 									serving: nutritionArray[0],
 									calories: Number(nutritionArray[1]),
