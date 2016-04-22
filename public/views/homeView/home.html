@@ -77,14 +77,14 @@
 
 									<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 											<div layout="column" layout-fill class="expanded">
-									            <span>Here we'll have some content</span>
-									            <br/>
-									            <span>Like pictures of the dishes?</span>
-									            <br/>
-									            <span>Nutritional Information!</span>
-									            <br/>
-									            <span>Maybe some reviews as well!</span>
-									            <br/>
+									            <md-list class='nutritionInfo'>
+									            	<md-list-item>
+									            		Nutrition Info
+									            	</md-list-item>
+									            	<md-list-item ng-repeat="(key,value) in food.nutritionInformation[0]">
+									            		{{key}}: {{value}}
+									            	</md-list-item>
+									            </md-list>
 								          </div>
 									</div>
 									<md-divider ng-if="!$last"></md-divider>
