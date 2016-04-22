@@ -30,7 +30,7 @@ angular.module('myApp.homeView', ['ngRoute'])
         }
 
         var userFilters = []
-        $scope.foodType.forEach(function (foodType){
+        $scope.foodTypes.forEach(function (foodType){
             if (AuthService.authStatus.user[foodType]){
                 userFilters.push(foodType);
             }
