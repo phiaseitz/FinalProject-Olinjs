@@ -77,10 +77,107 @@
 
 									<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 											<div layout="column" layout-fill class="expanded">
+									            <section class="performance-facts">
+													<header class="performance-facts__header">
+														<h1 class="performance-facts__title">Nutrition Information</h1>
+														<p>Serving Size: {{food.nutritionInformation[0].serving}}</p>
+														<b><p>Allergens: {{food.nutritionInformation[0].allergens.join(', ')}}</p></b>
+													</header>
+													<table class="performance-facts__table">
+														<thead>
+															<tr>
+																<th colspan="3" class="small-info">
+																Amount Per Serving
+																</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<th colspan="2">
+																	<b>Calories</b> {{food.nutritionInformation[0].calories}}
+																</th>
+																<td>
+																	Calories from Fat {{food.nutritionInformation[0].fatCalories}}
+																</td>
+															</tr>
+															<tr class="thick-row">
+																<td colspan="3" class="small-info">
+																	<b>% Daily Value*</b>
+																</td>
+															</tr>
+															<tr>
+																<th colspan="2">
+																	<b>Total Fat</b> {{food.nutritionInformation[0].fat}}g
+																</th>
+																	<td>
+																	<b>{{food.nutritionInformation[0].fatPercent}}%</b>
+																</td>
+															</tr>
+															<tr>
+																<td class="blank-cell"></td>
+																<th>Saturated Fat {{food.nutritionInformation[0].saturatedFat}}g</th>
+																<td><b>{{food.nutritionInformation[0].saturatedFatPercent}}%</b></td>
+															</tr>
+															<tr>
+																<td class="blank-cell"></td>
+																<th>Trans Fat {{food.nutritionInformation[0].transFat}}g</th>
+																<td></td>
+															</tr>
+															<tr>
+																<th colspan="2"><b>Cholesterol</b> {{food.nutritionInformation[0].cholesterol}}mg</th>
+																<td><b>18%</b></td>
+															</tr>
+															<tr>
+																<th colspan="2"> <b>Sodium</b> {{food.nutritionInformation[0].sodium}}mg </th>
+																<td><b>{{food.nutritionInformation[0].sodiumPercent}}%</b></td>
+															</tr>
+															<tr>
+																<th colspan="2"> <b>Total Carbohydrate</b> {{food.nutritionInformation[0].carbohydrates}}g </th>
+																<td><b>{{food.nutritionInformation[0].carbohydratesPercent}}%</b></td>
+															</tr>
+															<tr>
+																<td class="blank-cell"> </td>
+																<th> Dietary Fiber {{food.nutritionInformation[0].dietaryFiber}}g </th>
+																<td> <b>{{food.nutritionInformation[0].dietaryFiberPercent}}%</b> </td>
+															</tr>
+															<tr>
+																<td class="blank-cell"> </td>
+																<th> Sugars {{food.nutritionInformation[0].sugar}}g </th>
+																<td></td>
+															</tr>
+															<tr class="thick-end">
+																<th colspan="2"> <b>Protein</b> {{food.nutritionInformation[0].protein}}g </th>
+																<td></td>
+															</tr>
+														</tbody>
+													</table>
+
+													<table class="performance-facts__table--grid">
+														<tbody>
+															<tr>
+																<td colspan="2"> Vitamin A {{food.nutritionInformation[0].vitAPercent}}% </td>
+																<td> Vitamin C {{food.nutritionInformation[0].vitCPercent}}% </td>
+															</tr>
+															<tr class="thin-end">
+																<td colspan="2"> Calcium {{food.nutritionInformation[0].calciumPercent}}% </td>
+																<td> Iron {{food.nutritionInformation[0].ironPercent}}% </td>
+															</tr>
+														</tbody>
+													</table>
+													<p class="small-info">* Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs:</p>
+												</section>
+
+
+
+
 									            <md-list class='nutritionInfo'>
+									            	<md-list-item>
+									            		{{food.nutritionInformation[0].description}}
+									            	</md-list-item>
 									            	<md-list-item>
 									            		Nutrition Info
 									            	</md-list-item>
+
 									            	<md-list-item ng-repeat="(key,value) in food.nutritionInformation[0]">
 									            		{{key}}: {{value}}
 									            	</md-list-item>
