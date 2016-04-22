@@ -21,42 +21,35 @@ angular.module('myApp.homeView', ['ngRoute'])
     $scope.daymeals = [];
     $scope.filteredDayMeals = [];
     $scope.foodTypes = ['mindful', 'vegan', 'vegetarian'];
-    $scope.allergens = ['gf'];
+    $scope.allergens = ['milk', 'eggs', 'wheat', 'soy', 'gluten', 
+        'tree nuts', 'fish', 'shellfish', 'peanuts', 'mustard'];
     
 
-    $scope.getUserFilters = function(){
+    $scope.getUserFoodTypes = function(){
         if (!$scope.userAuthenticated){
             return []
         }
 
-        var userFilters = []
-        $scope.foodType.forEach(function (foodType){
+        var userFoodTypes = []
+        $scope.foodTypes.forEach(function (foodType){
             if (AuthService.authStatus.user[foodType]){
-                userFilters.push(foodType);
+                userFoodTypes.push(foodType);
             }
         });
         $scope.allergens.forEach(function (allergen){
             if (AuthService.authStatus.user[allergen]){
-                userFilters.push(allergen);
+                userFoodTypes.push(allergen);
             }
         });
 
-        return userFilters
+        return userFoodTypes
     }
-
 
     $scope.formData = {
         myDate: new Date(),
         myLocation: $scope.userAuthenticated? AuthService.authStatus.user.defaultloc : "olin",
-        mySelectedFilters: $scope.getUserFilters(), 
-        // myFoodTypes: {
-        //     mindful: $scope.userAuthenticated? AuthService.authStatus.user.mindful : false,
-        //     vegan: $scope.userAuthenticated? AuthService.authStatus.user.vegan: false,
-        //     vegetarian: $scope.userAuthenticated? AuthService.authStatus.user.vegetarian : false,
-        // },
-        // myAllergens: {
-        //     gf: $scope.userAuthenticated? AuthService.authStatus.user.gf : false,
-        // }
+        mySelectedFoodTypes: $scope.getUserFoodTypes(), 
+        mySelectedAllergens: $scope.userAuthenticated? AuthService.authStatus.user.allergens : [],
     };
     $scope.mealTypeToDisplay = {
         brk: "Breakfast",
@@ -78,9 +71,7 @@ angular.module('myApp.homeView', ['ngRoute'])
         mealparams = {
             mealloc: formData.myLocation, 
             mealdate: new Date(formData.myDate.getFullYear(), formData.myDate.getMonth(), formData.myDate.getDate())
-        }
-        // $location.path("/menuapi/getdaymeals", {params: mealparams})
-        //console.log(mealparams);
+        };
         $http.get('/menuapi/getdaymeals', {params: mealparams})
             .success(function(meals) {
                 $scope.daymeals = meals.sort(function(meal1, meal2){
@@ -142,19 +133,6 @@ angular.module('myApp.homeView', ['ngRoute'])
     }
 
     $scope.filterFoods = function(){
-        var filterDict = {};
-
-        $scope.foodTypes.forEach(function (foodType){
-            if ($scope.formData.mySelectedFilters.indexOf(foodType) >= 0){
-                filterDict[foodType] = true;
-            }
-        });
-        $scope.allergens.forEach(function (allergen){
-            if ($scope.formData.mySelectedFilters.indexOf(allergen) >= 0){
-                filterDict[allergen] = true;
-            }
-        });
-
         $scope.stations = {
             brk: [],
             lun: [],
@@ -172,11 +150,19 @@ angular.module('myApp.homeView', ['ngRoute'])
             };
             meal.foods.forEach(function (dish){
                 var include = true;
-                $scope.foodTypes.forEach(function (foodType){
-                    if (filterDict[foodType] && !dish[foodType]){
+                
+                $scope.formData.mySelectedFoodTypes.forEach(function (foodType){
+                    if (!dish[foodType]){
+                        include = false
+                    }
+                });
+                var dishAllergens = dish.nutritionInformation[0].allergens;
+                $scope.formData.mySelectedAllergens.forEach(function (allergen){
+                    if (dishAllergens.indexOf(allergen) !== -1){
                         include = false;
                     }
                 });
+
                 if (include){
                     filteredMeal.foods.push(dish);
                 }
@@ -186,11 +172,6 @@ angular.module('myApp.homeView', ['ngRoute'])
             });
             $scope.filteredDayMeals.push(filteredMeal)
         });
-        console.log($scope.stations)
-    }
-
-    $scope.filterChange = function(){
-        console.log($scope.formData.mySelectedFilters);
     }
 
     $scope.selectDish = function(meal, dish){

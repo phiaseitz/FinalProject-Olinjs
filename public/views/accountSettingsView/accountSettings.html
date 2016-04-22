@@ -38,12 +38,16 @@
                     <md-switch ng-model="preferences.vegan" ng-change="preferences.vegetarian=preferences.vegan">
                         Vegan: {{ preferences.vegan }}
                     </md-switch>
-                    <md-switch ng-model="preferences.gf">
-                        Gluten-Free: {{ preferences.gf }}
-                    </md-switch>  
                     <md-switch ng-model="preferences.mindful">
                         Mindful: {{ preferences.mindful }}
-                    </md-switch>                      
+                    </md-switch>
+
+                <md-subheader class="md-no-sticky">I'm allergic to</md-subheader>
+                    <md-switch ng-model="preferences.allergens[allergen]" ng-change="updateSelectedAllergens(allergen)" ng-repeat="allergen in allergens">
+                        {{allergen}}
+                    </md-switch>
+
+
 
                     <p>Default Location <span class="radioValue">{{ preferences.defaultloc }}</span> </p>
                     <md-radio-group ng-model="preferences.defaultloc">

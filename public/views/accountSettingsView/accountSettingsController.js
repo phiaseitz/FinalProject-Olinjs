@@ -17,13 +17,21 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     console.log("accountSettingsController loaded");
     
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
-    $scope.daymeals = []
     $scope.myDate = new Date();
-
+    $scope.allergens = ['milk', 'eggs', 'wheat', 'soy', 'gluten', 
+        'tree nuts', 'fish', 'shellfish', 'peanuts', 'mustard'];
     $scope.preferences = {};
     $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
     $scope.preferences.vegan = AuthService.authStatus.user.vegan;
-    $scope.preferences.gf = AuthService.authStatus.user.gf;
+    $scope.preferences.allergens = {
+        selected: AuthService.authStatus.user.allergens,
+    };
+
+    // Set up whether each allergen is switched "on"
+    $scope.preferences.allergens.selected.forEach(function(allergen){
+        $scope.preferences.allergens[allergen] = true;
+    })
+
     $scope.preferences.defaultloc = AuthService.authStatus.user.defaultloc;
     $scope.preferences.mindful = AuthService.authStatus.user.mindful;
 
@@ -53,7 +61,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.submit = function() {
         $scope.changeVegan($scope.preferences.vegan);
         $scope.changeVegetarian($scope.preferences.vegetarian);
-        $scope.changeGF($scope.preferences.gf);
+        $scope.changeAllergens($scope.preferences.allergens.selected);
         $scope.changeDefaultLoc($scope.preferences.defaultloc)
         $scope.changeMindful($scope.preferences.mindful)
 
@@ -81,17 +89,6 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
             })
     } 
 
-    $scope.changeGF = function(isgf) { 
-        gfparams = {
-            glutenfree: isgf,
-        }
-
-        $http.put('/prefapi/gf', {}, {params: gfparams})
-            .success(function(user){
-                console.log('Gluten free status ', user.gf)
-            })
-    } 
-
     $scope.changeMindful = function(ismindful) { 
         mindfulparams = {
             mindful: ismindful,
@@ -101,7 +98,33 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
             .success(function(user){
                 console.log('Mindful status ', user.mindful)
             })
-    }    
+    }
+
+    $scope.updateSelectedAllergens = function(allergen){
+        if ($scope.preferences.allergens[allergen]){
+            $scope.preferences.allergens.selected.push(allergen)
+        } else {
+            var index = $scope.preferences.allergens.selected.indexOf(allergen);
+            if (index > -1) {
+                $scope.preferences.allergens.selected.splice(index, 1);
+            }
+        }
+
+        console.log($scope.preferences.allergens.selected);
+        
+    }
+
+
+    $scope.changeAllergens = function(allergens) { 
+        allergenparams = {
+            allergens: allergens,
+        }
+
+        $http.put('/prefapi/allergens', {}, {params: allergenparams})
+            .success(function(user){
+                console.log('Allergen Status', user.allergens)
+            })
+    }     
 
     $scope.changeDefaultLoc = function(loc) { 
         var locparams = {};

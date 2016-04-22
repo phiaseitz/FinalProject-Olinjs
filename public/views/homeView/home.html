@@ -27,13 +27,14 @@
 			<md-button ng-click="setDateToday()">Today</md-button>
 			<md-input-container>
 				<label>Filter Foods</label>
-				<md-select ng-model="formData.mySelectedFilters" ng-change="filterFoods()" multiple>
-					<md-optgroup label="Dietary Types">
-						<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
-					</md-optgroup>
-					<md-optgroup label="Allergens">
-						<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
-					</md-optgroup>
+				<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
+					<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
+				</md-select>
+			</md-input-container>
+			<md-input-container>
+				<label>Filter Out Allergens</label>
+				<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
+					<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
 				</md-select>
 			</md-input-container>
     	</div>
