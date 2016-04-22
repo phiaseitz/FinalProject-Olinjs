@@ -45,32 +45,11 @@ angular.module('myApp.homeView', ['ngRoute'])
         return userFoodTypes
     }
 
-    $scope.getUserAllergens = function(){
-        if (!$scope.userAuthenticated){
-            return []
-        }
-
-        var userAllergens = []
-        $scope.foodTypes.forEach(function (foodType){
-            if (AuthService.authStatus.user[foodType]){
-                userAllergens.push(foodType);
-            }
-        });
-        $scope.allergens.forEach(function (allergen){
-            if (AuthService.authStatus.user[allergen]){
-                userAllergens.push(allergen);
-            }
-        });
-
-        return userAllergens
-    }
-
-
     $scope.formData = {
         myDate: new Date(),
         myLocation: $scope.userAuthenticated? AuthService.authStatus.user.defaultloc : "olin",
         mySelectedFoodTypes: $scope.getUserFoodTypes(), 
-        mySelectedAllergens: $scope.getUserAllergens(),
+        mySelectedAllergens: $scope.userAuthenticated? AuthService.authStatus.user.allergens : [],
     };
     $scope.mealTypeToDisplay = {
         brk: "Breakfast",
