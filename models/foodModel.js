@@ -36,7 +36,7 @@ var nutritionSchema = new mongoose.Schema({
 var foodSchema = mongoose.Schema({
     name: String,
     sodexoId: String,
-    station: String,
+    station: {},
     vegan: { type: Boolean, default: false },
 	vegetarian: { type: Boolean, default: false },
 	mindful: { type: Boolean, default: false },

@@ -20,8 +20,11 @@ getMenuURL = function(location, callback) {
 	request(url, function(error, response, html) {
 		if (!error) {
 			var $ = cheerio.load(html);
-			var menuURL = urlBase + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
-			callback(menuURL)
+			$('#accordion_3543').children().eq(1).children().first().children().each(function(i, elem) {
+			    var menuUrl = urlBase + $(elem).children().first().attr('href')
+			    // console.log(menuUrl)
+			    callback(menuUrl)
+			});
 		}
 	})
 }
@@ -155,14 +158,17 @@ getMenuData = function(location, callback) {
 
 }
 
-saveFoodsAndAddToMenu = function(foods, mealId) {
+saveFoodsAndAddToMenu = function(foods, mealId, location) {
+	var stationLocation = "station." + location ;
 	for (food of foods) {
+		var station = {};
+		station["station." + location] = food.station;
 		Food.findOneAndUpdate({
 				sodexoId: food.foodId
 			}, {
 				name: food.name,
 				vegan: food.vegan,
-				station: food.station,
+				$set: station,
 				vegetarian: food.vegetarian,
 				mindful: food.mindful,
 				$addToSet: {"nutritionInformation": food.nutrition},
@@ -207,7 +213,7 @@ scrapeMenuAndSave = function(location, callback) {
 							},
 							function(err, meal) {
 								if (err) return console.error(err)
-								saveFoodsAndAddToMenu(currentMeal, meal._id)
+								saveFoodsAndAddToMenu(currentMeal, meal._id, location)
 							})
 					}(currentMeal))
 				}
