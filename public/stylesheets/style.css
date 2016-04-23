@@ -59,6 +59,7 @@ p {
 
 .nutrition-cell {
   outline: gray solid 1px;
+  padding: 2px;
 }
 
 .nutrition-small {
