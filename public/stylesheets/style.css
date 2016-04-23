@@ -5,13 +5,21 @@ html, body {
   width: 100vw;
 }
 
-md-toolbar h2, h4 {
+md-toolbar h2, h3 {
   line-height: 1em;
   margin-left: 0.5em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   font-weight: 500;
   height: 5vh;
+}
+
+h4 {
+  margin-left: 10px;
+}
+
+p {
+  margin: 0;
 }
 
 #get-menu-form {
@@ -40,9 +48,25 @@ md-toolbar h2, h4 {
   overflow: scroll;
 }
 
-h5 {
-  margin-left: 10px;
+.meal-content {
+  padding: 10px;
 }
 
+.nutrition-info {
+  outline: black solid 2px;
+  padding: 0px;
+}
 
+.nutrition-cell {
+  outline: gray solid 1px;
+  padding: 2px;
+}
 
+.nutrition-small {
+  text-align: center;
+  font-size: 0.7em;
+}
+
+.indented-row {
+  margin-left: 10px;
+}
