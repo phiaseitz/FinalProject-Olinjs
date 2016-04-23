@@ -166,8 +166,8 @@ angular.module('myApp.homeView', ['ngRoute'])
                 if (include){
                     filteredMeal.foods.push(dish);
                 }
-                if ($scope.stations[meal.mealType].indexOf(dish.station) === -1){
-                    $scope.stations[meal.mealType].push(dish.station);
+                if ($scope.stations[meal.mealType].indexOf(dish.station[$scope.formData.myLocation]) === -1){
+                    $scope.stations[meal.mealType].push(dish.station[$scope.formData.myLocation]);
                 }
             });
             $scope.filteredDayMeals.push(filteredMeal)
