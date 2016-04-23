@@ -59,7 +59,7 @@
 						<md-subheader class="md-primary">{{station}}</md-subheader>
 						<md-list>
 							<div ng-repeat="food in meal.foods">
-								<md-list-item layout="column" ng-if="food.station === station">
+								<md-list-item layout="column" ng-if="food.station[formData.myLocation] === station">
 									<div flex layout="row" layout-align="space-between center" class="dish-header">
 										<div class='dish-text'>
 											<h5 class='dish-name'>{{food.name}}</h5>
