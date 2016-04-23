@@ -5,13 +5,21 @@ html, body {
   width: 100vw;
 }
 
-md-toolbar h2, h4 {
+md-toolbar h2, h3 {
   line-height: 1em;
   margin-left: 0.5em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   font-weight: 500;
   height: 5vh;
+}
+
+h4 {
+  margin-left: 10px;
+}
+
+p {
+  margin: 0;
 }
 
 #get-menu-form {
@@ -40,15 +48,38 @@ md-toolbar h2, h4 {
   overflow: scroll;
 }
 
-h5 {
+.meal-content {
+  padding: 10px;
+}
+
+.nutrition-info {
+  outline: black solid 2px;
+  padding: 0px;
+}
+
+.nutrition-cell {
+  outline: gray solid 1px;
+}
+
+.nutrition-small {
+  text-align: center;
+  font-size: 0.7em;
+}
+
+
+.indented-row {
   margin-left: 10px;
 }
 
-p {
-  margin: 0;
-}
 
-.performance-facts {
+
+
+
+
+
+
+
+/*.performance-facts {
   border: 1px solid black;
   margin: 20px;
   float: left;
@@ -58,12 +89,8 @@ p {
     border-collapse: collapse;
   }
 }
-.performance-facts__title {
-  font-weight: bold;
-  font-size: 2rem;
-  margin: 0 0 0.25rem 0;
-}
-.performance-facts__header {
+
+.nutrition-info {
   border-bottom: 10px solid black;
   padding: 0 0 0.25rem 0;
   margin: 0 0 0.5rem 0;
@@ -148,5 +175,5 @@ p {
 .thin-end {
   border-bottom: 1px solid black;
 }
-
+*/
 
