@@ -79,61 +79,63 @@
 											<div layout="column" layout-fill class="expanded">
 									            <p>{{food.nutritionInformation[0].description}}</p>
 									        </div>
+
+									        <br/>
 									      
-								            <md-list class="md-dense nutrition-info">
-								            	<md-list-item class="nutrition-cell" layout="column" layout-align="start start" class="nutrition-info-header">
+								            <div class="nutrition-info">
+								            	<div class="nutrition-cell" layout="column" layout-align="start start" class="nutrition-info-header">
 								            		<div><b>Nutrition Information</b></div>
 													<div>Serving Size: {{food.nutritionInformation[0].serving}}</div>
 													<b><div>Allergens: {{food.nutritionInformation[0].allergens.join(', ')}}</div></b>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout-align="center center">
+								            	</div>
+								            	<div class="nutrition-cell" layout-align="center center">
 								            		<div class='nutrition-small'>
 								            			Ammount Per Serving
 								            		</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div><b>Calories: </b>{{food.nutritionInformation[0].calories}}</div>
 													
 													<div>Calories from Fat: {{food.nutritionInformation[0].fatCalories}}</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="center center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="center center">
 								            		<div class='nutrition-small'>
 								            			% Daily Value*
 								            		</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div><b>Total Fat </b>{{food.nutritionInformation[0].fat}}g</div>
 								            		<div><b>{{food.nutritionInformation[0].fatPercent}}%</b></div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div class="indented-row">Saturated Fat {{food.nutritionInformation[0].saturatedFat}}g</div>
 								            		<div><b>{{food.nutritionInformation[0].saturatedFatPercent}}%</b></div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell">
+								            	</div>
+								            	<div class="nutrition-cell">
 								            		<div class="indented-row">Trans Fat {{food.nutritionInformation[0].transFat}}g</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell">
+								            	</div>
+								            	<div class="nutrition-cell">
 								            		<div><b>Cholesterol</b> {{food.nutritionInformation[0].cholesterol}}mg</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div><b>Sodium</b> {{food.nutritionInformation[0].sodium}}mg</div>
 								            		<div><b>{{food.nutritionInformation[0].sodiumPercent}}%</b></div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div><b>Total Carbohydrate</b> {{food.nutritionInformation[0].carbohydrates}}g</div>
 								            		<div><b>{{food.nutritionInformation[0].carbohydratesPercent}}%</b></div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div class="indented-row">Dietary Fiber {{food.nutritionInformation[0].dietaryFiber}}g</div>
 								            		<div><b>{{food.nutritionInformation[0].dietaryFiberPercent}}%</b></div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell">
+								            	</div>
+								            	<div class="nutrition-cell">
 								            		<div class="indented-row">Sugars {{food.nutritionInformation[0].sugar}}g</div>
-								            	</md-list-item>
-								            	<md-list-item>
+								            	</div>
+								            	<div>
 								            		<div><b>Protein</b> {{food.nutritionInformation[0].protein}}g</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell" layout="row" layout-align="space-between center">
+								            	</div>
+								            	<div class="nutrition-cell" layout="row" layout-align="space-between center">
 								            		<div layout=column layout-align="space-between center">
 								            			<div>
 								            				Vitamin A {{food.nutritionInformation[0].vitAPercent}}%
@@ -149,11 +151,11 @@
 								            			</div>
 								            			<div>Iron {{food.nutritionInformation[0].ironPercent}}%</div>
 								            		</div>
-								            	</md-list-item>
-								            	<md-list-item class="nutrition-cell nutrition-small">
+								            	</div>
+								            	<div class="nutrition-cell nutrition-small">
 								            		<div>*Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.</div>
-								            	</md-list-item>
-								            </md-list>
+								            	</div>
+								            </div>
 										</div>
 									<md-divider ng-if="!$last"></md-divider>
 								</md-list-item>
