@@ -20,8 +20,11 @@ getMenuURL = function(location, callback) {
 	request(url, function(error, response, html) {
 		if (!error) {
 			var $ = cheerio.load(html);
-			menuURL = urlBase + $('#accordion_3543').children().eq(1).children().first().children().first().children().first().attr('href')
-			callback(menuURL)
+			$('#accordion_3543').children().eq(1).children().first().children().each(function(i, elem) {
+			    var menuUrl = urlBase + $(elem).children().first().attr('href')
+			    // console.log(menuUrl)
+			    callback(menuUrl)
+			});
 		}
 	})
 }
@@ -47,7 +50,7 @@ getMenuData = function(location, callback) {
 
 				var menu = [];
 
-				daysOfWeek = {
+				var daysOfWeek = {
 					'monday': 0,
 					'tuesday': 1,
 					'wednesday': 2,
@@ -58,7 +61,7 @@ getMenuData = function(location, callback) {
 				}
 
 				$('.dayouter').each(function(i, elem) {
-					dayMenu = {}
+					var dayMenu = {}
 					dayMenu.dayOfWeek = $(elem).attr('id');
 					var dayDate = new Date(startDate.getTime());
 					dayDate.setDate(dayDate.getDate() + daysOfWeek[dayMenu.dayOfWeek]);
@@ -70,6 +73,7 @@ getMenuData = function(location, callback) {
 						$(elem).find('.' + meal).filter(function(i, elem) {
 							return $(elem).find('.menuitem').length != 0;
 						}).each(function(i, elem) {
+							
 							var station = $(elem).find('.station').first().text();
 							// console.log(station)
 							// console.log(station.length)
@@ -80,7 +84,7 @@ getMenuData = function(location, callback) {
 
 							if (menuItem.find('.chk').length !== 0) {
 
-								item = {
+								var item = {
 									name: null,
 									foodId: null,
 									nutritionId: null,
@@ -102,11 +106,11 @@ getMenuData = function(location, callback) {
 								item.vegetarian = item.vegan || (menuItem.find('img[alt="Vegetarian"]').length != 0)
 								item.mindful = (menuItem.find('img[alt="Mindful Item"]').length != 0)
 
-								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]"
+								var regSearchString = "aData\\['"+ itemId.substring(9) +"'\\]";
 								var nutritionString = html.match("(.*(?:"+regSearchString+").*)")[0];
 								var nutritionArray = nutritionString.slice(37, -3).replace(/(\r\n|\n|\r)/gm,"").split("','")
 								
-								nutritionObject = {
+								var nutritionObject = {
 									nutritionId: item.nutritionId,
 									serving: nutritionArray[0],
 									calories: Number(nutritionArray[1]),
@@ -154,14 +158,17 @@ getMenuData = function(location, callback) {
 
 }
 
-saveFoodsAndAddToMenu = function(foods, mealId) {
+saveFoodsAndAddToMenu = function(foods, mealId, location) {
+	var stationLocation = "station." + location ;
 	for (food of foods) {
+		var station = {};
+		station["station." + location] = food.station;
 		Food.findOneAndUpdate({
 				sodexoId: food.foodId
 			}, {
 				name: food.name,
 				vegan: food.vegan,
-				station: food.station,
+				$set: station,
 				vegetarian: food.vegetarian,
 				mindful: food.mindful,
 				$addToSet: {"nutritionInformation": food.nutrition},
@@ -206,7 +213,7 @@ scrapeMenuAndSave = function(location, callback) {
 							},
 							function(err, meal) {
 								if (err) return console.error(err)
-								saveFoodsAndAddToMenu(currentMeal, meal._id)
+								saveFoodsAndAddToMenu(currentMeal, meal._id, location)
 							})
 					}(currentMeal))
 				}

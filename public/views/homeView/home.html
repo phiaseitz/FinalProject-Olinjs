@@ -1,11 +1,11 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
-<md-content>
-	<md-toolbar layout="row" layout-align="center center">
-		<h2>Dining App!!!</h2>
+<md-content class="outer-content">
+	<md-toolbar layout="row" layout-align="space-between center">
+		<h2>Olin Trim Dining</h2>
 		<div ng-switch="userAuthenticated">
-			<div ng-switch-when="true">
-				<md-button ng-click="logout()">Logout</md-button> 
-				<md-button class="material-icons" ng-click="accountSettingsRedirect()">settings</md-button> 		
+			<div ng-switch-when="true" layout='row' layout-align='center center'>
+				<md-button class="material-icons" ng-click="accountSettingsRedirect()">settings</md-button>
+				<md-button ng-click="logout()">Logout</md-button>  		
 			</div>
 			<div ng-switch-when="false">
 				<md-button ng-click="signupRedirect()">Sign Up</md-button> 
@@ -14,43 +14,36 @@
 		</div>
 	</md-toolbar>
 
-	<div layout="column" flex layout-align="center">
-		<div layout="column" flex layout-align="center">
+	<div layout="column" layout-align="start" class="menu-content">
 		<div layout="row" layout-align="center center" id="get-menu-form">
 			<md-input-container>
-		        <label>Dining Hall</label>
-		        <md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
-		          	<md-option value="olin">Olin</md-option>
-		          	<md-option value="trim">Trim</md-option>
-		        </md-select>
-		    </md-input-container>
+				<label>Dining Hall</label>
+				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
+					<md-option value="olin">Olin</md-option>
+					<md-option value="trim">Trim</md-option>
+				</md-select>
+			</md-input-container>
 			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
 			<md-button ng-click="setDateToday()">Today</md-button>
-			
-    </div>
-    <fieldset class="food-types" >
-      <legend class="food-types-legend">Show me only foods that are...</legend>
-      <div layout="row" layout-wrap flex>
-      <div flex-xs flex="100">
-        <md-checkbox aria-label="Select All"
-                     ng-checked="formData.myFoodTypes.all"
-                     ng-click="setAllFoodType()">
-          <span ng-if="formData.myFoodTypes.all">Un-</span>Select All
-        </md-checkbox>
-      </div>
-        <div class="food-types-checkboxes" flex="100" ng-repeat="foodType in foodTypes">
-          <md-checkbox ng-checked="formData.myFoodTypes.{{foodType}}" ng-click="toggleFoodType(foodType)">{{foodType}}</md-checkbox>
-        </div>
-      </div>
-    </fieldset>
-
+			<md-input-container>
+				<label>Filter Foods</label>
+				<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
+					<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
+				</md-select>
+			</md-input-container>
+			<md-input-container>
+				<label>Filter Out Allergens</label>
+				<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
+					<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
+				</md-select>
+			</md-input-container>
 		</div>
+		
 
 	
-		<div id="day-meal-list" flex layout='row'>
-				
+		<div id="day-meal-list" layout='row' layout-aling="space-between stretch">
 			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
-				<md-toolbar>
+				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
 				</md-toolbar>
 				
@@ -59,10 +52,10 @@
 						<md-subheader class="md-primary">{{station}}</md-subheader>
 						<md-list>
 							<div ng-repeat="food in meal.foods">
-								<md-list-item layout="column" ng-if="food.station === station">
+								<md-list-item layout="column" ng-if="food.station[formData.myLocation] === station">
 									<div flex layout="row" layout-align="space-between center" class="dish-header">
 										<div class='dish-text'>
-											<h5 class='dish-name'>{{food.name}}</h5>
+											<h4 class='dish-name'>{{food.name}}</h4>
 										</div>
 										
 										<div layout="row" class="food-buttons">
@@ -82,21 +75,89 @@
 										</div>
 										
 									</div>
-
 									<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 											<div layout="column" layout-fill class="expanded">
-									            <span>Here we'll have some content</span>
-									            <br/>
-									            <span>Like pictures of the dishes?</span>
-									            <br/>
-									            <span>Nutritional Information!</span>
-									            <br/>
-									            <span>Maybe some reviews as well!</span>
-									            <br/>
-								          </div>
-									</div>
-									<md-divider ng-if="!$last"></md-divider>
+												<p>{{food.nutritionInformation[0].description}}</p>
+											</div>
 
+											<br/>
+										  
+											<div class="nutrition-info">
+												<div class="nutrition-cell" layout="column" layout-align="start start" class="nutrition-info-header">
+													<div><b>Nutrition Information</b></div>
+													<div>Serving Size: {{food.nutritionInformation[0].serving}}</div>
+													<b><div>Allergens: {{food.nutritionInformation[0].allergens.join(', ')}}</div></b>
+												</div>
+												<div class="nutrition-cell" layout-align="center center">
+													<div class='nutrition-small'>
+														Ammount Per Serving
+													</div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div><b>Calories: </b>{{food.nutritionInformation[0].calories}}</div>
+													
+													<div>Calories from Fat: {{food.nutritionInformation[0].fatCalories}}</div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="center center">
+													<div class='nutrition-small'>
+														% Daily Value*
+													</div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div><b>Total Fat </b>{{food.nutritionInformation[0].fat}}g</div>
+													<div><b>{{food.nutritionInformation[0].fatPercent}}%</b></div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div class="indented-row">Saturated Fat {{food.nutritionInformation[0].saturatedFat}}g</div>
+													<div><b>{{food.nutritionInformation[0].saturatedFatPercent}}%</b></div>
+												</div>
+												<div class="nutrition-cell">
+													<div class="indented-row">Trans Fat {{food.nutritionInformation[0].transFat}}g</div>
+												</div>
+												<div class="nutrition-cell">
+													<div><b>Cholesterol</b> {{food.nutritionInformation[0].cholesterol}}mg</div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div><b>Sodium</b> {{food.nutritionInformation[0].sodium}}mg</div>
+													<div><b>{{food.nutritionInformation[0].sodiumPercent}}%</b></div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div><b>Total Carbohydrate</b> {{food.nutritionInformation[0].carbohydrates}}g</div>
+													<div><b>{{food.nutritionInformation[0].carbohydratesPercent}}%</b></div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div class="indented-row">Dietary Fiber {{food.nutritionInformation[0].dietaryFiber}}g</div>
+													<div><b>{{food.nutritionInformation[0].dietaryFiberPercent}}%</b></div>
+												</div>
+												<div class="nutrition-cell">
+													<div class="indented-row">Sugars {{food.nutritionInformation[0].sugar}}g</div>
+												</div>
+												<div class="nutrition-cell">
+													<div><b>Protein</b> {{food.nutritionInformation[0].protein}}g</div>
+												</div>
+												<div class="nutrition-cell" layout="row" layout-align="space-between center">
+													<div layout=column layout-align="space-between center">
+														<div>
+															Vitamin A {{food.nutritionInformation[0].vitAPercent}}%
+														</div>
+														<div>
+															Calcium {{food.nutritionInformation[0].calciumPercent}}%
+														</div>
+														
+													</div>
+													<div layout=column layout-align="space-between center">
+														<div>
+															Vitamin C {{food.nutritionInformation[0].vitCPercent}}%
+														</div>
+														<div>Iron {{food.nutritionInformation[0].ironPercent}}%</div>
+													</div>
+												</div>
+												<div class="nutrition-cell nutrition-small">
+													<div>*Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.</div>
+												</div>
+											</div>
+										</div>
+									<md-divider ng-if="!$last"></md-divider>
 								</md-list-item>
 							</div>
 							

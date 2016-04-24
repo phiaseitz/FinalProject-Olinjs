@@ -1,18 +1,25 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
 <md-content>
-	<md-toolbar layout="row">
-		<h2>Dining App!!!</h2>
+	<md-toolbar layout="row" layout-align="space-between center">
+		<h2>Olin Trim Dining - Sign Up</h2>
+		<div class="navbuttons" layout='row' layout-align='center center'>
+			<md-button ng-click="loginRedirect()">Log In</md-button>  
+            <md-button ng-click="homeRedirect()">Home</md-button> 
+        </div>
 	</md-toolbar>
-	<md-content layout="row" flex layout-align="center">
+	<md-content layout="row" layout-align="center">
 		<form>
-			<md-input-container> 
-				<label> Email </label>
-				<input required ng-model="signupForm.username" type="email" >
-			</md-input-container>
-			<md-input-container> 
-				<label> Password </label>
-				<input  required ng-model="signupForm.password" type="password">
-			</md-input-container>
-			<md-button ng-click="signup(signupForm)" class="md-primary">Sign Up</md-button>
+			<div layout="column" flex layout-align="center center">
+				<md-input-container> 
+					<label> Email </label>
+					<input required ng-model="signupForm.username" type="email" >
+				</md-input-container>
+				<md-input-container> 
+					<label> Password </label>
+					<input  required ng-model="signupForm.password" type="password">
+				</md-input-container>
+				<md-button ng-click="signup(signupForm)" class="md-primary">Sign Up</md-button>
+			</div>
+			
 		</form>
 </md-content>

@@ -7,7 +7,7 @@ angular.module('myApp.signupView', ['ngRoute'])
   });
 }])
 
-.controller('signupController', ['$scope','$window', '$http', '$mdToast', 'AuthService', function($scope,$window, $http, $mdToast, AuthService) {
+.controller('signupController', ['$scope','$window', '$http', '$mdToast', 'AuthService', '$location', function($scope,$window, $http, $mdToast, AuthService, $location) {
 	console.log("signupController loaded");
 	$scope.signupForm = {}
 	$scope.signup = function(formData){
@@ -15,5 +15,14 @@ angular.module('myApp.signupView', ['ngRoute'])
 		AuthService.signup(formData)
 		
 	}
+
+	$scope.homeRedirect = function(){
+        $location.path("/");
+    }
+
+    $scope.loginRedirect = function(){
+    	console.log('login')
+        $location.path("/login");
+    }
 
 }]);

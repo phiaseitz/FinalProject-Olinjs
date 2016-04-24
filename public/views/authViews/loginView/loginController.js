@@ -17,4 +17,13 @@ angular.module('myApp.loginView', ['ngRoute'])
 		AuthService.login(formData);
 	}
 
+	$scope.homeRedirect = function(){
+        $location.path("/");
+    }
+
+    $scope.signupRedirect = function(){
+        $location.path("/signup");
+    }
+
+
 }]);

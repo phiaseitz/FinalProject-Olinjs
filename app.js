@@ -3,14 +3,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var express = require('express');
-var indexRoute = require('./routes/index');
-var scrapingRoute = require('./routes/scraping');
-var scrapingHelper = require('./helpers/scrapingMenu.js');
-var pushNotificationRoute = require('./routes/pushNotifications');
 var mongoose = require('mongoose');
 var favicon = require('serve-favicon');
 var session = require('express-session');
+var fork = require('child_process').fork;
+var indexRoute = require('./routes/index');
+var scrapingRoute = require('./routes/scraping');
+var scrapingHelper = require('./helpers/scrapingMenu.js');
 var auth = require('./authentication.js')
+var pushNotificationRoute = require('./routes/pushNotifications');
+
 var app = express();
 
 if (process.env.NODE_ENV === 'production') {
@@ -38,16 +40,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("we're connected!");
-	(function foo() {
-    	console.log('scraping menu');
-    	scrapingHelper.scrapeMenuAndSave('olin',function(data) {
-			console.log("scraped olin menu");
-		});
-		scrapingHelper.scrapeMenuAndSave('trim',function(data) {
-			console.log("scraped trim menu");
-		});
-    	setTimeout(foo, 30*60*1000);
-	})();
+	var child = fork('./helpers/scrapingSchedule'); //create child process because scraping is slow and blocking
 });
 
 // favicon setup
@@ -85,7 +78,7 @@ app.put('/prefapi/rmfav', indexRoute.removeFavFoodPUT);
 
 app.put('/prefapi/vegan', indexRoute.changeVeganStatusPUT);
 app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
-app.put('/prefapi/gf', indexRoute.changeGFStatusPUT);
+app.put('/prefapi/allergens', indexRoute.changeAllergenStatusPUT);
 app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
 app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
 

@@ -10,10 +10,11 @@ var userSchema = mongoose.Schema({
     favorites: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Food' }],
     vegan: { type: Boolean, default: false }, 
     vegetarian: { type: Boolean, default: false }, 
-    gf: { type: Boolean, default: false }, //gluten free
     mindful: { type: Boolean, default: false },
     defaultloc: { type: String, default: 'olin' },
     notificationSubscriptions: [String],
+    allergens: [String], 
+    defaultloc: { type: String, default: 'olin' }
 });
 
 userSchema.plugin(passportLocalMongoose);
