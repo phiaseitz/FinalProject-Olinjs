@@ -85,7 +85,6 @@ app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
 app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
 app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
 
-
 app.get('*', indexRoute.home);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
