@@ -11,7 +11,6 @@ md-toolbar h2, h3 {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   font-weight: 500;
-  height: 5vh;
 }
 
 h4 {
@@ -22,9 +21,9 @@ p {
   margin: 0;
 }
 
-#get-menu-form {
-  height:15vh;
-} 
+md-input-container{
+  margin-left: 20px;
+}
 
 .outer-content {
   width: 100vw;
@@ -41,6 +40,7 @@ p {
 }
 
 #day-meal-list{
+  min-height: 500px;
   height: calc(80vh - 100px);
 }
 
