@@ -21,6 +21,7 @@ p {
   margin: 0;
 }
 
+/*Home Page*/
 .outer-content {
   width: 100vw;
   height: 100vh;
@@ -52,8 +53,6 @@ p {
   margin: 0px;
 }
 
-
-
 .meal-menu {
   overflow: scroll;
 }
@@ -80,4 +79,19 @@ p {
 
 .indented-row {
   margin-left: 10px;
+}
+
+/*Settings Page*/
+.change-password-form, .preferences-form {
+  width: 100%;
+}
+
+.change-password-form {
+  border-bottom-width:2px;
+   border-bottom-color:gray;
+   border-bottom-style: solid;
+}
+
+.default-loc {
+  padding-top: 20px;
 }

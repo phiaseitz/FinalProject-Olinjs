@@ -21,6 +21,8 @@ p {
   margin: 0;
 }
 
+/*Home Page*/
+
 md-input-container{
   margin-left: 20px;
 }
@@ -69,4 +71,11 @@ md-input-container{
 
 .indented-row {
   margin-left: 10px;
+}
+
+/*Settings Page*/
+.change-password-form {
+  border-bottom-width:2px;
+   border-bottom-color:gray;
+   border-bottom-style: solid;
 }
