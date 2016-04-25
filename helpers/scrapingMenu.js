@@ -136,7 +136,7 @@ getMenuData = function(location, callback) {
 									ironPercent:Number(nutritionArray[21]),
 									name: nutritionArray[22],
 									description: nutritionArray[23],
-									allergens: nutritionArray[24].substring(9).split(',').filter(function(x) { return (x !== '') }),
+									allergens: nutritionArray[24].substring(9).split(',').filter(function(x) { return (x !== '')}).map(function (x){ return x.trim()}),
 									vitA: Number(nutritionArray[25]),
 									vitC: Number(nutritionArray[26]),
 									calcium: Number(nutritionArray[27]),
