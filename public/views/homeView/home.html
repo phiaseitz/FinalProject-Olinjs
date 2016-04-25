@@ -14,8 +14,8 @@
 		</div>
 	</md-toolbar>
 
-	<div layout="column" layout-align="start" class="menu-content">
-		<div layout="row" layout-align="center center" id="get-menu-form">
+	<div layout="column" layout-align="start stretch" class="menu-content">
+		<div layout="column" layout-gt-sm="row" layout-align="start start" layout-align-gt-sm="center center" id="get-menu-form">
 			<md-input-container>
 				<label>Dining Hall</label>
 				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -23,25 +23,31 @@
 					<md-option value="trim">Trim</md-option>
 				</md-select>
 			</md-input-container>
-			<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
-			<md-button ng-click="setDateToday()">Today</md-button>
-			<md-input-container>
-				<label>Filter Foods</label>
-				<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
-					<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
-				</md-select>
-			</md-input-container>
-			<md-input-container>
-				<label>Filter Out Allergens</label>
-				<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
-					<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
-				</md-select>
-			</md-input-container>
+			<div class="date-stuff">
+				<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
+				<md-button ng-click="setDateToday()">Today</md-button>
+			</div>
+			<div class="filter-stuff">
+				<md-input-container>
+					<label>Filter Foods</label>
+					<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
+						<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
+					</md-select>
+				</md-input-container>
+				<md-input-container>
+					<label>Filter Out Allergens</label>
+					<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
+						<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
+					</md-select>
+				</md-input-container>
+			</div>
+			
+			
 		</div>
 		
 
 	
-		<div id="day-meal-list" layout='row' layout-aling="space-between stretch">
+		<div id="day-meal-list" layout='column' layout-gt-sm="row" layout-align="space-between stretch">
 			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
 				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
