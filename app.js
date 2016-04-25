@@ -57,6 +57,11 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
+// app.use('sw.js', express.static(__dirname + '/node_modules'));
+
+app.get('/sw.js', function(req, res){
+  res.sendfile('sw.js');
+});
 
 app.get('/auth/getAuthenticated', auth.getAuthenticated);
 app.get('/auth/logout', auth.logout);
@@ -83,6 +88,8 @@ app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
 app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
 
 app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
+app.post('/notifictionAPI/addSubscriptionAndConfirm', pushNotificationRoute.addEndpointToUserAndConfirmPOST);
+app.post('/notifictionAPI/removeSubscription', pushNotificationRoute.removeEndpointFromUserPOST);
 app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
 
 app.get('*', indexRoute.home);

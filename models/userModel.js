@@ -12,7 +12,11 @@ var userSchema = mongoose.Schema({
     vegetarian: { type: Boolean, default: false }, 
     mindful: { type: Boolean, default: false },
     defaultloc: { type: String, default: 'olin' },
-    notificationSubscriptions: [String],
+    notificationSubscriptions: [{
+    	endpoint: String,
+    	p256dh: String,
+    	auth: String
+    }],
     allergens: [String], 
     defaultloc: { type: String, default: 'olin' }
 });

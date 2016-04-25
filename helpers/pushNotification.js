@@ -1,5 +1,6 @@
 var gcm = require('node-gcm');
-var webpush = require('web-push-encryption');
+// var webpush = require('web-push-encryption');
+var webPush = require('web-push');
 
 var User = require('../models/userModel.js');
 
@@ -7,53 +8,45 @@ addEndpointToUser = function(user, subscription, callback) {
 	console.log('addEndpointToUser helper called');
 
 	User.findByIdAndUpdate(user._id, { $addToSet: { notificationSubscriptions:  subscription } }, function (err, user) {
-		  if (err) return callback(err)
-		  callback(null,user)
+		if (err) return callback(err)
+		callback(null,subscription)
+	});
+}
+
+removeEndpointFromUser = function(user, endpoint, callback) {
+	User.findByIdAndUpdate(user._id, { $pull: { notificationSubscriptions:  {endpoint: endpoint} } }, function (err, user) {
+		if (err) return callback(err)
+		callback(null,user)
 	});
 }
 
 sendNotificationToUser = function(user, title, message, callback) {
-	var notificationContent = {title: title,
-							   message: message}
 	for (subscription of user.notificationSubscriptions) {
-		console.log('subscription: ',JSON.parse(subscription));
-		webpush.sendWebPush(JSON.stringify(notificationContent), JSON.parse(subscription), process.env.GCM_API_KEY).then(function(message) {
-			console.log('sent notification without error')
-		}).catch(function(err){
-			console.log('error sending notification')
-		})
+		sendNotification(subscription, title, message)
 	}
 	callback(null,'notifications sent')
 }
 
-sendNotificationToUser2 = function(user, title, message, callback) {
-	regTokens = [];
-	for (endpoint of user.notificationEndpoints) {
-		console.log(endpoint);
-		regTokens.push(endpoint.split("/").pop());
-	}
-	console.log(regTokens)
-
-	var message = new gcm.Message({notification: {
-		title: "Hello, World",
-		icon: "images/burger.png",
-		body: "This is a notification that will be displayed ASAP."
-	}});
-
-	var sender = new gcm.Sender(process.env.GCM_API_KEY);
-
-	sender.send(message, { registrationTokens: regTokens }, 3, function (err, response) {
-		if(err) {
-			console.error(err);
-			callback(err)
-		}
-		else {
-			console.log(response);
-			callback(null,response)
-		}
-	});
-
+sendNotification = function(subscription, title, message, callback) {
+	var notificationContent = {title: title,
+						   message: message}
+	webPush.setGCMAPIKey(process.env.GCM_API_KEY);
+	webPush.sendNotification(subscription.endpoint, {
+        TTL: (3*60*60),
+        payload: JSON.stringify(notificationContent),
+        userPublicKey: subscription.p256dh,
+        userAuth: subscription.auth,
+      })
+      .then(function() {
+      	console.log('sent notification without error')
+        callback(null, 'success')
+      }).catch(function(err){
+		console.log('error sending notification')
+		callback(err)
+	  });
 }
 
 module.exports.addEndpointToUser = addEndpointToUser;
+module.exports.removeEndpointFromUser = removeEndpointFromUser
 module.exports.sendNotificationToUser = sendNotificationToUser;
+module.exports.sendNotification = sendNotification;

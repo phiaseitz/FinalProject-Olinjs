@@ -24,11 +24,12 @@
 console.log('Started', self);
 
 self.addEventListener('install', function(event) {
-  // self.skipWaiting();
   console.log('Installed', event);
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', function(event) {
+  event.waitUntil(self.clients.claim());
   console.log('Activated', event);
 });
 

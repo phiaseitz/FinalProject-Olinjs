@@ -21,17 +21,27 @@ angular.module('myApp.settingsView', ['ngRoute'])
     $scope.registerServiceWorker = function(){
         if ('serviceWorker' in navigator) {
             console.log('Service Worker is supported');
-            navigator.serviceWorker.register('javascripts/sw.js').then(function(reg) {
+            navigator.serviceWorker.register('sw.js');
+            navigator.serviceWorker.ready.then(function(reg) {
                 console.log(':^)', reg);
                 reg.pushManager.subscribe({
                     userVisibleOnly: true
-                }).then(function(sub) {
-                    var key = sub.getKey('p256dh');
-                    var auth = sub.getKey('auth');
-                    console.log(key);
-                    console.log(auth);
-                    var data = {subscription: JSON.stringify(sub)}
-                    $http.post('/notifictionAPI/addSubscription', data)
+                }).then(function(subscription) {
+                    var rawKey = subscription.getKey ? subscription.getKey('p256dh') : '';
+                    key = rawKey ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawKey))) : '';
+                    var rawAuthSecret = subscription.getKey ? subscription.getKey('auth') : '';
+                    authSecret = rawAuthSecret ? btoa(String.fromCharCode.apply(null, new Uint8Array(rawAuthSecret))) :'';
+
+                    var data = {
+                        subscription: {
+                            endpoint: subscription.endpoint,
+                            p256dh: key,
+                            auth: authSecret,
+                        }
+                    }
+                    console.log(data)
+
+                    $http.post('/notifictionAPI/addSubscriptionAndConfirm', data)
                         .success(function(data) {
                             console.log("push notifications endpoint save successfull");
                             console.log(data);
@@ -47,7 +57,6 @@ angular.module('myApp.settingsView', ['ngRoute'])
                                 .hideDelay(3000)
                             );
                         });
-                    console.log('subscription:', JSON.stringify(sub));
                 });
             }).catch(function(error) {
                 console.log(':^(', error);
@@ -55,9 +64,38 @@ angular.module('myApp.settingsView', ['ngRoute'])
         }
     }
 
+    $scope.removePushSubsrciption = function(){
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(function(reg) {
+                reg.pushManager.getSubscription().then(function(subscription) {
+                    console.log(subscription.endpoint)
+                        var data = {endpoint: subscription.endpoint}
+
+                        $http.post('/notifictionAPI/removeSubscription', data)
+                        .success(function(data) {
+                            subscription.unsubscribe()
+                            console.log("push notifications endpoint unsubscribed");
+                            console.log(data);
+                            $mdToast.show($mdToast.simple()
+                                .textContent('Successfully unsubscribed this device from push notifications')
+                                .hideDelay(3000)
+                            );
+                        })
+                        .error(function(data) {
+                            console.log('Error: ' + data);
+                            $mdToast.show($mdToast.simple()
+                                .textContent('Failed to unsubscribe from push notifications')
+                                .hideDelay(3000)
+                            );
+                        });
+                })
+            })
+        }
+    }
+
     $scope.testNotifications = function(){
-        data = {title: "testTitle",
-                message: "testMessage"}
+        data = {title: "testTitle" + Math.random().toString(36),
+                message: "testMessage2"}
         $http.post('/notifictionAPI/testNotifications', data)
                         .success(function(data) {
                             console.log("notifications sent successfully");
