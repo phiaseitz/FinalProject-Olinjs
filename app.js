@@ -45,6 +45,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("we're connected!");
 	var child = fork('./helpers/scrapingSchedule'); //create child process because scraping is slow and blocking
+	var child = fork('./helpers/notificationSchedule');
 });
 
 // favicon setup

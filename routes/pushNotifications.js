@@ -56,40 +56,36 @@ var sendNotificationToUserPOST = function(req, res) {
 }
 
 var sendFavoritesNotificationPOST = function(req, res) {
-	console.log(req.user)
 
 	var today = moment().tz('America/New_York');
 
 	var todayDay = moment(today).startOf('day')
 	var tomorrowDay = moment(todayDay).add(1, 'days');
 
-	// console.log(today.hours())
-	console.log(todayDay.format("dddd, MMMM Do YYYY, h:mm:ss a"))
-	console.log(tomorrowDay.format("dddd, MMMM Do YYYY, h:mm:ss a"))
-
 	var currentHours = today.hours() + today.minutes()/60.0
-	console.log(currentHours)
-	if (currentHours < 10.5) {
+	var todayWeekend = (todayDay.day() == 6) || (todayDay.day() == 0)
+	var tomorrowWeekend = (tomorrowDay.day() == 6) || (tomorrowDay.day() == 0)
+	// console.log(currentHours)
+	if (currentHours < 10.5 & !todayWeekend) {
 		var meal = 'brk'
 		var mealDate = todayDay
-	} else if (currentHours > 19.5) {
+	} else if (currentHours > 20.5 & !tomorrowWeekend) {
 		var meal = 'brk'
 		var mealDate = tomorrowDay
-	} else if (currentHours<14) {
+	} else if (currentHours > 20.5 & tomorrowWeekend) {
+		var meal = 'lun'
+		var mealDate = tomorrowDay
+	}else if (currentHours<14) {
 		var meal = 'lun'
 		var mealDate = todayDay
 	} else {
 		var meal = 'din'
 		var mealDate = todayDay
 	}
-	console.log(meal)
-	console.log(mealDate.format("dddd, MMMM Do YYYY, h:mm:ss a"))
+	// console.log(meal)
+	// console.log(mealDate.format("dddd, MMMM Do YYYY, h:mm:ss a"))
 
-	var users = [req.user]
-	console.log('first users: ')
-	console.log(users)
-	//console.log(req.user);
-	pushNotificationHelper.sendFavoritesNotification(users, mealDate, meal, 'olin',function(err, data) {
+	pushNotificationHelper.sendFavoritesNotifications(mealDate, meal,function(err, data) {
 		if (err) {
 			console.log(err)
 			return res.send(err)
