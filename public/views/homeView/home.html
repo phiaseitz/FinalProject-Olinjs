@@ -15,7 +15,7 @@
 	</md-toolbar>
 
 	<div class="menu-content">
-		<div layout="column" layout-gt-xs="row" layout-align="start start" layout-align-gt-xs="center center" id="get-menu-form">
+		<div layout="column" layout-gt-sm="row" layout-align="start start" layout-align-gt-sm="center center" id="get-menu-form">
 			<md-input-container>
 				<label>Dining Hall</label>
 				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -30,13 +30,13 @@
 			<div class="filter-stuff">
 				<md-input-container>
 					<label>Filter Foods</label>
-					<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
+					<md-select class="filter" ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
 						<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
 					</md-select>
 				</md-input-container>
 				<md-input-container>
 					<label>Filter Out Allergens</label>
-					<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
+					<md-select class="filter" ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
 						<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
 					</md-select>
 				</md-input-container>
@@ -47,8 +47,8 @@
 		
 
 	
-		<div id="day-meal-list" layout='column' layout-gt-xs="row" layout-align="space-between start">
-			<md-card class="meal-card" ng-repeat="meal in filteredDayMeals">
+		<div id="day-meal-list" layout='column' layout-gt-sm="row"  layout-align="space-between stretch">
+			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
 				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
 				</md-toolbar>

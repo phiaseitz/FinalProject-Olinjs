@@ -49,6 +49,10 @@ p {
   width: 100%;
 }
 
+.filter {
+  min-width: 150px;
+}
+
 .dish-name {
   margin: 0px;
 }
