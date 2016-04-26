@@ -1,5 +1,5 @@
 <!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
-<md-content class="outer-content">
+<md-content layout="column" layout-align="start stretch" class="outer-content">
 	<md-toolbar layout="row" layout-align="space-between center">
 		<h2>Olin Trim Dining</h2>
 		<div ng-switch="userAuthenticated">
@@ -14,8 +14,8 @@
 		</div>
 	</md-toolbar>
 
-	<div layout="column" layout-align="start stretch" class="menu-content">
-		<div layout="column" layout-gt-sm="row" layout-align="start start" layout-align-gt-sm="center center" id="get-menu-form">
+	<div class="menu-content">
+		<div layout="column" layout-gt-md="row" layout-align="start start" layout-align-gt-md="center center" id="get-menu-form">
 			<md-input-container>
 				<label>Dining Hall</label>
 				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -47,7 +47,7 @@
 		
 
 	
-		<div id="day-meal-list" layout='column' layout-gt-sm="row" layout-align="space-between stretch">
+		<div id="day-meal-list" layout='column' layout-gt-md="row" layout-align="space-between stretch">
 			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
 				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
