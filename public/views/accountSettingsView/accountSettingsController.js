@@ -23,6 +23,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences = {};
     $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
     $scope.preferences.vegan = AuthService.authStatus.user.vegan;
+
+    $scope.favorites = AuthService.authStatus.user.favorites;
+
     $scope.preferences.allergens = {
         selected: AuthService.authStatus.user.allergens,
     };
@@ -57,6 +60,45 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         $location.path("/")
         location.reload();
     }
+
+    $scope.getFavs = function() { 
+        $http.get('/prefapi/getfavs')
+            .success(function(foods){
+                console.log(foods)
+                $scope.favorites = foods;
+                console.log ($scope.favorites);
+            })
+    }
+
+    $scope.getFavs();
+
+    $scope.rmFav = function(id) { 
+        favparams = {
+            foodID: id,
+        }
+
+        $http.put('/prefapi/rmfav', {}, {params: favparams})
+            .success(function(food){
+                console.log('Removed food ', food)
+                console.log("Favorites", $scope.favorites)
+
+                var index;
+                for(index=0; index < $scope.favorites.length; index++) {
+                    if(food._id == $scope.favorites[index]._id) {
+                        $scope.favorites.splice(index, 1);
+                        break;
+                    }
+                }
+                // var index = $scope.favorites.indexOf(food.id);
+                // console.log("Index", index)
+                // if (index > -1) {
+                //     console.log("Before splice", $scope.favorites);
+                //     $scope.favorites.splice(index, 1);
+                //     console.log("After splice", $scope.favorites)
+                // }
+            })
+    }
+
 
     $scope.submit = function() {
         $scope.changeVegan($scope.preferences.vegan);

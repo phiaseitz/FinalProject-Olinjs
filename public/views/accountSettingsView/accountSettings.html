@@ -65,5 +65,21 @@
                 <md-button class="md-primary" ng-click="submit()">Change Preferences</md-button>
             </form>
         </div>
+
+        <div class="favorites-form" >
+            <h3 class="md-no-sticky">Favorites</h3>
+
+            <div class="setting-fav" layout="column" layout-align="center start" ng-repeat="favorite in favorites">
+                <form class="accountsettings-form" layout="column" layout-align="center start">
+                    <h4 class="md-no-sticky">{{favorite.name}}</h4>                 
+                    <md-button class="md-primary" ng-click="rmFav(favorite._id)">Remove Favorite</md-button>
+                </form>
+
+            </div>
+
+
+
+        </div>
+
     </md-content>
 </md-content>
