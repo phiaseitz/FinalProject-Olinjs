@@ -13,6 +13,7 @@ var userSchema = mongoose.Schema({
     mindful: { type: Boolean, default: false },
     defaultloc: { type: String, default: 'olin' },
     notificationSubscriptions: [{
+        _id:false,
     	endpoint: String,
     	p256dh: String,
     	auth: String

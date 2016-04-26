@@ -114,6 +114,27 @@ angular.module('myApp.settingsView', ['ngRoute'])
                         });
     }
 
+    $scope.testFavoriteNotifications = function(){
+        data = {title: "testTitle" + Math.random().toString(36),
+                message: "testMessage2"}
+        $http.post('/notifictionAPI/sendFavoritesNotification', data)
+                        .success(function(data) {
+                            console.log("notifications sent successfully");
+                            console.log(data);
+                            $mdToast.show($mdToast.simple()
+                                .textContent('Successfully sent favorite notification')
+                                .hideDelay(3000)
+                            );
+                        })
+                        .error(function(data) {
+                            console.log('Error: ' + data);
+                            $mdToast.show($mdToast.simple()
+                                .textContent('Failed to send favorite notification')
+                                .hideDelay(3000)
+                            );
+                        });
+    }
+
 	$scope.loginRedirect = function(){
 		$location.path("/login");
 	}

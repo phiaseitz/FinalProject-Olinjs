@@ -95,6 +95,7 @@ app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToU
 app.post('/notifictionAPI/addSubscriptionAndConfirm', pushNotificationRoute.addEndpointToUserAndConfirmPOST);
 app.post('/notifictionAPI/removeSubscription', pushNotificationRoute.removeEndpointFromUserPOST);
 app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
+app.post('/notifictionAPI/sendFavoritesNotification', pushNotificationRoute.sendFavoritesNotificationPOST);
 
 app.get('*', indexRoute.home);
 
