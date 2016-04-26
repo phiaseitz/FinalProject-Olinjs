@@ -94,7 +94,7 @@ getMenuData = function(location, callback) {
 									'mindful': false
 								}
 
-								item.name = menuItem.find('span').first().text().replace(/(\r\n|\n|\r)/gm,"");
+								item.name = menuItem.find('span').first().text().replace(/(\r\n|\n|\r)/gm,"").replace(/^\s+|\s+$/g, "");;
 
 								var itemId =  menuItem.find('.chk').first().attr('id');
 								item.foodId = itemId.substring(9, 19);

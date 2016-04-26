@@ -11,9 +11,14 @@ var userSchema = mongoose.Schema({
     vegan: { type: Boolean, default: false }, 
     vegetarian: { type: Boolean, default: false }, 
     mindful: { type: Boolean, default: false },
+    notificationSubscriptions: [{
+        _id:false,
+    	endpoint: String,
+    	p256dh: String,
+    	auth: String
+    }],
     allergens: [String], 
     defaultloc: { type: String, default: 'olin' }
-
 });
 
 userSchema.plugin(passportLocalMongoose);

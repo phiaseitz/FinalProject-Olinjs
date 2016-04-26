@@ -11,15 +11,16 @@ var indexRoute = require('./routes/index');
 var scrapingRoute = require('./routes/scraping');
 var scrapingHelper = require('./helpers/scrapingMenu.js');
 var auth = require('./authentication.js')
+var pushNotificationRoute = require('./routes/pushNotifications');
 
 var app = express();
 
-// if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
 
-// } else {
-// 	var authKeys = require('./authKeys.js');
-// 	process.env['VARIABLE'] = authKeys.VARIABLE;
-// }
+} else {
+	var authKeys = require('./authKeys.json');
+	process.env['GCM_API_KEY'] = authKeys.GCM_API_KEY;
+}
 
 var passport = auth.configure();
 
@@ -44,6 +45,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log("we're connected!");
 	var child = fork('./helpers/scrapingSchedule'); //create child process because scraping is slow and blocking
+	var child = fork('./helpers/notificationSchedule');
 });
 
 // favicon setup
@@ -60,6 +62,11 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
+// app.use('sw.js', express.static(__dirname + '/node_modules'));
+
+app.get('/sw.js', function(req, res){
+  res.sendfile('sw.js');
+});
 
 app.get('/auth/getAuthenticated', auth.getAuthenticated);
 app.get('/auth/logout', auth.logout);
@@ -84,6 +91,12 @@ app.put('/prefapi/vegetarian', indexRoute.changeVegetarianStatusPUT);
 app.put('/prefapi/allergens', indexRoute.changeAllergenStatusPUT);
 app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
 app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
+
+app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
+app.post('/notifictionAPI/addSubscriptionAndConfirm', pushNotificationRoute.addEndpointToUserAndConfirmPOST);
+app.post('/notifictionAPI/removeSubscription', pushNotificationRoute.removeEndpointFromUserPOST);
+app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
+app.post('/notifictionAPI/sendFavoritesNotification', pushNotificationRoute.sendFavoritesNotificationPOST);
 
 app.get('*', indexRoute.home);
 

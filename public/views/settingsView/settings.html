@@ -1,0 +1,23 @@
+<!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
+<md-content>
+	<md-toolbar layout="row">
+		<h2>Dining App!!!</h2>
+		<div ng-switch="userAuthenticated">
+			<div ng-switch-when="true">
+				<md-button ng-click="logout()">Logout</md-button> 
+				<md-button ng-click="changePasswordRedirect()">Change Password</md-button> 
+			</div>
+			<div ng-switch-when="false">
+				<md-button ng-click="signupRedirect()">Sign Up</md-button> 
+				<md-button ng-click="loginRedirect()">Login</md-button> 
+			</div>
+		</div>
+		
+	</md-toolbar>
+	<md-content layout="row" flex layout-align="center">
+		<md-button ng-click="registerServiceWorker()">serviceWorker</md-button> 
+		<md-button ng-click="removePushSubsrciption()">unsubscribe</md-button> 
+		<md-button ng-click="testNotifications()">Test Notifications</md-button> 
+		<md-button ng-click="testFavoriteNotifications()">sendFavorites</md-button> 
+	</md-content>
+</md-content>
