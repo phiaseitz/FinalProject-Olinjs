@@ -1,3 +1,7 @@
+/*
+Sets up an account-settings page, containing dietary restrictions, allergies, preferred-location, and favorite foods.
+*/
+
 angular.module('myApp.accountSettingsView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -23,13 +27,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences = {};
     $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
     $scope.preferences.vegan = AuthService.authStatus.user.vegan;
-
-    $scope.favorites = AuthService.authStatus.user.favorites;
-
     $scope.preferences.allergens = {
         selected: AuthService.authStatus.user.allergens,
     };
-
     // Set up whether each allergen is switched "on"
     $scope.preferences.allergens.selected.forEach(function(allergen){
         $scope.preferences.allergens[allergen] = true;
@@ -39,20 +39,22 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences.mindful = AuthService.authStatus.user.mindful;
 
     $scope.changePasswordForm = {};
-
     $scope.changePasswordForm.username = AuthService.authStatus.user.username;
     
-    $scope.changePassword = function(formData){
-        console.log(formData);
+    $scope.favorites = AuthService.authStatus.user.favorites;
 
+    //changes user password
+    $scope.changePassword = function(formData){
         AuthService.changePassword(formData);
     }
 
+    //redirects to home page with menu
     $scope.homeRedirect = function(){
         $location.path("/");
         location.reload();
     }
 
+    //logs user out, reloads page
     $scope.logout = function() {
         AuthService.logout().then(function(authStatus){
             $scope.userAuthenticated = authStatus;
@@ -61,12 +63,12 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         location.reload();
     }
 
+    
     $scope.getFavs = function() { 
         $http.get('/prefapi/getfavs')
             .success(function(foods){
                 console.log(foods)
                 $scope.favorites = foods;
-                console.log ($scope.favorites);
             })
     }
 
