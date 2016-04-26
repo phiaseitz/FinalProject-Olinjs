@@ -1,7 +1,3 @@
-/*
-Sets up an account-settings page, containing dietary restrictions, allergies, preferred-location, and favorite foods.
-*/
-
 angular.module('myApp.accountSettingsView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -28,8 +24,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
     $scope.preferences.vegan = AuthService.authStatus.user.vegan;
     $scope.preferences.allergens = {
-        selected: AuthService.authStatus.user.allergens,
+        selected: AuthService.authStatus.user.allergens || [],
     };
+    console.log($scope.preferences.allergens)
     // Set up whether each allergen is switched "on"
     $scope.preferences.allergens.selected.forEach(function(allergen){
         $scope.preferences.allergens[allergen] = true;
@@ -42,19 +39,19 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.changePasswordForm.username = AuthService.authStatus.user.username;
     
     $scope.favorites = AuthService.authStatus.user.favorites;
+    // $scope.getFavs();
 
-    //changes user password
     $scope.changePassword = function(formData){
+        console.log(formData);
+
         AuthService.changePassword(formData);
     }
 
-    //redirects to home page with menu
     $scope.homeRedirect = function(){
         $location.path("/");
         location.reload();
     }
 
-    //logs user out, reloads page
     $scope.logout = function() {
         AuthService.logout().then(function(authStatus){
             $scope.userAuthenticated = authStatus;
@@ -63,12 +60,12 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         location.reload();
     }
 
-    
     $scope.getFavs = function() { 
         $http.get('/prefapi/getfavs')
             .success(function(foods){
                 console.log(foods)
                 $scope.favorites = foods;
+                console.log ($scope.favorites);
             })
     }
 
@@ -161,8 +158,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
 
     $scope.changeAllergens = function(allergens) { 
         allergenparams = {
-            allergens: allergens,
+            allergens: allergens || [],
         }
+        console.log("Allergen params", allergenparams)
 
         $http.put('/prefapi/allergens', {}, {params: allergenparams})
             .success(function(user){
@@ -177,7 +175,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         // } else {
         //     locparams = { defaultloc: "trim" }
         // }
-        locparams = {defaultloc: loc};
+        locparams = {defaultloc: loc}; //loc
         $http.put('/prefapi/loc', {}, {params: locparams})
             .success(function(user){
                 console.log('Default loc status ', user.defaultloc)
