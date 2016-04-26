@@ -11,7 +11,6 @@ var userSchema = mongoose.Schema({
     vegan: { type: Boolean, default: false }, 
     vegetarian: { type: Boolean, default: false }, 
     mindful: { type: Boolean, default: false },
-    defaultloc: { type: String, default: 'olin' },
     notificationSubscriptions: [{
         _id:false,
     	endpoint: String,
