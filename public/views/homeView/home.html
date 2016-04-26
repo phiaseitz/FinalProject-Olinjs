@@ -30,13 +30,13 @@
 			<div class="filter-stuff">
 				<md-input-container>
 					<label>Filter Foods</label>
-					<md-select ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
+					<md-select class="filter" ng-model="formData.mySelectedFoodTypes" ng-change="filterFoods()" multiple>
 						<md-option ng-repeat="foodType in foodTypes" ng-value="foodType">{{foodType}}</md-option>
 					</md-select>
 				</md-input-container>
 				<md-input-container>
 					<label>Filter Out Allergens</label>
-					<md-select ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
+					<md-select class="filter" ng-model="formData.mySelectedAllergens" ng-change="filterFoods()" multiple>
 						<md-option ng-repeat="allergen in allergens" ng-value="allergen">{{allergen}}</md-option>
 					</md-select>
 				</md-input-container>
