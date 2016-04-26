@@ -15,7 +15,7 @@
 	</md-toolbar>
 
 	<div class="menu-content">
-		<div layout="column" layout-gt-md="row" layout-align="start start" layout-align-gt-md="center center" id="get-menu-form">
+		<div layout="column" layout-gt-xs="row" layout-align="start start" layout-align-gt-xs="center center" id="get-menu-form">
 			<md-input-container>
 				<label>Dining Hall</label>
 				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -47,8 +47,8 @@
 		
 
 	
-		<div id="day-meal-list" layout='column' layout-gt-md="row" layout-align="space-between stretch">
-			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
+		<div id="day-meal-list" layout='column' layout-gt-xs="row" layout-align="space-between start">
+			<md-card class="meal-card" ng-repeat="meal in filteredDayMeals">
 				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
 				</md-toolbar>
