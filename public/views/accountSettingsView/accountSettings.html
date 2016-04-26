@@ -67,12 +67,16 @@
         </div>
 
         <div class="favorites-form" >
-            <h3 class="md-no-sticky">Favorites</h3>
+            <h3 class="md-no-sticky" layout="column" layout-align="center center">Favorites</h3>
 
-            <div class="setting-fav" layout="column" layout-align="center start" ng-repeat="favorite in favorites">
-                <form class="accountsettings-form" layout="column" layout-align="center start">
-                    <h4 class="md-no-sticky">{{favorite.name}}</h4>                 
-                    <md-button class="md-primary" ng-click="rmFav(favorite._id)">Remove Favorite</md-button>
+            <div class="setting-fav"  ng-repeat="favorite in favorites">
+                <form class="accountsettings-form" layout="row"  layout-align="space-between center">                
+                    <div class="food-name">
+                        {{favorite.name}}
+                    </div>
+                    <div class="remove-food">
+                        <md-button class="material-icons" ng-click="rmFav(favorite._id)">delete</md-button>
+                    </div>
                 </form>
 
             </div>
