@@ -51,10 +51,6 @@ db.once('open', function() {
 // favicon setup
 app.use(favicon(path.join(__dirname,'public','images','burger.png')));
 
-// setInterval(function () { 
-//     console.log('scraping menu'); 
-// }, 30*60*1000); 
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,7 +58,16 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
-// app.use('sw.js', express.static(__dirname + '/node_modules'));
+
+function redirectSec(req, res, next) {
+  if (req.headers['x-forwarded-proto'] == 'http') {
+      res.redirect('https://' + req.headers.host + req.path);
+  } else {
+      return next();
+  }
+}
+
+app.get('*', redirectSec);
 
 app.get('/sw.js', function(req, res){
   res.sendfile('sw.js');
