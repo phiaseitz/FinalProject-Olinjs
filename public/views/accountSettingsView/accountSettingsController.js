@@ -23,13 +23,10 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences = {};
     $scope.preferences.vegetarian = AuthService.authStatus.user.vegetarian;
     $scope.preferences.vegan = AuthService.authStatus.user.vegan;
-
-    $scope.favorites = AuthService.authStatus.user.favorites;
-
     $scope.preferences.allergens = {
-        selected: AuthService.authStatus.user.allergens,
+        selected: AuthService.authStatus.user.allergens || [],
     };
-
+    console.log($scope.preferences.allergens)
     // Set up whether each allergen is switched "on"
     $scope.preferences.allergens.selected.forEach(function(allergen){
         $scope.preferences.allergens[allergen] = true;
@@ -39,7 +36,6 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     $scope.preferences.mindful = AuthService.authStatus.user.mindful;
 
     $scope.changePasswordForm = {};
-
     $scope.changePasswordForm.username = AuthService.authStatus.user.username;
 
     //set weather the user is subscribing or unsubscribing from notifications
@@ -60,6 +56,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
 
     
     
+    $scope.favorites = AuthService.authStatus.user.favorites;
+    // $scope.getFavs();
+
     $scope.changePassword = function(formData){
         console.log(formData);
 
@@ -177,8 +176,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
 
     $scope.changeAllergens = function(allergens) { 
         allergenparams = {
-            allergens: allergens,
+            allergens: allergens || [],
         }
+        console.log("Allergen params", allergenparams)
 
         $http.put('/prefapi/allergens', {}, {params: allergenparams})
             .success(function(user){
@@ -193,7 +193,7 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
         // } else {
         //     locparams = { defaultloc: "trim" }
         // }
-        locparams = {defaultloc: loc};
+        locparams = {defaultloc: loc}; //loc
         $http.put('/prefapi/loc', {}, {params: locparams})
             .success(function(user){
                 console.log('Default loc status ', user.defaultloc)
