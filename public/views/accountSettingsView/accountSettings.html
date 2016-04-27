@@ -27,6 +27,14 @@
             </form>
         </div>
 
+        <div class="notifications" layout="column" layout-align="center center" ng-show="notificationsSupported">
+            <h3 class="md-no-sticky">Notifications</h3>
+            <p class="md-no-sticky">Will send you a notification if your favorite food(s) is being served</p>
+            <md-button ng-click="subscribeToNotifications()" class="md-primary" ng-show="!subscribed">Subscribe</md-button>
+            <md-button ng-click="unsubscribeFromNotifications()" class="md-primary" ng-show="subscribed">Unsubscribe</md-button>
+        </div>
+
+
         <div class="preferences-form" >
             <form class="accountsettings-form" layout="column" layout-align="center center">
                 <h3 class="md-no-sticky">Meal Preferences</h3>
