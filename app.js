@@ -97,11 +97,11 @@ app.put('/prefapi/allergens', indexRoute.changeAllergenStatusPUT);
 app.put('/prefapi/loc', indexRoute.changeDefaultLocPUT);
 app.put('/prefapi/mindful', indexRoute.changeMindfulStatusPUT);
 
-app.post('/notifictionAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
-app.post('/notifictionAPI/addSubscriptionAndConfirm', pushNotificationRoute.addEndpointToUserAndConfirmPOST);
-app.post('/notifictionAPI/removeSubscription', pushNotificationRoute.removeEndpointFromUserPOST);
-app.post('/notifictionAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
-app.post('/notifictionAPI/sendFavoritesNotification', pushNotificationRoute.sendFavoritesNotificationPOST);
+app.post('/notificationAPI/addSubscription', pushNotificationRoute.addEndpointToUserPOST);
+app.post('/notificationAPI/addSubscriptionAndConfirm', pushNotificationRoute.addEndpointToUserAndConfirmPOST);
+app.post('/notificationAPI/removeSubscription', pushNotificationRoute.removeEndpointFromUserPOST);
+// app.post('/notificationAPI/testNotifications', pushNotificationRoute.sendNotificationToUserPOST);
+// app.post('/notificationAPI/sendFavoritesNotification', pushNotificationRoute.sendFavoritesNotificationPOST);
 
 app.get('*', indexRoute.home);
 

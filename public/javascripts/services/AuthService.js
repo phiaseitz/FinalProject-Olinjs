@@ -60,7 +60,7 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     var service = this;
     $http.post('/auth/signup', credentials)
       .then(function success(signupStatus){
-        $location.path('/');
+        $location.path('/accountsettings');
       })
     .catch(function(err){
       console.log('Error signing up! ', err)
