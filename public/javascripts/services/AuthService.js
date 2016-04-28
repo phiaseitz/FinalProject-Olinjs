@@ -4,8 +4,10 @@
 
 app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) {
 
+  // Default authentication status to false
   this.authStatus = {authenticated: false};
 
+  // Error message dictionary for auth-based error message
   this.errorMessage = {
     Unauthorized: "The email and password combination did not match. Please try again.",
     UserExistsError: "This email is already associated with an account. Please try another one.",
@@ -17,15 +19,24 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     Error: "This is a chatchall error message!",
   };
 
+  // If the user tries to access a page they need to be logged in 
+  // for, send them back home
   this.routeForUnauthorizedAccess = '/';
 
 
 
+  /* AuthService.getAuthenticated()
+      Inputs: None
+      Outputs: A promise object returned from the get request
+  */
   this.getAuthenticated = function() {
-    console.log('getting authenticated')
     return $http.get('/auth/getAuthenticated');
   };
 
+  /* AuthService.setAuthenticated()
+      Inputs: None
+      Outputs: None (This function sets the authStatus variable)
+                using getAuthenticated()*/
   this.setAuthenticated = function() {
     var service = this;
     return $q(function(resolve){
@@ -37,8 +48,14 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     })
   };
 
+  /* AuthService.login()
+      Inputs: credentials (email and password)
+      Outputs: None
+
+      This function handles the logging in, redirecting on success,
+      and displays an error if we were unable to log the user in. 
+  */ 
   this.login = function(credentials) {
-    console.log('attempting to log in')
     var service = this;
     
     $http.post('/auth/login', credentials)
@@ -56,6 +73,13 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
       });
   };
 
+  /* AuthService.signup()
+      Inputs: credentials (email and password)
+      Outpus: None
+
+      This function handles signing up for our app. It performs
+      the same function as login but creates a user account.
+  */ 
   this.signup = function(credentials) {
     var service = this;
     $http.post('/auth/signup', credentials)
@@ -75,6 +99,15 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     })
   };
 
+  /* AuthService.ensureAuthenticated()
+      Inputs: None
+      Outputs: None
+
+      This function checks whether the user is authenticated. If so, 
+      it just resolves the promise, otherwise we redirect to the 
+      route for unauthorized access and then resolve
+  */ 
+
   this.ensureAuthenticated = function() {
     var deferred = $q.defer();
     var service = this;
@@ -90,12 +123,18 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
     return deferred.promise;
   };
 
+  /* AuthService.changePassword()
+      Inputs: credentials (username, old password, new password)
+      Outputs: None
+
+      This function changes the password. 
+  */ 
+
   this.changePassword = function(credentials){
     var service = this;
     $http.post('/auth/changePassword', credentials)
       .then(function (response){
         console.log('success');
-        $location.path('/');
         $mdToast.show(
           $mdToast.simple()
             .textContent('Password changed successfully!')
@@ -114,7 +153,12 @@ app.service('AuthService', function($http, $q, $rootScope, $location, $mdToast) 
       })
   };
 
+  /* AuthService.logout()
+      Inputs: None
+      Outputs: None
 
+      This function logs the user out!
+  */ 
 
   this.logout = function() {
     var service = this;
