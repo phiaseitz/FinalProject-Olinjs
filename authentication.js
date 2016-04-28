@@ -96,7 +96,7 @@ var authentication = {
           }
         })
       // If we were unable to find the user
-      } else {}
+      } else {
         res.status(401).json({status: 0, msg: 'UserDNE'});
       }
     })
