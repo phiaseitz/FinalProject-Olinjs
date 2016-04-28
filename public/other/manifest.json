@@ -1,4 +1,5 @@
+// required file for push notification subscription on chrome
 {
   "name": "Dining 2.0",
-  "gcm_sender_id": "16088923437"
+  "gcm_sender_id": "16088923437" //replace with your gcm_sender_id ("otherwise you will not be able to send notifications")
 }

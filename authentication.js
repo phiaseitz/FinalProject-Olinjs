@@ -1,10 +1,20 @@
-// This is the file where we have all of our authentication-based logic. We're using passport-spotify to handle all of our authentication. 
+// authentication.js
+// This file contains all the backend auth code!
+
+// Imports
 var passport        = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/userModel');
 
-
+// Functions
 var authentication = {
+  /* authentication.configure()
+      Inputs: None
+      Outputs: Passport object
+
+      This function configures the passport object and returns the
+      configured passport object
+  */
   configure: function() {
     passport.serializeUser(User.serializeUser());
 
@@ -16,6 +26,16 @@ var authentication = {
 
   },
 
+
+  /* authentication.signup()
+      Inputs: req, res, next
+      Outputs: None
+
+      This function handles signing up the user. Since we're using
+      passport local mongoose, this is super straight-forward. 
+
+      If we're successful, we redirect to home after authenticating. 
+  */
   signup: function(req, res, next) {
     User.register(new User({username: req.body.username}), req.body.password, function(err, user){
       console.log(err);
@@ -34,25 +54,35 @@ var authentication = {
     });
   },
 
+
+  /* authentication.login()
+      Inputs: req, res, next
+      Outputs: None
+
+      Log in the user using passport.authenticate
+  */
   login: function(req, res, next) {
-    console.log('logging in...')
     passport.authenticate('local') (req, res, function () {
       res.redirect('/')
     })
   },
 
+  /* authentication.changePassword()
+      Inputs: req, res, next
+      Outputs: None
+
+      Change the password
+  */
   changePassword: function(req, res, next) {
-    // TODO: Make sure user is authenticated first!
+    // Find the username object
     User.findByUsername(req.body.username).then(function(sanitizedUser){
       if (sanitizedUser){
+        // Check whether the old password and the username match
         sanitizedUser.authenticate(req.body.oldPassword, function (err, user, message){
-          console.log(err);
-          console.log(user);
-          console.log(message);
-
           if(err || message){
             res.status(401).json({status: 0, msg: "WrongPassword"})
           } else {
+            // Set the password 
             user.setPassword(req.body.newPassword, function(err, userWithNewPassword){
               console.log(err);
               console.log(userWithNewPassword);
@@ -65,39 +95,58 @@ var authentication = {
             })
           }
         })
+      // If we were unable to find the user
       } else {
         res.status(401).json({status: 0, msg: 'UserDNE'});
       }
     })
     .catch(function(err){
+      // Something else went wrong
       console.log(err);
       res.status(401).json({status: 0, msg: 'Error'});
     })
   },
 
+  /* authentication.ensureAuthenticated()
+      Inputs: req, res, next
+      Outputs: None
+
+      Go to the next route if we are authenticated, othewise go home.
+  */
   ensureAuthenticated: function(req, res, next){
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/');
   },
 
+
+  /* authentication.login()
+      Inputs: req, res, next
+      Outputs: None
+
+      Logout the user.
+  */
   logout: function(req, res, next) {
       req.logout();
       next();
   },
 
+
+  /* authentication.getAuthenticated()
+      Inputs: req, res, next
+      Outputs: None
+
+      Get the authentication status of the user
+  */
   getAuthenticated: function(req, res, next){
-    console.log("getting authentication status");
     // res.json({'authenticated': true});
     console.log(req.user);
     console.log(req.isAuthenticated())
     if (req.isAuthenticated()){
-      console.log('authenticated');
       res.json({
         user: req.user,
         authenticated: true, 
       });
     } else {
-      console.log('notauthenticated');
       res.json({
         authenticated: false,
       });

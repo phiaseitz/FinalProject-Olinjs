@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 var passportLocalMongoose = require('passport-local-mongoose');
 
 
@@ -7,17 +7,17 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var userSchema = mongoose.Schema({
     username: String,
     password: String,
-    favorites: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Food' }],
-    vegan: { type: Boolean, default: false }, 
-    vegetarian: { type: Boolean, default: false }, 
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Food' }],
+    vegan: { type: Boolean, default: false },
+    vegetarian: { type: Boolean, default: false },
     mindful: { type: Boolean, default: false },
     notificationSubscriptions: [{
-        _id:false,
-    	endpoint: String,
-    	p256dh: String,
-    	auth: String
+        _id: false,
+        endpoint: String,
+        p256dh: String,
+        auth: String
     }],
-    allergens: [String], 
+    allergens: [String],
     defaultloc: { type: String, default: 'olin' }
 });
 
