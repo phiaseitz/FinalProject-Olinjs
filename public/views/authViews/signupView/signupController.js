@@ -1,4 +1,5 @@
-// Signup Controller -- the controller for our signup page
+// public/views/authViews/signupView/signupController.js
+// the controller for our signup page
 angular.module('myApp.signupView', ['ngRoute'])
 
 //  Load the template and controller

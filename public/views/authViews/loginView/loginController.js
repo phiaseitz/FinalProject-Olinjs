@@ -1,6 +1,6 @@
-// Login Controller -- the controller for our login page
+// public/views/authViews/loginView/loginController.js
+// the controller for our login page
 angular.module('myApp.loginView', ['ngRoute'])
-
 // Load the template and controller
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', {
