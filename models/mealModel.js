@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 
 // Create a Schema
 var mealSchema = mongoose.Schema({
-    date:  Date,
+    date: Date,
     mealType: String,
-    foods: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Food' }],
+    foods: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Food' }],
     location: String,
     lastUpdated: { type: Date, default: Date.now }
 });

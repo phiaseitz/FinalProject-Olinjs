@@ -25,7 +25,7 @@ var homeGET = function(req, res) {
     /*
     Loads home page.
     */
-	res.sendFile(path.resolve('public/html/main.html'));
+    res.sendFile(path.resolve('public/html/main.html'));
 }
 
 //MEAL API
@@ -41,7 +41,7 @@ var getWeekMealsGET = function(req, res) {
 
     var now = new Date();
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var day = today.getDay();   //obtain day of week
+    var day = today.getDay(); //obtain day of week
 
     //first day of week is... Past Sunday
     var firstday = new Date(today.setDate(today.getDate() - today.getDay()))
@@ -50,17 +50,17 @@ var getWeekMealsGET = function(req, res) {
 
     //Create a new weekday for every day of the week, add it to weekdates
     //Olin website starts on Monday, ends on coming Sunday, so 1-7.
-    for(i=1; i<=7; i++) {   
+    for (i = 1; i <= 7; i++) {
         weekday = new Date(firstday.getTime());
         weekday.setDate(weekday.getDate() + i)
         weekdates.push(weekday)
     }
 
-    Meal.find({ 'date': { $in: weekdates}, location: mealloc})
+    Meal.find({ 'date': { $in: weekdates }, location: mealloc })
         .populate('foods')
-        .exec(function(err, meals){
+        .exec(function(err, meals) {
             res.send(meals);
-    });
+        });
 }
 
 var getMealGET = function(req, res) {
@@ -75,19 +75,19 @@ var getMealGET = function(req, res) {
     var mealloc = req.query.mealloc;
 
     Meal.find({
-        date: mealdate, 
-        mealType: mealtype, 
-        location: mealloc
-    })
-    .populate('foods')
-    .exec(function(err, meal) {
-        if(err) { console.log(err) }
+            date: mealdate,
+            mealType: mealtype,
+            location: mealloc
+        })
+        .populate('foods')
+        .exec(function(err, meal) {
+            if (err) { console.log(err) }
 
-        if(meal.length > 1) {
-            console.log("Uh-oh... you got more than one meal...")
-        }
-        res.send(meal[0]);
-    })
+            if (meal.length > 1) {
+                console.log("Uh-oh... you got more than one meal...")
+            }
+            res.send(meal[0]);
+        })
 }
 
 var getDayMealsGET = function(req, res) {
@@ -100,12 +100,12 @@ var getDayMealsGET = function(req, res) {
     var mealdate = req.query.mealdate;
     var mealloc = req.query.mealloc;
 
-    Meal.find({date:mealdate, location: mealloc})
-    .populate('foods')
-    .exec(function(err, meals) {
-        if(err) { console.log(err) }
-        res.send(meals);
-    })
+    Meal.find({ date: mealdate, location: mealloc })
+        .populate('foods')
+        .exec(function(err, meals) {
+            if (err) { console.log(err) }
+            res.send(meals);
+        })
 }
 
 //USER FAVORITES
@@ -116,12 +116,12 @@ var getFavFoodsGET = function(req, res) {
 
     var username = req.session.passport.user;
 
-    User.findOne({username:username})
-    .populate('favorites')
-    .exec(function(err, user){
-        if(err) { console.log(err) }
-        res.send(user.favorites);
-    })
+    User.findOne({ username: username })
+        .populate('favorites')
+        .exec(function(err, user) {
+            if (err) { console.log(err) }
+            res.send(user.favorites);
+        })
 
 
 }
@@ -132,18 +132,18 @@ var addFavFoodPUT = function(req, res) {
     */
 
     var foodID = req.query.foodID;
-    foodID = mongoose.Types.ObjectId(foodID); 
+    foodID = mongoose.Types.ObjectId(foodID);
 
     var username = req.session.passport.user;
 
-    User.findOneAndUpdate( {username:username}, { $addToSet: { favorites: foodID }}, {new: true})
-    .populate('favorites')
-    .exec(function(err, user){   //addToSet instead of push, no duplicates!
-        if(err) { console.log(err) }
-        Food.findOne( {_id: foodID}, function(err, food) {
-            res.send(food);
+    User.findOneAndUpdate({ username: username }, { $addToSet: { favorites: foodID } }, { new: true })
+        .populate('favorites')
+        .exec(function(err, user) { //addToSet instead of push, no duplicates!
+            if (err) { console.log(err) }
+            Food.findOne({ _id: foodID }, function(err, food) {
+                res.send(food);
+            })
         })
-    })
 }
 
 
@@ -153,22 +153,22 @@ var removeFavFoodPUT = function(req, res) {
     */
 
     var foodID = req.query.foodID;
-    foodID = mongoose.Types.ObjectId(foodID); 
+    foodID = mongoose.Types.ObjectId(foodID);
 
-    var username = req.session.passport.user;   
+    var username = req.session.passport.user;
 
-    User.findOneAndUpdate( {username:username}, { $pull: { favorites: foodID } }, {new: true})
-    .populate('favorites')
-    .exec(function(err, user) {
-        if(err) { console.log(err) }
-        Food.findOne({_id: foodID}, function(err, food) {
-            res.send(food)
+    User.findOneAndUpdate({ username: username }, { $pull: { favorites: foodID } }, { new: true })
+        .populate('favorites')
+        .exec(function(err, user) {
+            if (err) { console.log(err) }
+            Food.findOne({ _id: foodID }, function(err, food) {
+                res.send(food)
+            })
+
         })
 
-    })
 
-
-} 
+}
 
 //USER PREFERENCES
 var changeVeganStatusPUT = function(req, res) {
@@ -181,13 +181,13 @@ var changeVeganStatusPUT = function(req, res) {
     var vegan = req.query.vegan;
     var username = req.session.passport.user;
 
-    if(vegan=== 'true') {   //if vegan, the user must also be vegetarian
-        User.findOneAndUpdate({username:username}, {vegan:true, vegetarian:true}, {new: true}, function(err, user) {
-                res.send(user)
+    if (vegan === 'true') { //if vegan, the user must also be vegetarian
+        User.findOneAndUpdate({ username: username }, { vegan: true, vegetarian: true }, { new: true }, function(err, user) {
+            res.send(user)
         })
     } else {
-        User.findOneAndUpdate({username:username}, {vegan: false}, {new: true}, function(err, user) {
-                res.send(user)
+        User.findOneAndUpdate({ username: username }, { vegan: false }, { new: true }, function(err, user) {
+            res.send(user)
         })
     }
 }
@@ -202,13 +202,13 @@ var changeVegetarianStatusPUT = function(req, res) {
     var vegetarian = req.query.vegetarian;
     var username = req.session.passport.user;
 
-    if(vegetarian==='true') {
-        User.findOneAndUpdate({username:username}, {vegetarian:true}, {new: true}, function(err, user) {
-                res.send(user)
+    if (vegetarian === 'true') {
+        User.findOneAndUpdate({ username: username }, { vegetarian: true }, { new: true }, function(err, user) {
+            res.send(user)
         })
-    } else {    //if not vegetarian, user also cannot be vegan
-        User.findOneAndUpdate({username:username}, {vegetarian:false, vegan: false}, {new: true}, function(err, user) {
-                res.send(user)
+    } else { //if not vegetarian, user also cannot be vegan
+        User.findOneAndUpdate({ username: username }, { vegetarian: false, vegan: false }, { new: true }, function(err, user) {
+            res.send(user)
         })
     }
 }
@@ -222,8 +222,8 @@ var changeAllergenStatusPUT = function(req, res) {
     var allergens = req.query.allergens;
     var username = req.session.passport.user;
 
-    User.findOneAndUpdate({username:username}, {allergens:allergens}, {new: true}, function(err, user) {
-            res.send(user)
+    User.findOneAndUpdate({ username: username }, { allergens: allergens }, { new: true }, function(err, user) {
+        res.send(user)
     })
 }
 
@@ -235,8 +235,8 @@ var changeDefaultLocPUT = function(req, res) {
     var defaultloc = req.query.defaultloc;
     var username = req.session.passport.user;
 
-    User.findOneAndUpdate({username:username}, {defaultloc:defaultloc}, {new: true}, function(err, user) {
-            res.send(user)
+    User.findOneAndUpdate({ username: username }, { defaultloc: defaultloc }, { new: true }, function(err, user) {
+        res.send(user)
     })
 
 
@@ -245,13 +245,13 @@ var changeDefaultLocPUT = function(req, res) {
 var changeMindfulStatusPUT = function(req, res) {
     /*
     Given the username of the authenticated user and whether they want to view "Mindful" foods only, sets the user's "mindful" status.
-    */    
-    
+    */
+
     var mindful = req.query.mindful;
     var username = req.session.passport.user;
 
-    User.findOneAndUpdate({username:username}, {mindful:mindful}, {new: true}, function(err, user) {
-            res.send(user)
+    User.findOneAndUpdate({ username: username }, { mindful: mindful }, { new: true }, function(err, user) {
+        res.send(user)
     })
 
 
