@@ -1,4 +1,4 @@
-
+<!-- The account-settings page. Allows the user to set dietary preferences, push notifications, allergies, favorite foods, and change their passwords.  -->
 
 <md-content>
     <md-toolbar layout="row" layout-align="space-between center">
@@ -33,10 +33,10 @@
             <form class="accountsettings-form" layout="column" layout-align="center center">
                 <h3 class="md-no-sticky">Meal Preferences</h3>
                 <div class="meal-type-settings" layout="column" layout-align="start start">
-                    <md-switch ng-model="preferences.vegetarian" ng-disabled="preferences.vegan">
+                    <md-switch ng-model="preferences.vegetarian" ng-disabled="preferences.vegan"> <!-- If not vegetarian, must not be vegan! -->
                         Vegetarian
                     </md-switch>
-                    <md-switch ng-model="preferences.vegan" ng-change="preferences.vegetarian=preferences.vegan">
+                    <md-switch ng-model="preferences.vegan" ng-change="preferences.vegetarian=preferences.vegan"> <!-- If vegan, must be vegetarian -->
                         Vegan
                     </md-switch>
                     <md-switch ng-model="preferences.mindful">
