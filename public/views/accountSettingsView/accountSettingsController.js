@@ -1,3 +1,8 @@
+/*
+The controller for the Account Settings page. Controls user favorites (enables removal of these favorites), 
+allows subscribing to push notifications, user allergies, and dietary preferences. 
+*/
+
 angular.module('myApp.accountSettingsView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -60,17 +65,24 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     // $scope.getFavs();
 
     $scope.changePassword = function(formData){
-        console.log(formData);
-
+    /*
+    Enables users to change their passwords, given the new password.
+    */
         AuthService.changePassword(formData);
     }
 
     $scope.homeRedirect = function(){
+    /*
+    Redirects page to home following an account-settings change. In addition, reloads the page.
+    */
         $location.path("/");
         location.reload();
     }
 
     $scope.logout = function() {
+    /*
+    Logs the user out, redirecting to the home page, reloads home page.    
+    */
         AuthService.logout().then(function(authStatus){
             $scope.userAuthenticated = authStatus;
         });
@@ -79,17 +91,24 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     }
 
     $scope.getFavs = function() { 
+    /*
+    Obtains a populated list of favorite foods for the logged-in user.
+    */
         $http.get('/prefapi/getfavs')
             .success(function(foods){
                 console.log(foods)
                 $scope.favorites = foods;
-                console.log ($scope.favorites);
+                // console.log ($scope.favorites);
             })
     }
 
+    //replaces the list of food IDs in $scope.favorites with a populated list of foods. 
     $scope.getFavs();
 
     $scope.rmFav = function(id) { 
+    /*
+    Given a food ID, removes that food from the logged-in user's list of favorites.
+    */
         favparams = {
             foodID: id,
         }
@@ -106,18 +125,14 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
                         break;
                     }
                 }
-                // var index = $scope.favorites.indexOf(food.id);
-                // console.log("Index", index)
-                // if (index > -1) {
-                //     console.log("Before splice", $scope.favorites);
-                //     $scope.favorites.splice(index, 1);
-                //     console.log("After splice", $scope.favorites)
-                // }
             })
     }
 
 
     $scope.submit = function() {
+    /*
+    Submits changes in user preferences upon button-click.
+    */
         $scope.changeVegan($scope.preferences.vegan);
         $scope.changeVegetarian($scope.preferences.vegetarian);
         $scope.changeAllergens($scope.preferences.allergens.selected);
@@ -127,6 +142,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     }
 
     $scope.changeVegan = function(isvegan) { 
+    /*
+    Changes the user's "vegan" preference (and potentially their vegetarian preference!)
+    */
         veganparams = {
             vegan: isvegan,
         }
@@ -138,6 +156,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     }  
 
     $scope.changeVegetarian = function(isveg) { 
+    /*
+    Changes the user's "vegetarian" preference (and potentially their vegan preference!)
+    */        
         vegparams = {
             vegetarian: isveg,
         }
@@ -149,6 +170,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     } 
 
     $scope.changeMindful = function(ismindful) { 
+    /*
+    Changes the user's "Mindful" preference.
+    */    
         mindfulparams = {
             mindful: ismindful,
         }
@@ -160,6 +184,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     }
 
     $scope.updateSelectedAllergens = function(allergen){
+    /*
+    Changes the selected allergens on the frontend (ie. $scope.preferences.allergens.selected)
+    */  
         if ($scope.preferences.allergens[allergen]){
             $scope.preferences.allergens.selected.push(allergen)
         } else {
@@ -175,6 +202,9 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
 
 
     $scope.changeAllergens = function(allergens) { 
+    /*
+    Changes the user's allergens on the backend. 
+    */          
         allergenparams = {
             allergens: allergens || [],
         }
@@ -187,12 +217,10 @@ angular.module('myApp.accountSettingsView', ['ngRoute'])
     }     
 
     $scope.changeDefaultLoc = function(loc) { 
+    /*
+    Changes the user's default-location preference ("olin" or "trim")
+    */    
         var locparams = {};
-        // if(loc === false) {
-        //     locparams = { defaultloc: "olin" }
-        // } else {
-        //     locparams = { defaultloc: "trim" }
-        // }
         locparams = {defaultloc: loc}; //loc
         $http.put('/prefapi/loc', {}, {params: locparams})
             .success(function(user){

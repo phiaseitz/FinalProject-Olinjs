@@ -1,5 +1,6 @@
-<!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
+<!-- This html isinjected into the main page by $routeProvider, this is our signup page -->
 <md-content>
+	<!-- Header -->
 	<md-toolbar layout="row" layout-align="space-between center">
 		<h2>Olin Trim Dining - Sign Up</h2>
 		<div class="navbuttons" layout='row' layout-align='center center'>
@@ -7,6 +8,7 @@
             <md-button ng-click="homeRedirect()">Home</md-button> 
         </div>
 	</md-toolbar>
+	<!-- The Signup Form -->
 	<md-content layout="row" layout-align="center">
 		<form>
 			<div layout="column" flex layout-align="center center">
@@ -20,6 +22,5 @@
 				</md-input-container>
 				<md-button ng-click="signup(signupForm)" class="md-primary">Sign Up</md-button>
 			</div>
-			
 		</form>
 </md-content>

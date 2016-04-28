@@ -1,5 +1,6 @@
-<!-- This html isinjected into the main page by $routeProvider, it is the only html template used -->
+<!-- This html isinjected into the main page by $routeProvider, this is the html for the home page -->
 <md-content layout="column" layout-align="start stretch" class="outer-content">
+	<!-- Header -->
 	<md-toolbar layout="row" layout-align="space-between center">
 		<h2>Olin Trim Dining</h2>
 		<div ng-switch="userAuthenticated">
@@ -14,8 +15,11 @@
 		</div>
 	</md-toolbar>
 
+	<!-- The content of our page -->
 	<div class="menu-content">
+		<!-- the form a user can use to filter/select their preferred menu configuration. Here, we're using angular material to handle the layout -->
 		<div layout="column" layout-gt-sm="row" layout-align="start start" layout-align-gt-sm="center center" id="get-menu-form">
+			<!-- Dining hal selector -->
 			<md-input-container>
 				<label>Dining Hall</label>
 				<md-select ng-model="formData.myLocation" placeholder="olin" ng-change="getDayMeals(formData)">
@@ -23,10 +27,12 @@
 					<md-option value="trim">Trim</md-option>
 				</md-select>
 			</md-input-container>
+			<!-- Date picker and today button -->
 			<div class="date-stuff">
 				<md-datepicker ng-model="formData.myDate" md-placeholder="Enter date" ng-change="getDayMeals(formData)"></md-datepicker>
 				<md-button ng-click="setDateToday()">Today</md-button>
 			</div>
+			<!-- Allergen and Food type filter -->
 			<div class="filter-stuff">
 				<md-input-container>
 					<label>Filter Foods</label>
@@ -41,37 +47,38 @@
 					</md-select>
 				</md-input-container>
 			</div>
-			
-			
-		</div>
-		
-
-	
+		</div>	
+		<!-- The part where the actual menu gets displayed-->
 		<div id="day-meal-list" layout='column' layout-gt-sm="row"  layout-align="space-between stretch">
+			<!-- Make a card for each meal -->
 			<md-card flex class="meal-card" ng-repeat="meal in filteredDayMeals">
 				<md-toolbar layout='row' layout-align="center center">
 					<h4>{{mealTypeToDisplay[meal.mealType]}}</h4>
 				</md-toolbar>
-				
+				<!-- Make the menu (using md-content to make things scrollable) -->
 				<md-content class="meal-menu">
+					<!-- For each of the stations we have identified, display all of the foods -->
 					<section ng-repeat="station in stations[meal.mealType]">
 						<md-subheader class="md-primary">{{station}}</md-subheader>
 						<md-list>
+							<!-- Loop over all the foods. Only display them if the station is our current station. -->
 							<div ng-repeat="food in meal.foods">
 								<md-list-item layout="column" ng-if="food.station[formData.myLocation] === station">
 									<div flex layout="row" layout-align="space-between center" class="dish-header">
+										<!-- Dish name -->
 										<div class='dish-text'>
 											<h4 class='dish-name'>{{food.name}}</h4>
 										</div>
-										
+										<!-- Favorite/Expand buttons -->
 										<div layout="row" class="food-buttons">
+											<!-- Only show the favorite buttons if the user is logged in. -->
 											<div class="notfavd-button" ng-if="userAuthenticated&&(userFavoriteFoods.indexOf(food._id) < 0)">
 													<md-button class="material-icons" ng-click="addFav(food._id)">favorite_border</md-button>
 											</div>
 											<div class="isfavd-button" ng-if="userAuthenticated && userFavoriteFoods.indexOf(food._id) >= 0">
 													<md-button class="material-icons" ng-click="rmFav(food._id)">favorite</md-button>
 											</div>
-											
+											<!-- Collapse/Expland buttons -->
 											<div class="colapse-button" ng-if="!((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
 													<md-button  class="material-icons" ng-click="selectDish(meal, food)">keyboard_arrow_down</md-button>
 											</div>
@@ -79,15 +86,15 @@
 													<md-button  class="material-icons" ng-click="unselectDish()">keyboard_arrow_up</md-button>
 											</div>
 										</div>
-										
 									</div>
+									<!-- this is what gets expanded/collapsed. Only show this if this dish is the currently selected dish in the currently selected meal. -->
 									<div class="meal-content" ng-if="((food._id === currentlySelected.dish._id) && (meal.mealType === currentlySelected.meal))">
+											<!-- The description -->
 											<div layout="column" layout-fill class="expanded">
 												<p>{{food.nutritionInformation[0].description}}</p>
 											</div>
-
 											<br/>
-										  
+										  	<!-- The nutrition info. This is kindof an monolith, as it's hard-coded so that it displays the same way every time. We're using divs to take advantage of the angular material layout tags.  -->
 											<div class="nutrition-info">
 												<div class="nutrition-cell" layout="column" layout-align="start start" class="nutrition-info-header">
 													<div><b>Nutrition Information</b></div>
@@ -166,12 +173,10 @@
 									<md-divider ng-if="!$last"></md-divider>
 								</md-list-item>
 							</div>
-							
 						</md-list>
 					</section>
 					
 				</md-content>
 			</md-card>
-				
 		</div>
 </md-content>

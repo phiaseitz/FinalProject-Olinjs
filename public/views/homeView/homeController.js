@@ -1,5 +1,8 @@
-angular.module('myApp.homeView', ['ngRoute'])
+// public/views/homeView/homeController.js
+// This is the file that contains the controller for the home page of our app
 
+angular.module('myApp.homeView', ['ngRoute'])
+// Load the template and controller for the home page
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: '/views/homeView/home.html',
@@ -15,15 +18,26 @@ angular.module('myApp.homeView', ['ngRoute'])
 
 .controller('homeController', ['$scope','$window', '$http', '$mdToast', '$q', '$location', 'AuthService', function($scope,$window, $http, $mdToast, $q, $location, AuthService) {
 	console.log("homeController loaded");
-	
+	// boolean for whether or not the user is authenticated
     $scope.userAuthenticated = AuthService.authStatus.authenticated;
+    // the user's favorite foods
     $scope.userFavoriteFoods = $scope.userAuthenticated? AuthService.authStatus.user.favorites : [];
+    // the variable that will contain the menu for the day
     $scope.daymeals = [];
+    // the variable that will contain the filtered menu for the day
     $scope.filteredDayMeals = [];
+    // the food types and allergens
     $scope.foodTypes = ['mindful', 'vegan', 'vegetarian'];
     $scope.allergens = ['milk', 'eggs', 'wheat', 'soy', 'gluten', 
         'tree nuts', 'fish', 'shellfish', 'peanuts', 'mustard'];
     
+
+    /* getUserFoodTypes()
+        Inputs: None
+        Outputs: userFoodTypes
+
+        Returns the food types and allergens that a user has identfied
+    */
 
     $scope.getUserFoodTypes = function(){
         if (!$scope.userAuthenticated){
@@ -45,28 +59,40 @@ angular.module('myApp.homeView', ['ngRoute'])
         return userFoodTypes
     }
 
+    // The form data for adjusting the menu
     $scope.formData = {
         myDate: new Date(),
         myLocation: $scope.userAuthenticated? AuthService.authStatus.user.defaultloc : "olin",
         mySelectedFoodTypes: $scope.getUserFoodTypes(), 
         mySelectedAllergens: $scope.userAuthenticated? AuthService.authStatus.user.allergens : [],
     };
+
+    // Display text for breakfast, lunch, and dinner
     $scope.mealTypeToDisplay = {
         brk: "Breakfast",
         lun: "Lunch",
         din: "Dinner",
     }
+
+    // The currently selected (expanded) dish
     $scope.currentlySelected = {
         meal: "",
         dish: {}
     };
 
+    // the stations for each meal
     $scope.stations = {
         brk: [],
         lun: [],
         din: [],
     };
 
+    /* getDayMeals()
+        Inputs: formData (date, location, foodtypes, allergens)
+        Outputs: None
+
+        get the meals being served on the selected date
+    */
     $scope.getDayMeals = function(formData) {
         mealparams = {
             mealloc: formData.myLocation, 
@@ -88,58 +114,48 @@ angular.module('myApp.homeView', ['ngRoute'])
                         return 1
                     }
                 });
-                //console.log($scope.daymeals);
+                // filter the menu according to the user's preferences
                 $scope.filterFoods();
-                //console.log($scope.filteredDayMeals);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             })
     }
 
+    // get the meals being served, now that we've declared the function
+    $scope.getDayMeals($scope.formData);
+
+    /* setDateToday()
+        Inputs: None
+        Outputs: None
+
+        set the date of the date picker to today, and get the new meals from the backend
+    */
     $scope.setDateToday = function (){
         $scope.formData.myDate = new Date();
         $scope.getDayMeals($scope.formData);
     }
 
-    $scope.getDayMeals($scope.formData);
+    
 
-    $scope.setAllFoodType = function(){
-        $scope.formData.myFoodTypes.all = !$scope.formData.myFoodTypes.all;
-        var value = $scope.formData.myFoodTypes.all;
-        //console.log($scope.formData);
-        $scope.foodTypes.forEach(function (foodType){
-            $scope.formData.myFoodTypes[foodType] = value;
-        });
-        $scope.filterFoods();
-    }
+    /* filterFoods()
+        Inputs: None
+        Outputs: None
 
-    $scope.toggleFoodType = function(foodType){
-        $scope.formData.myFoodTypes[foodType] = !$scope.formData.myFoodTypes[foodType];
-        
-        var areAllFoodTypeChecked = $scope.formData.myFoodTypes[foodType];
-        var newSelectAllVal = areAllFoodTypeChecked;
-
-        if (areAllFoodTypeChecked){
-            $scope.foodTypes.forEach(function (foodType){
-            if (!$scope.formData.myFoodTypes[foodType]){
-                newSelectAllVal = false;
-            }
-        });
-        }
-        
-        $scope.formData.myFoodTypes.all = newSelectAllVal;
-        $scope.filterFoods();
-    }
-
+        Filter the foods and set the $scope.filteredDayMeals variable. Also, find all the stations that exist for the food. 
+    */
     $scope.filterFoods = function(){
+        // Clear the stations
         $scope.stations = {
             brk: [],
             lun: [],
             din: [],
         };
+        // Clear the previously filtered meals
         $scope.filteredDayMeals = [];
+        // Loop over all of the meals
         $scope.daymeals.forEach(function (meal){
+            // create a filtered meal object
             var filteredMeal = {
                 _id: meal._id,
                 date: meal.date,
@@ -148,24 +164,34 @@ angular.module('myApp.homeView', ['ngRoute'])
                 mealType: meal.mealType,
                 foods: []
             };
+            // loop over all the dishes in the meal
             meal.foods.forEach(function (dish){
+                // assume we're including
                 var include = true;
                 
+                // Loop over all of the selected food types could be: (mindful, vegan, vegetarian)
                 $scope.formData.mySelectedFoodTypes.forEach(function (foodType){
+                    // if the meal type is selected, and the dish is not that mealtype, don't include it
                     if (!dish[foodType]){
                         include = false
                     }
                 });
+                // Do pretty much the same thing: filter out dishes that contain allergens we've selected to filter out
+                // Get the allergens of the current dish
                 var dishAllergens = dish.nutritionInformation[0].allergens;
+                // Loop over all the selected allergens
                 $scope.formData.mySelectedAllergens.forEach(function (allergen){
+                    // if our current allergen is in the list of allergens, don't include it
                     if (dishAllergens.indexOf(allergen) !== -1){
                         include = false;
                     }
                 });
-
+                // If we should still be including this dish, push it to the filtered meal list. 
                 if (include){
                     filteredMeal.foods.push(dish);
                 }
+                // If the station of this current dish,meal combination is not in the list of stations for that meal, 
+                // push it to the list of staitons
                 if ($scope.stations[meal.mealType].indexOf(dish.station[$scope.formData.myLocation]) === -1){
                     $scope.stations[meal.mealType].push(dish.station[$scope.formData.myLocation]);
                 }
@@ -174,12 +200,26 @@ angular.module('myApp.homeView', ['ngRoute'])
         });
     }
 
+    /* selectDish()
+        Inputs: meal (which meal?), dish object
+        Outputs: None
+
+        After a user presses the button to select (expand) a dish, this is the function that gets called. Here we 
+        set the meal (so we don't expand all instances of the dish, if it's served in multiple meals) and save the
+        dish as our currently selected. 
+    */
     $scope.selectDish = function(meal, dish){
         $scope.currentlySelected.meal = meal.mealType;
         $scope.currentlySelected.dish = dish;
-        console.log($scope.currentlySelected);
-        console.log(dish._id === $scope.currentlySelected.dish._id) && (dish.mealType === $scope.currentlySelected.meal)
     }
+
+    /* unselectDish()
+        Inputs: None
+        Outputs: None
+
+        If a user presses the collapse button, this is the function that gets called. Here, we just set the variable
+        for the currently selected dish back to empty
+    */
     $scope.unselectDish = function(){
         $scope.currentlySelected = {
             meal: "",
@@ -187,6 +227,13 @@ angular.module('myApp.homeView', ['ngRoute'])
         };
     }
 
+
+    /* getFavs()
+        Inputs: None
+        Outputs: None
+
+        This function gets the user's favorite foods from the backend
+    */
     $scope.getFavs = function() { 
         $http.get('/prefapi/getfavs')
             .success(function(foods){
@@ -196,6 +243,13 @@ angular.module('myApp.homeView', ['ngRoute'])
             })
     }
 
+    /* addFav()
+        Inputs: id
+        Outputs: None
+
+        After a user presses the favorite button, this is the function that gets called. Here we add the food id 
+        to a list of the user's favorite foods (and also the list we have on the frontend)
+    */
     $scope.addFav = function(id) { 
         favparams = {
             foodID: id,
@@ -209,6 +263,14 @@ angular.module('myApp.homeView', ['ngRoute'])
             })
     }
 
+
+    /* rmFav()
+        Inputs: id
+        Outputs: None
+
+        After a user presses the unfavorite button, this is the function that gets called. Here we remove the 
+        food id from a list of the user's favorite foods on the backend, and the list we've stored on the frontend
+    */
     $scope.rmFav = function(id) { 
         favparams = {
             foodID: id,
@@ -225,22 +287,42 @@ angular.module('myApp.homeView', ['ngRoute'])
     }        
 
 
+    /* loginRedirect()
+        Inputs: None
+        Outputs: None
+
+        Redirects to the login page
+    */
 	$scope.loginRedirect = function(){
 		$location.path("/login");
 	}
 
+    /* signupRedirect()
+        Inputs: None
+        Outputs: None
+
+        Redirects to the signup page
+    */
 	$scope.signupRedirect = function(){
 		$location.path("/signup");
 	}
 
-	$scope.changePasswordRedirect = function(){
-		$location.path("/changePassword");
-	}
+    /* accountSettingsRedirect()
+        Inputs: None
+        Outputs: None
 
+        Redirects to the account settings page page
+    */
     $scope.accountSettingsRedirect = function(){
         $location.path("/accountsettings");
     }    
 
+    /* logout()
+        Inputs: None
+        Outputs: None
+
+        wrapper for the auth service logout page. Reloads the page after logging out
+    */
 	$scope.logout = function() {
 		AuthService.logout().then(function(authStatus){
 			$scope.userAuthenticated = authStatus;
